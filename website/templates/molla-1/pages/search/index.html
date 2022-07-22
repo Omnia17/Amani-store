@@ -1,0 +1,469 @@
+{% extends "../index.html" %}
+{% block body %}
+
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Recherche<span>Produits</span></h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Recherche</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="toolbox">
+                        <div class="toolbox-left">
+                            <div class="toolbox-info">
+                                Affichage de <span>[[ ProductsSearch.results.length ]] sur [[ ProductsSearch.count ]]</span> Produits
+                            </div><!-- End .toolbox-info -->
+                        </div><!-- End .toolbox-left -->
+
+                        {% comment %} <div class="toolbox-right">
+                            <div class="toolbox-sort">
+                                <label for="sortby">Sort by:</label>
+                                <div class="select-custom">
+                                    <select name="sortby" id="sortby" class="form-control">
+                                        <option value="popularity" selected="selected">Most Popular</option>
+                                        <option value="rating">Most Rated</option>
+                                        <option value="date">Date</option>
+                                    </select>
+                                </div>
+                            </div><!-- End .toolbox-sort -->
+                            <div class="toolbox-layout">
+                                <a href="category-list.html" class="btn-layout active">
+                                    <svg width="16" height="10">
+                                        <rect x="0" y="0" width="4" height="4"></rect>
+                                        <rect x="6" y="0" width="10" height="4"></rect>
+                                        <rect x="0" y="6" width="4" height="4"></rect>
+                                        <rect x="6" y="6" width="10" height="4"></rect>
+                                    </svg>
+                                </a>
+
+                                <a href="category-2cols.html" class="btn-layout">
+                                    <svg width="10" height="10">
+                                        <rect x="0" y="0" width="4" height="4"></rect>
+                                        <rect x="6" y="0" width="4" height="4"></rect>
+                                        <rect x="0" y="6" width="4" height="4"></rect>
+                                        <rect x="6" y="6" width="4" height="4"></rect>
+                                    </svg>
+                                </a>
+
+                                <a href="category.html" class="btn-layout">
+                                    <svg width="16" height="10">
+                                        <rect x="0" y="0" width="4" height="4"></rect>
+                                        <rect x="6" y="0" width="4" height="4"></rect>
+                                        <rect x="12" y="0" width="4" height="4"></rect>
+                                        <rect x="0" y="6" width="4" height="4"></rect>
+                                        <rect x="6" y="6" width="4" height="4"></rect>
+                                        <rect x="12" y="6" width="4" height="4"></rect>
+                                    </svg>
+                                </a>
+
+                                <a href="category-4cols.html" class="btn-layout">
+                                    <svg width="22" height="10">
+                                        <rect x="0" y="0" width="4" height="4"></rect>
+                                        <rect x="6" y="0" width="4" height="4"></rect>
+                                        <rect x="12" y="0" width="4" height="4"></rect>
+                                        <rect x="18" y="0" width="4" height="4"></rect>
+                                        <rect x="0" y="6" width="4" height="4"></rect>
+                                        <rect x="6" y="6" width="4" height="4"></rect>
+                                        <rect x="12" y="6" width="4" height="4"></rect>
+                                        <rect x="18" y="6" width="4" height="4"></rect>
+                                    </svg>
+                                </a>
+                            </div><!-- End .toolbox-layout -->
+                        </div><!-- End .toolbox-right --> {% endcomment %}
+                    </div><!-- End .toolbox -->
+
+                    <div class="products mb-3">
+                        <div class="product product-list" v-for="(product, index) in ProductsSearch.results" :key="product.name">
+                            <div class="row">
+                                <div class="col-6 col-lg-3">
+                                    <figure class="product-media">
+                                        <span v-if="product.discount > 0" class="product-label label-sale">En promotion!</span> 
+                                        <span v-if="product.active_stock && product.stock < 1 && !product.order_without_stock" class="product-label label-out">En rupture de stock</span>
+                                        {% comment %} <span class="product-label label-new">New</span> {% endcomment %}
+                                        <a v-bind:href="[[ getProductLink(product) ]]">
+                                            <img v-bind:src="[[ product.photo ]]" alt="[[ product.name ]]" class="product-image">
+                                        </a>
+                                    </figure><!-- End .product-media -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-6 col-lg-3 order-lg-last">
+                                    <div class="product-list-action">
+                                        <div class="product-price">
+                                            [[ product.price ]] {{company.currency}}
+                                        </div><!-- End .product-price -->
+                                        {% comment %} <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                                            </div><!-- End .ratings -->
+                                            <span class="ratings-text">( 2 Reviews )</span>
+                                        </div><!-- End .rating-container --> {% endcomment %}
+
+                                        {% comment %} <div class="product-action">
+                                            <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
+                                            <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a>
+                                        </div><!-- End .product-action --> {% endcomment %}
+                                        <br>
+
+                                        <button v-if="!product.declinaison" @click="addToCart(product, 1)" class="btn btn-block btn-outline-primary-2">
+                                            <i class="icon-cart-plus"></i>Ajouter au panier
+                                        </button>
+
+                                        <div v-if="product.declinaison" class="dropdown">
+                                            <button class="btn btn-block btn-outline-primary-2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="icon-cart-plus"></i>Ajouter au panier
+                                            </button>
+                
+                                            <div class="dropdown-menu">
+                                                <a v-for="child_product in product.declinaisons" class="dropdown-item" href="#" @click="addToCart(child_product, 1)">[[ getAttrs(child_product) ]]</a>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- End .product-list-action -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-lg-6">
+                                    <div class="product-body product-action-inner">
+                                        <a href="#"  v-if="logged" @click="addToWishlist(product.id, $event)" class="btn-product btn-wishlist" title="Add to wishlist"><span>add to wishlist</span></a>
+                                        <div class="product-cat">
+                                            <a href="#">[[ product._category.name ]]</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a v-bind:href="[[ getProductLink(product) ]]">[[ product.name ]]</a></h3><!-- End .product-title -->
+
+                                        <div class="product-content">
+                                            <p>[[ product.description ]]</p>
+                                        </div><!-- End .product-content -->
+                                        
+                                        {% comment %} <div class="product-nav product-nav-thumbs">
+                                            <a href="#" class="active">
+                                                <img src="assets/images/products/product-4-thumb.jpg" alt="product desc">
+                                            </a>
+                                            <a href="#">
+                                                <img src="assets/images/products/product-4-2-thumb.jpg" alt="product desc">
+                                            </a>
+
+                                            <a href="#">
+                                                <img src="assets/images/products/product-4-3-thumb.jpg" alt="product desc">
+                                            </a>
+                                        </div><!-- End .product-nav --> {% endcomment %}
+                                    </div><!-- End .product-body -->
+                                </div><!-- End .col-lg-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .product -->
+{% comment %} 
+                        <div class="product product-list">
+                            <div class="row">
+                                <div class="col-6 col-lg-3">
+                                    <figure class="product-media">
+                                        <a href="product.html">
+                                            <img src="assets/images/products/product-5.jpg" alt="Product image" class="product-image">
+                                        </a>
+                                    </figure><!-- End .product-media -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-6 col-lg-3 order-lg-last">
+                                    <div class="product-list-action">
+                                        <div class="product-price">
+                                            $84.00
+                                        </div><!-- End .product-price -->
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: 0%;"></div><!-- End .ratings-val -->
+                                            </div><!-- End .ratings -->
+                                            <span class="ratings-text">( 0 Reviews )</span>
+                                        </div><!-- End .rating-container -->
+
+                                        <div class="product-action">
+                                            <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
+                                            <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a>
+                                        </div><!-- End .product-action -->
+
+                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                    </div><!-- End .product-list-action -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-lg-6">
+                                    <div class="product-body product-action-inner">
+                                        <a href="#" class="btn-product btn-wishlist" title="Add to wishlist"><span>add to wishlist</span></a>
+                                        <div class="product-cat">
+                                            <a href="#">Dresses</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="product.html">Dark yellow lace cut out swing dress</a></h3><!-- End .product-title -->
+
+                                        <div class="product-content">
+                                            <p>Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. </p>
+                                        </div><!-- End .product-content -->
+                                        
+                                        <div class="product-nav product-nav-thumbs">
+                                            <a href="#" class="active">
+                                                <img src="assets/images/products/product-5-thumb.jpg" alt="product desc">
+                                            </a>
+                                            <a href="#">
+                                                <img src="assets/images/products/product-5-2-thumb.jpg" alt="product desc">
+                                            </a>
+                                        </div><!-- End .product-nav -->
+                                    </div><!-- End .product-body -->
+                                </div><!-- End .col-lg-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .product -->
+
+                        <div class="product product-list">
+                            <div class="row">
+                                <div class="col-6 col-lg-3">
+                                    <figure class="product-media">
+                                        <span class="product-label label-out">Out of Stock</span>
+                                        <a href="product.html">
+                                            <img src="assets/images/products/product-6.jpg" alt="Product image" class="product-image">
+                                        </a>
+                                    </figure><!-- End .product-media -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-6 col-lg-3 order-lg-last">
+                                    <div class="product-list-action">
+                                        <div class="product-price">
+                                            <span class="out-price">$120.00</span>
+                                        </div><!-- End .product-price -->
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                            </div><!-- End .ratings -->
+                                            <span class="ratings-text">( 6 Reviews )</span>
+                                        </div><!-- End .rating-container -->
+
+                                        <div class="product-action">
+                                            <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
+                                            <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a>
+                                        </div><!-- End .product-action -->
+
+                                        <a href="#" class="btn-product btn-cart disabled"><span>add to cart</span></a>
+                                    </div><!-- End .product-list-action -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-lg-6">
+                                    <div class="product-body product-action-inner">
+                                        <a href="#" class="btn-product btn-wishlist" title="Add to wishlist"><span>add to wishlist</span></a>
+                                        <div class="product-cat">
+                                            <a href="#">Jackets</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="product.html">Khaki utility boiler jumpsuit</a></h3><!-- End .product-title -->
+
+                                        <div class="product-content">
+                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque </p>
+                                        </div><!-- End .product-content -->
+                                    </div><!-- End .product-body -->
+                                </div><!-- End .col-lg-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .product -->
+
+                        <div class="product product-list">
+                            <div class="row">
+                                <div class="col-6 col-lg-3">
+                                    <figure class="product-media">
+                                        <a href="product.html">
+                                            <img src="assets/images/products/product-7.jpg" alt="Product image" class="product-image">
+                                        </a>
+                                    </figure><!-- End .product-media -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-6 col-lg-3 order-lg-last">
+                                    <div class="product-list-action">
+                                        <div class="product-price">
+                                            $76.00
+                                        </div><!-- End .product-price -->
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                                            </div><!-- End .ratings -->
+                                            <span class="ratings-text">( 2 Reviews )</span>
+                                        </div><!-- End .rating-container -->
+
+                                        <div class="product-action">
+                                            <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
+                                            <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a>
+                                        </div><!-- End .product-action -->
+
+                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                    </div><!-- End .product-list-action -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-lg-6">
+                                    <div class="product-body product-action-inner">
+                                        <a href="#" class="btn-product btn-wishlist" title="Add to wishlist"><span>add to wishlist</span></a>
+                                        <div class="product-cat">
+                                            <a href="#">Jeans</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="product.html">Blue utility pinafore denim dress</a></h3><!-- End .product-title -->
+
+                                        <div class="product-content">
+                                            <p>Pellentesque aliquet nibh nec urna. In nisi neque, aliquet vel, dapibus id, mattis vel, nisi. </p>
+                                        </div><!-- End .product-content -->
+                                    </div><!-- End .product-body -->
+                                </div><!-- End .col-lg-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .product -->
+
+                        <div class="product product-list">
+                            <div class="row">
+                                <div class="col-6 col-lg-3">
+                                    <figure class="product-media">
+                                        <span class="product-label label-new">New</span>
+                                        <a href="product.html">
+                                            <img src="assets/images/products/product-8.jpg" alt="Product image" class="product-image">
+                                        </a>
+                                    </figure><!-- End .product-media -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-6 col-lg-3 order-lg-last">
+                                    <div class="product-list-action">
+                                        <div class="product-price">
+                                            $84.00
+                                        </div><!-- End .product-price -->
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: 0%;"></div><!-- End .ratings-val -->
+                                            </div><!-- End .ratings -->
+                                            <span class="ratings-text">( 0 Reviews )</span>
+                                        </div><!-- End .rating-container -->
+
+                                        <div class="product-action">
+                                            <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
+                                            <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a>
+                                        </div><!-- End .product-action -->
+
+                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                    </div><!-- End .product-list-action -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-lg-6">
+                                    <div class="product-body product-action-inner">
+                                        <a href="#" class="btn-product btn-wishlist" title="Add to wishlist"><span>add to wishlist</span></a>
+                                        <div class="product-cat">
+                                            <a href="#">Shoes</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="product.html">Beige knitted elastic runner shoes</a></h3><!-- End .product-title -->
+
+                                        <div class="product-content">
+                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque </p>
+                                        </div><!-- End .product-content -->
+                                        
+                                        <div class="product-nav product-nav-thumbs">
+                                            <a href="#" class="active">
+                                                <img src="assets/images/products/product-8-thumb.jpg" alt="product desc">
+                                            </a>
+                                            <a href="#">
+                                                <img src="assets/images/products/product-8-2-thumb.jpg" alt="product desc">
+                                            </a>
+                                        </div><!-- End .product-nav -->
+                                    </div><!-- End .product-body -->
+                                </div><!-- End .col-lg-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .product -->
+
+                        <div class="product product-list">
+                            <div class="row">
+                                <div class="col-6 col-lg-3">
+                                    <figure class="product-media">
+                                        <a href="product.html">
+                                            <img src="assets/images/products/product-9.jpg" alt="Product image" class="product-image">
+                                        </a>
+                                    </figure><!-- End .product-media -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-6 col-lg-3 order-lg-last">
+                                    <div class="product-list-action">
+                                        <div class="product-price">
+                                            $52.00
+                                        </div><!-- End .product-price -->
+                                        <div class="ratings-container">
+                                            <div class="ratings">
+                                                <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                            </div><!-- End .ratings -->
+                                            <span class="ratings-text">( 1 Reviews )</span>
+                                        </div><!-- End .rating-container -->
+
+                                        <div class="product-action">
+                                            <a href="popup/quickView.html" class="btn-product btn-quickview" title="Quick view"><span>quick view</span></a>
+                                            <a href="#" class="btn-product btn-compare" title="Compare"><span>compare</span></a>
+                                        </div><!-- End .product-action -->
+
+                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                    </div><!-- End .product-list-action -->
+                                </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                <div class="col-lg-6">
+                                    <div class="product-body product-action-inner">
+                                        <a href="#" class="btn-product btn-wishlist" title="Add to wishlist"><span>add to wishlist</span></a>
+                                        <div class="product-cat">
+                                            <a href="#">Bags</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="product.html">Orange saddle lock front chain cross body bag</a></h3><!-- End .product-title -->
+
+                                        <div class="product-content">
+                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Phasellus hendrerit. Pellentesque </p>
+                                        </div><!-- End .product-content -->
+                                        
+                                        <div class="product-nav product-nav-thumbs">
+                                            <a href="#" class="active">
+                                                <img src="assets/images/products/product-9-thumb.jpg" alt="product desc">
+                                            </a>
+                                            <a href="#">
+                                                <img src="assets/images/products/product-9-2-thumb.jpg" alt="product desc">
+                                            </a>
+                                            <a href="#">
+                                                <img src="assets/images/products/product-9-3-thumb.jpg" alt="product desc">
+                                            </a>
+                                        </div><!-- End .product-nav -->
+                                    </div><!-- End .product-body -->
+                                </div><!-- End .col-lg-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .product --> {% endcomment %}
+                    </div><!-- End .products -->
+
+                    <nav aria-label="Page navigation">
+
+                        <ul class="pagination justify-content-center">
+                            <li v-if="ProductsSearch.current_page == 1" class="page-item disabled">
+                                <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                                    <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Précédent
+                                </a>
+                            </li>
+                            <li v-if="ProductsSearch.current_page != 1" class="page-item">
+                                <a class="page-link page-link-prev" href="#" aria-label="Previous" @click="searchProductsPagination(ProductsSearch.previous)">
+                                    <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Précédent
+                                </a>
+                            </li>
+
+                            <li class="page-item-total">[[ ProductsSearch.current_page ]]  sur  [[ ProductsSearch.total_pages ]]</li>
+
+                            <li v-if="ProductsSearch.current_page == ProductsSearch.total_pages" class="page-item disabled">
+                                <a class="page-link page-link-next" href="#" aria-label="Next" tabindex="+1" aria-disabled="true">
+                                    Suivant <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                                </a>
+                            </li>
+                            <li v-if="ProductsSearch.current_page != ProductsSearch.total_pages" class="page-item" @click="searchProductsPagination(ProductsSearch.next)">
+                                <a class="page-link page-link-next" href="#" aria-label="Next">
+                                    Suivant <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </nav>
+                </div><!-- End .col-lg-9 -->
+              
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .page-content -->
+</main>
+
+{% endblock %}
