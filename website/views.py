@@ -439,4 +439,49 @@ def error500(request):
             "url": request.build_absolute_uri()
         }
     }
-    return HttpResponse(template.render(context, request), status=500)        
+    return HttpResponse(template.render(context, request), status=500)    
+    # amani store 
+
+def amaniindex(request):
+    company, header_menu, footer_menu, company_info = getCompanyData(request)   
+  
+    template = loader.get_template('amani/pages/newIndex.html')
+
+    context = {
+        "company": company,
+        "header": header_menu,
+        "footer": footer_menu,
+        "social_links": company_info.get('contact_settings', {}),
+        "company_info": company_info,
+        "page_type": "product_group",
+
+        "seo":{
+            "title": "categpry", 
+            "description": "", 
+            "image": "", 
+            "url": request.build_absolute_uri()
+        },
+    }
+    return HttpResponse(template.render(context, request))
+
+def amaniproductlist(request):
+    company, header_menu, footer_menu, company_info = getCompanyData(request)   
+  
+    template = loader.get_template('amani/pages/newList.html')
+
+    context = {
+        "company": company,
+        "header": header_menu,
+        "footer": footer_menu,
+        "social_links": company_info.get('contact_settings', {}),
+        "company_info": company_info,
+        "page_type": "product_group",
+
+        "seo":{
+            "title": "categpry", 
+            "description": "", 
+            "image": "", 
+            "url": request.build_absolute_uri()
+        },
+    }
+    return HttpResponse(template.render(context, request))
