@@ -173,7 +173,306 @@
  
 
  */
+/*--------------------- 4.5.Cards -------------------- */
 
+.accordion {
+    margin-bottom: 3rem;
+
+
+}
+
+.card {
+    border-radius: 0;
+
+
+    margin-bottom: 0;
+
+
+    border: none;
+
+
+    border-top: .1rem solid #ebebeb;
+
+
+}
+
+.card:last-child {
+    border-bottom: .1rem solid #ebebeb;
+
+
+}
+
+.card-header {
+    position: relative;
+
+
+    padding: 0;
+
+
+    border: none;
+
+
+    font-weight: 700;
+
+
+    line-height: 1.5;
+
+
+    background-color: transparent;
+
+
+    margin: 0;
+
+
+}
+
+.card-header::after {
+    display: block;
+
+
+    clear: both;
+
+
+    content: '';
+
+
+}
+
+.card-title {
+    font-size: 1.8rem;
+
+
+    line-height: 1.2;
+
+
+    margin-bottom: 0;
+
+
+}
+
+.card-title a {
+    display: block;
+
+
+    padding: 1.7rem 4rem 1.7rem 1.2rem;
+
+
+    position: relative;
+
+
+    color: #c96;
+
+
+    border: none;
+
+
+    background-color: transparent;
+
+
+    outline: none !important;
+
+
+}
+
+.card-title a i {
+    min-width: 17px;
+
+
+    margin-right: 2.4rem;
+
+
+}
+
+.card-title a:before {
+    content: '\e802';
+
+
+    display: inline-block;
+
+
+    position: absolute;
+
+
+    right: 1.2rem;
+
+
+    top: 50%;
+
+
+    color: #c96;
+
+
+    font-family: "molla";
+
+
+    line-height: 1;
+
+
+    transform: translateY(-50%);
+
+
+    -ms-transform: translateY(-50%);
+
+
+    transition: all 0.3s;
+
+
+}
+
+.card-title a.collapsed {
+    color: #333;
+
+
+}
+
+.card-title a.collapsed:hover,
+.card-title a.collapsed:focus {
+    color: #c96;
+
+
+}
+
+.card-title a.collapsed:before {
+    content: '\f110';
+
+
+    color: #8c8c8c;
+
+
+    transform: translateY(-50%);
+
+
+    -ms-transform: translateY(-50%);
+
+
+}
+
+.card-body {
+    padding: .4rem 4rem 1.8rem 1.2rem;
+
+
+    border: none;
+
+
+    border-radius: 0;
+
+
+}
+
+.accordion-icon .card-body {
+    padding-left: 5.5rem !important;
+
+
+}
+
+.accordion-plus .card-title a:before {
+    content: '\f28e';
+
+
+}
+
+.accordion-plus .card-title a.collapsed:before {
+    content: '\f2c2';
+
+
+}
+
+.accordion-rounded .card:first-child {
+    border-radius: .3rem .3rem 0 0;
+
+
+}
+
+.accordion-rounded .card:last-child {
+    border-radius: 0 0 .3rem .3rem;
+
+
+}
+
+.card.card-box .card-title a {
+    padding-left: 2rem;
+
+
+}
+
+.card.card-box .card-title a:before {
+    right: 2rem;
+
+
+}
+
+.card.card-box .card-title a i {
+    margin-right: 1.4rem;
+
+
+}
+
+.card.card-box .card-body {
+    padding: 1rem 2rem 2rem;
+
+
+}
+
+.card.card-sm .card-title {
+    font-size: 1.6rem;
+
+
+    letter-spacing: -.01em;
+
+
+}
+
+.card.card-sm .card-title a {
+    padding-top: 2.1rem;
+
+
+    padding-bottom: 2.1rem;
+
+
+}
+
+.card.card-sm .card-title a:before {
+    right: 2rem;
+
+
+}
+
+.card.card-sm .card-body {
+    padding: 1rem 2rem 2rem;
+
+
+}
+
+.card.bg-light,
+.card.bg-white {
+    background-color: #fff !important;
+
+
+    border: .1rem solid #ebebeb;
+
+
+}
+
+.card.bg-light .card-title a,
+.card.bg-white .card-title a {
+    background-color: #fff;
+
+
+}
+
+.card.bg-light .card-title a.collapsed {
+    background-color: #fafafa;
+
+
+}
+
+@media screen and (min-width: 992px) {
+    .card-title {
+        font-size: 2rem;
+
+
+    }
+}
 
 /*--------------------- 1.General Styles ---------- */
 
@@ -8579,8 +8878,8 @@ blockquote.text-white cite span {
  margin:0 auto}.line-left-style{background-color:#cecece; 
  display:inline-block; 
  height:1px; 
- width:40px}.breadcrumb-style1{background:#fffaef; 
- padding:36px 0 20px}.breadcrumb-item{color:#494949; 
+ width:40px}.breadcrumb-style1{ 
+ padding:36px 0 20px}.breadcrumb-item{color:#e98383; 
  font-size:14px; 
  line-height:28px}@media only screen and (max-width:767px),only screen and (min-width:768px) and (max-width:991px),only screen and (min-width:992px) and (max-width:1199px){.breadcrumb-item{font-size:15px}}.breadcrumb-item a{color:#494949}.breadcrumb-item a:hover{color:#ff6565}.breadcrumb-item.active{color:#494949}.breadcrumb-item+.breadcrumb-item:before{color:#494949; 
  font-size:16px}.page-header-style2-area{border-radius:30px; 
@@ -11461,7 +11760,311 @@ blockquote.text-white cite span {
  margin:0 auto}.line-left-style{background-color:#cecece; 
  display:inline-block; 
  height:1px; 
- width:40px}.breadcrumb-style1{background:#fffaef; 
+ width:40px}.breadcrumb-style1{ background-color: #fffaef;
  padding:36px 0 20px}.breadcrumb-item{color:#494949; 
  font-size:14px; 
  line-height:28px}@media only screen and (max-width:767px),only screen and (min-width:768px) and (max-width:991px),only screen and (min-width:992px) and (max-width:1199px){.breadcrumb-item{font-size:15px}}
+
+ /*  22 - Components - Breadcrumb
+/*----------------------------------------*/
+ .wrap-flex { 
+    display: flex;
+ }
+.breadcrumb-area {
+   
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    min-height: 100px;
+    position: relative;
+  }
+  
+  .breadcrumb-area .breadcrumb-content {
+    position: absolute;
+    left: auto;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+  }
+  
+  .breadcrumb-area .breadcrumb-content > h2 {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 32px;
+    margin-bottom: 0;
+    padding-bottom: 20px;
+  }
+  
+  .breadcrumb-area .breadcrumb-content ul > li {
+    display: inline-block;
+    padding-left: 20px;
+    position: relative;
+  }
+  
+  .breadcrumb-area .breadcrumb-content ul > li:first-child {
+    padding-left: 0;
+  }
+  
+  .breadcrumb-area .breadcrumb-content ul > li:before {
+    content: "\f054";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 600;
+    position: absolute;
+    right: -15px;
+    top: 2px;
+    font-size: 10px;
+  }
+  
+  .breadcrumb-area .breadcrumb-content ul > li:last-child:before {
+    display: none;
+  } 
+
+  /* newcart */
+  
+.cart-discount {
+    flex: 0 0 50%;
+
+
+    max-width: 326px;
+
+
+}
+
+.cart-discount .form-control {
+    margin-right: 1.1rem;
+
+
+}
+
+.cart-discount .btn {
+    min-width: 40px;
+
+
+    padding-left: 0;
+
+
+    padding-right: 0;
+
+
+}
+
+.summary.summary-cart {
+    margin-bottom: 3rem;
+
+
+}
+
+.summary.summary-cart .summary-title {
+    margin-bottom: 0;
+
+
+}
+
+.table.table-summary .summary-shipping {
+    color: #333333;
+
+
+    font-weight: 400;
+
+
+    font-size: 1.6rem;
+
+
+}
+
+.table.table-summary .summary-shipping td {
+    padding-top: 2rem;
+
+
+    padding-bottom: 1.3rem;
+
+
+    height: auto;
+
+
+    border-bottom: none;
+
+
+}
+
+.table.table-summary .summary-shipping-row {
+    color: #333333;
+
+
+}
+
+.table.table-summary .summary-shipping-row label {
+    color: inherit;
+
+
+}
+
+.table.table-summary .summary-shipping-row td {
+    height: auto;
+
+
+    padding-top: .5rem;
+
+
+    padding-bottom: .5rem;
+
+
+    border-bottom: none;
+
+
+}
+
+.table.table-summary .custom-control {
+    margin: 0;
+
+
+}
+
+.table.table-summary .summary-shipping-estimate {
+    color: #333333;
+
+
+    font-weight: 400;
+
+
+    font-size: 1.6rem;
+
+
+}
+
+.table.table-summary .summary-shipping-estimate td {
+    height: auto;
+
+
+    padding-top: 1.4rem;
+
+
+    padding-bottom: 2.3rem;
+
+
+}
+
+.table.table-summary .summary-shipping-estimate a {
+    margin-top: .6rem;
+
+
+    display: inline-block;
+
+
+    font-weight: 300;
+
+
+    color: #999999;
+
+
+    font-size: 1.4rem;
+
+
+    border-bottom: 0.1rem solid #999999;
+
+
+}
+
+.table.table-summary .summary-shipping-estimate a:hover,
+.table.table-summary .summary-shipping-estimate a:focus {
+    color: #c96;
+
+
+    border-bottom-color: #c96;
+
+
+}
+
+.summary-cart .table.table-summary thead th:last-child,
+.summary-cart .table.table-summary tbody td:last-child {
+    min-width: 0;
+
+
+}
+
+.cart-product-quantity {
+    width: 100px;
+
+
+}
+
+.cart-product-quantity .form-control {
+    padding: .85rem 2.6rem;
+
+
+    height: 40px;
+
+
+    max-width: 100%;
+
+
+    border-color: #dadada;
+
+
+    background-color: #fff;
+
+
+    margin: 0;
+
+
+}
+
+/* ---Torress's Quantity--- */
+.quantity .cart-plus-minus,
+.group-quantity .cart-plus-minus {
+  position: relative;
+  width: 76px;
+  text-align: left;
+}
+
+.quantity .cart-plus-minus > .cart-plus-minus-box,
+.group-quantity .cart-plus-minus > .cart-plus-minus-box {
+  border: 1px solid #ebebeb;
+  height: 46px;
+  text-align: center;
+  width: 48px;
+  background: #ffffff;
+}
+
+.quantity .cart-plus-minus > .qtybutton,
+.group-quantity .cart-plus-minus > .qtybutton {
+  border-bottom: 1px solid #ebebeb;
+  border-right: 1px solid #ebebeb;
+  border-top: 1px solid #ebebeb;
+  cursor: pointer;
+  height: 23px;
+  line-height: 20px;
+  position: absolute;
+  text-align: center;
+  width: 28px;
+  line-height: 21px;
+}
+
+.quantity .cart-plus-minus > .qtybutton:hover,
+.group-quantity .cart-plus-minus > .qtybutton:hover {
+  background: #ebebeb;
+}
+
+.quantity .cart-plus-minus > .qtybutton.dec,
+.group-quantity .cart-plus-minus > .qtybutton.dec {
+  bottom: 0;
+  right: 0;
+}
+
+.quantity .cart-plus-minus > .qtybutton.inc,
+.group-quantity .cart-plus-minus > .qtybutton.inc {
+  border-bottom: none;
+  top: 0;
+  right: 0;
+}
+
+.quantity.group-quantity,
+.group-quantity.group-quantity {
+  text-align: center;
+}
+
+.quantity.group-quantity .cart-plus-minus,
+.group-quantity.group-quantity .cart-plus-minus {
+  margin: 0 auto;
+}

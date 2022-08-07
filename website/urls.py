@@ -21,5 +21,8 @@ urlpatterns = [
     path('sitemap.xml', sitemap, name='sitemap'),
     path("robots.txt",TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path('newIndex', amaniindex, name='newindex'),
-    path('newPList/<cat_id>/<cat_slug>/', amaniproductlist, name='newlist')
+    path('newPList/<cat_id>/<cat_slug>/', amaniproductlist, name='newlist'),
+    path('amanicart', amanicart, name='cart'),
+    path('amanicheckout', amanicheckout, name='checkout')
+
 ]

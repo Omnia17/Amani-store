@@ -440,7 +440,8 @@ def error500(request):
         }
     }
     return HttpResponse(template.render(context, request), status=500)    
-    # amani store 
+
+    # ----------------------------amani store----------------------------
 
 def amaniindex(request):
     company, header_menu, footer_menu, company_info = getCompanyData(request)   
@@ -467,7 +468,7 @@ def amaniindex(request):
 def amaniproductlist(request):
     company, header_menu, footer_menu, company_info = getCompanyData(request)   
   
-    template = loader.get_template('amani/pages/newList.html')
+    template = loader.get_template('amani/pages/Product-List/index.html')
 
     context = {
         "company": company,
@@ -485,3 +486,65 @@ def amaniproductlist(request):
         },
     }
     return HttpResponse(template.render(context, request))
+
+
+
+def amanicart(request):
+    company, header_menu, footer_menu, company_info = getCompanyData(request)   
+
+    transporters = None
+    if company['works_with_transport']:
+        transporters = requests.get(api+"transports-read/?company="+company['id']).json()
+        transporters = transporters['results']
+
+    template = loader.get_template('amani/pages/cart/index.html')
+
+    context = {
+        "company": company,
+        "header": header_menu,
+        "footer": footer_menu,
+        "social_links": company_info.get('contact_settings', {}),
+        "company_info": company_info,
+        "page_type": "cart",
+
+        "seo":{
+            "title": "panier", 
+            "description": "", 
+            "image": "", 
+            "url": request.build_absolute_uri()
+        },
+
+        "transporters": transporters
+    }
+    return HttpResponse(template.render(context, request))
+
+def amanicheckout(request):
+    company, header_menu, footer_menu, company_info = getCompanyData(request)   
+
+    transporters = None
+    if company['works_with_transport']:
+        res = requests.get(api+"transports-read/?company="+company['id']).json()
+        transporters = res['results']
+
+
+    template = loader.get_template('amani/pages/checkout/index.html')
+
+    context = {
+        "company": company,
+        "header": header_menu,
+        "footer": footer_menu,
+        "social_links": company_info.get('contact_settings', {}),
+        "company_info": company_info,
+        "page_type": "checkout",
+
+        "seo": {
+            "title": "checkout", 
+            "description": "", 
+            "image": "", 
+            "url": request.build_absolute_uri()
+        },
+
+        "transporters": transporters
+    }
+    return HttpResponse(template.render(context, request))
+
