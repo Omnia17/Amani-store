@@ -548,3 +548,121 @@ def amanicheckout(request):
     }
     return HttpResponse(template.render(context, request))
 
+def amanicart(request):
+    company, header_menu, footer_menu, company_info = getCompanyData(request)   
+
+    transporters = None
+    if company['works_with_transport']:
+        transporters = requests.get(api+"transports-read/?company="+company['id']).json()
+        transporters = transporters['results']
+
+    template = loader.get_template('amani/pages/cart/index.html')
+
+    context = {
+        "company": company,
+        "header": header_menu,
+        "footer": footer_menu,
+        "social_links": company_info.get('contact_settings', {}),
+        "company_info": company_info,
+        "page_type": "cart",
+
+        "seo":{
+            "title": "panier", 
+            "description": "", 
+            "image": "", 
+            "url": request.build_absolute_uri()
+        },
+
+        "transporters": transporters
+    }
+    return HttpResponse(template.render(context, request))
+
+def failPayment(request):
+    company, header_menu, footer_menu, company_info = getCompanyData(request)   
+
+    transporters = None
+    if company['works_with_transport']:
+        res = requests.get(api+"transports-read/?company="+company['id']).json()
+        transporters = res['results']
+
+
+    template = loader.get_template('amani/pages/payment/fail.html')
+
+    context = {
+        "company": company,
+        "header": header_menu,
+        "footer": footer_menu,
+        "social_links": company_info.get('contact_settings', {}),
+        "company_info": company_info,
+        "page_type": "checkout",
+
+        "seo": {
+            "title": "checkout", 
+            "description": "", 
+            "image": "", 
+            "url": request.build_absolute_uri()
+        },
+
+        "transporters": transporters
+    }
+    return HttpResponse(template.render(context, request))
+
+def successPayment(request):
+    company, header_menu, footer_menu, company_info = getCompanyData(request)   
+
+    transporters = None
+    if company['works_with_transport']:
+        res = requests.get(api+"transports-read/?company="+company['id']).json()
+        transporters = res['results']
+
+
+    template = loader.get_template('amani/pages/payment/success.html')
+
+    context = {
+        "company": company,
+        "header": header_menu,
+        "footer": footer_menu,
+        "social_links": company_info.get('contact_settings', {}),
+        "company_info": company_info,
+        "page_type": "checkout",
+
+        "seo": {
+            "title": "checkout", 
+            "description": "", 
+            "image": "", 
+            "url": request.build_absolute_uri()
+        },
+
+        "transporters": transporters
+    }
+    return HttpResponse(template.render(context, request))
+
+def search(request):
+    company, header_menu, footer_menu, company_info = getCompanyData(request)   
+
+    transporters = None
+    if company['works_with_transport']:
+        res = requests.get(api+"transports-read/?company="+company['id']).json()
+        transporters = res['results']
+
+
+    template = loader.get_template('amani/pages/search/index.html')
+
+    context = {
+        "company": company,
+        "header": header_menu,
+        "footer": footer_menu,
+        "social_links": company_info.get('contact_settings', {}),
+        "company_info": company_info,
+        "page_type": "checkout",
+
+        "seo": {
+            "title": "checkout", 
+            "description": "", 
+            "image": "", 
+            "url": request.build_absolute_uri()
+        },
+
+        "transporters": transporters
+    }
+    return HttpResponse(template.render(context, request))

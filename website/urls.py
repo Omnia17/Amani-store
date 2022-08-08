@@ -23,6 +23,12 @@ urlpatterns = [
     path('newIndex', amaniindex, name='newindex'),
     path('newPList/<cat_id>/<cat_slug>/', amaniproductlist, name='newlist'),
     path('amanicart', amanicart, name='cart'),
-    path('amanicheckout', amanicheckout, name='checkout')
+    path('amanicheckout', amanicheckout, name='checkout'),
+    path('failPayment', failPayment, name='fail'),
+    path('successPayment', successPayment, name='success'),
+    path('search', search, name='search')
+
+
+
 
 ]
