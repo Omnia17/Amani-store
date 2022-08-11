@@ -1,4 +1,4 @@
-{% extends "../index.html" %}
+{% extends "../newIndex.html" %}
 
 {% load static %}
 {% load paginate %}
@@ -8,152 +8,210 @@
 {% block body %}
 
 <main class="main">
-    <h1>hello</h1>
-    <div class="page-header text-center" >
-        <div class="container">
-            <h1 class="page-title">{{ category.name | upper }}<span>{{ category.description }}</span></h1>
-        </div><!-- End .container -->
-    </div><!-- End .page-header -->
-    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
-        <div class="container">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Accueil</a></li>
-                <li class="breadcrumb-item"><a href="">{{ category.name }}</a></li>
-            </ol>
-        </div><!-- End .container -->
-    </nav><!-- End .breadcrumb-nav -->
+    <br><br><br><br><br>
+    <nav aria-label="breadcrumb" class="breadcrumb-style1">
 
-    <div class="page-content">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="toolbox">
-                        <div class="toolbox-left">
-                            <div class="toolbox-info">
-                                Affichage de <span> [[ products.results.length ]] sur [[ products.count ]]</span> Produits
-                            </div><!-- End .toolbox-info -->
-                        </div><!-- End .toolbox-left -->
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <h2>Welcome to your product list</h2>
+                    <ul>
+                        <li><a href="newIndex">Home</a></li>
+                        
+    
+                    <li class="active"> </li>
+                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </nav>
 
-                        <div class="toolbox-right">
-                            <div class="toolbox-sort">
-                                <label for="sortby">Trier par:</label>
-                                <div class="select-custom">
-                                    <select name="sortby" id="sortby" class="form-control" v-model="productsSort" @change="getProducts(1)">
-                                        <option value="-updated_at" selected="selected">Plus Populaire</option>
-                                        <option value="created_at">Nouveaux Produit</option>
-                                        <option value="price">Prix Croissant</option>
-                                        <option value="-price">Prix Décroissant</option>
-                                    </select>
-                                </div>
-                            </div><!-- End .toolbox-sort -->
+        <div class="shop-top-bar-area">
+            <div class="container">
+                <div class="shop-top-bar">
+                    <select class="select-shoing">
+                        <option data-display="Trending">Trending</option>
+                        <option value="1">Featured</option>
+                        <option value="2">Best Selling</option>
+                        <option value="3">Alphabetically, A-Z</option>
+                        <option value="4">Alphabetically, Z-A</option>
+                        <option value="5">Price, low to high</option>
+                        <option value="6">Price, high to low</option>
+                        <option value="7">Date, new to old</option>
+                        <option value="8">Date, old to new</option>
+                    </select>
 
-                        </div><!-- End .toolbox-right -->
-                    </div><!-- End .toolbox -->
+                    <div class="select-on-sale d-flex d-md-none">
+                        <span>On Sale :</span>
+                        <select class="select-on-sale-form">
+                            <option selected>Yes</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
 
-                    <div class="products mb-3">
-                        <div class="row justify-content-center">
-                            <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="(product, index) in products.results" :key="product.name">
-                                <div class="product product-7 text-center">
-                                    <figure class="product-media">
-                                        <span v-if="product.discount > 0" class="product-label label-sale">En promotion!</span> 
-                                        <span v-if="product.active_stock && product.stock < 1 && ! product.order_without_stock" class="product-label label-out">En rupture de stock</span>
+                    <div class="select-price-range">
+                        Affichage de <span> [[ products.results.length ]] sur [[ products.count ]]</span> Produits
+
+                    </div>
+
+                    <div class="select-on-sale d-none d-md-flex">
+                        <span>On Sale :</span>
+                        <select class="select-on-sale-form">
+                            <option selected>Yes</option>
+                            <option value="1">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<br>
+<section class="section-space pb-0">
+    {# <h2 class="fs-lg-56 fs-40 font-weight-normal text-center text-primary custom-font" data-animate="fadeInUp">Our Categories</h2> #}
+    <div class="container">
+        <div class="row g-3 g-sm-6">
+            <div class="col-6 col-lg-4 col-lg-2 col-xl-2">
+                <!--== Start Product Category Item ==-->
+                <a href="/productList" class="product-category-item" data-bg-color="#dcffd2">
+                    <img class="icon" src="static/assets/amani/images/dress.png" width="70" height="80" alt="Image-HasTech">
+                    <h3 class="title">dresses</h3>
+                    
+                </a>
+                <!--== End Product Category Item ==-->
+            </div>
+            <div class="col-6 col-lg-4 col-lg-2 col-xl-2">
+                <!--== Start Product Category Item ==-->
+                <a href="product.html" class="product-category-item" data-bg-color="#6495ED">
+                    <img class="icon" src="static/assets/amani/images/tops.png" width="80" height="80" alt="Image-HasTech">
+                    <h3 class="title">tops</h3>
+                </a>
+                <!--== End Product Category Item ==-->
+            </div>
+            <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-lg-0 mt-sm-6 mt-4">
+                <!--== Start Product Category Item ==-->
+                <a href="product.html" class="product-category-item" data-bg-color="#DFE4FF">
+                    <img class="icon" src="static/assets/amani/images/pants.png" width="80" height="80" alt="Image-HasTech">
+                    <h3 class="title">pants</h3>
+                </a>
+                <!--== End Product Category Item ==-->
+            </div>
+            <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-xl-0 mt-sm-6 mt-4">
+                <!--== Start Product Category Item ==-->
+                <a href="product.html" class="product-category-item" data-bg-color="#FFEACC">
+                    <img class="icon" src="static/assets/amani/images/skirt.png" width="80" height="80" alt="Image-HasTech">
+                    <h3 class="title">skirts</h3>
+                  
+                </a>
+                <!--== End Product Category Item ==-->
+            </div>
+            <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-xl-0 mt-sm-6 mt-4">
+                <!--== Start Product Category Item ==-->
+                <a href="product.html" class="product-category-item" data-bg-color="#FFDAE0">
+                    <img class="icon" src="static/assets/amani/images/shoess.png" width="80" height="80" alt="Image-HasTech" >
+                    <h3 class="title">shoes</h3>
+                </a>
+                <!--== End Product Category Item ==-->
+            </div>
+            <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-xl-0 mt-sm-6 mt-4">
+                <!--== Start Product Category Item ==-->
+                <a href="product.html" class="product-category-item" data-bg-color="#FFF3DA">
+                    <img class="icon" src="static/assets/amani/images/sunglasses.png" width="80" height="80" alt="Image-HasTech">
+                    <h3 class="title">accessories</h3>
+                </a>
+                <!--== End Product Category Item ==-->
+            </div>
+        </div>
+    </div>
+</section>
+<br><br>
+
+
+
+
+
+
+                <!-- lets try the original-->
+               
+                        <!--== Start Product Item ==-->
+                        <div class="product-item">
+                            <div class="product-thumb">
+                                
+                <div class="products mb-3">
+                    <div class="row justify-content-center">
+                        <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="(product, index) in products.results" :key="product.name">
+                            <div class="product product-7 text-center">
+                                <figure class="product-media">
+                                    <span v-if="product.discount > 0" class="product-label label-sale">En promotion!</span> 
+                                    <span v-if="product.active_stock && product.stock < 1 && ! product.order_without_stock" class="product-label label-out">En rupture de stock</span>
+                                    
+                                    <a v-bind:href="[[ getProductLink(product) ]]">
+                                        <img v-bind:src="[[ product.photo ]]" alt="[[ product.name ]]" class="product-image">
+                                    </a>
+
+                                    <div class="product-action-vertical">
+                                        <a href="#" v-if="logged" @click="addToWishlist(product.id, $event)" class="btn-product-icon btn-wishlist btn-expandable"><span>Ajouter aux Favoris</span></a>
                                         
-                                        <a v-bind:href="[[ getProductLink(product) ]]">
-                                            <img v-bind:src="[[ product.photo ]]" alt="[[ product.name ]]" class="product-image">
+                                    </div><!-- End .product-action-vertical -->
+                                    <div class="product-action">
+                                    <a v-bind:href="[[ getProductLink(product) ]]" type="button" class="product-action-btn action-btn-cart" data-bs-toggle="modal" data-bs-target="#action-CartAddModal">
+                                        <span>Afficher produit</span>
+                                    </a>
+</div>
+                                   <!-- <div class="product-action">
+                                        <a v-bind:href="[[ getProductLink(product) ]]" class="btn-product"><span>Afficher produit</span></a>-->
+
+                                        {% comment %} {% if not product.declinaison %}
+                                            <a href="#" @click="addToCart({{product | to_json}}, productQte, $event)" class="btn-product btn-cart"><span>Ajouter au panier</span></a>
+                                        {% else %}
+                                            <a href="#" class="btn-product btn-cart" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Ajouter au panier</span></a>
+                
+                                            <div class="dropdown-menu">
+                                                {% for child_product in product.declinaisons %}
+                                                    <a class="dropdown-item" href="#" @click="addToCart({{child_product | to_json}}, productQte, $event)">{{ child_product | get_prod_attrs }}</a>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %} {% endcomment %}
+                                    </div><!-- End .product-action -->
+                                </figure><!-- End .product-media -->
+
+                                <div class="product-info">
+
+                                    <div class="product-cat">
+                                        <a>[[ product._category.name ]]</a>
+                                    </div><!-- End .product-cat -->
+                                    <h3 class="product-title"><a v-bind:href="[[ getProductLink(product) ]]">[[ product.name ]]</a></h3><!-- End .product-title -->
+                                    <div class="product-price" v-if="product.discount > 0">
+                                        <span class="new-price">[[ product.price - product.discount ]] {{ company.currency }}</span>
+                                        <span class="old-price">[[ product.price ]] {{ company.currency }}</span>
+                                    </div>
+                                    <div class="product-price" v-if="!product.discount > 0">
+                                        [[ product.price ]] {{ company.currency }}
+                                    </div><!-- End .product-price -->
+                                    {% comment %} <div class="ratings-container">
+                                        <div class="ratings">
+                                            <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                                        </div><!-- End .ratings -->
+                                        <span class="ratings-text">( 2 Reviews )</span>
+                                    </div><!-- End .rating-container --> {% endcomment %}
+
+                                    {% comment %} <div class="product-nav product-nav-thumbs">
+                                        <a href="#" class="active">
+                                            <img src="static/assets/amani/images/products/failed.jpg" alt="product desc">
+                                        </a>
+                                        <a href="#">
+                                            <img src="assets/images/products/product-4-2-thumb.jpg" alt="product desc">
                                         </a>
 
-                                        <div class="product-action-vertical">
-                                            <a href="#" v-if="logged" @click="addToWishlist(product.id, $event)" class="btn-product-icon btn-wishlist btn-expandable"><span>Ajouter aux Favoris</span></a>
-                                            
-                                        </div><!-- End .product-action-vertical -->
-
-                                        <div class="product-action">
-                                            <a v-bind:href="[[ getProductLink(product) ]]" class="btn-product"><span>Afficher produit</span></a>
-
-                                            {% comment %} {% if not product.declinaison %}
-                                                <a href="#" @click="addToCart({{product | to_json}}, productQte, $event)" class="btn-product btn-cart"><span>Ajouter au panier</span></a>
-                                            {% else %}
-                                                <a href="#" class="btn-product btn-cart" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Ajouter au panier</span></a>
-                    
-                                                <div class="dropdown-menu">
-                                                    {% for child_product in product.declinaisons %}
-                                                        <a class="dropdown-item" href="#" @click="addToCart({{child_product | to_json}}, productQte, $event)">{{ child_product | get_prod_attrs }}</a>
-                                                    {% endfor %}
-                                                </div>
-                                            {% endif %} {% endcomment %}
-                                        </div><!-- End .product-action -->
-                                    </figure><!-- End .product-media -->
-
-                                    <div class="product-body">
-                                        <div class="product-cat">
-                                            <a>[[ product._category.name ]]</a>
-                                        </div><!-- End .product-cat -->
-                                        <h3 class="product-title"><a v-bind:href="[[ getProductLink(product) ]]">[[ product.name ]]</a></h3><!-- End .product-title -->
-                                        <div class="product-price" v-if="product.discount > 0">
-                                            <span class="new-price">[[ product.price - product.discount ]] {{ company.currency }}</span>
-                                            <span class="old-price">[[ product.price ]] {{ company.currency }}</span>
-                                        </div>
-                                        <div class="product-price" v-if="!product.discount > 0">
-                                            [[ product.price ]] {{ company.currency }}
-                                        </div><!-- End .product-price -->
-                                        {% comment %} <div class="ratings-container">
-                                            <div class="ratings">
-                                                <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
-                                            </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 2 Reviews )</span>
-                                        </div><!-- End .rating-container --> {% endcomment %}
-
-                                        {% comment %} <div class="product-nav product-nav-thumbs">
-                                            <a href="#" class="active">
-                                                <img src="assets/images/products/product-4-thumb.jpg" alt="product desc">
-                                            </a>
-                                            <a href="#">
-                                                <img src="assets/images/products/product-4-2-thumb.jpg" alt="product desc">
-                                            </a>
-
-                                            <a href="#">
-                                                <img src="assets/images/products/product-4-3-thumb.jpg" alt="product desc">
-                                            </a>
-                                        </div> {% endcomment %}
-                                    </div><!-- End .product-body -->
-                                </div><!-- End .product -->
-                            </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .products -->
-
-
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled" v-if=" products.current_page == 1">
-                                <a class="page-link page-link-prev" href="#/" aria-label="Previous" tabindex="-1" aria-disabled="true">
-                                    <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Précédent
-                                </a>
-                            </li>
-                            <li class="page-item" v-if=" products.current_page != 1">
-                                <a class="page-link page-link-prev" href="#/" @click="getProducts(products.current_page-1)" aria-label="Previous">
-                                    <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Précédent
-                                </a>
-                            </li>
-
-                            <li class="page-item-total">[[ products.current_page ]]  sur  [[ products.total_pages ]]</li>
-
-                            <li class="page-item disabled" v-if="products.current_page == products.total_pages">
-                                <a class="page-link page-link-next" href="#/" aria-label="Next" tabindex="+1" aria-disabled="true">
-                                    Suivant <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
-                                </a>
-                            </li>
-                            <li class="page-item" v-if="products.current_page != products.total_pages">
-                                <a class="page-link page-link-next" href="#/" @click="getProducts(products.current_page+1)" aria-label="Next">
-                                    Suivant <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div><!-- End .col-lg-9 -->
-                <!-- End .col-lg-3 -->
-            </div><!-- End .row -->
-        </div><!-- End .container -->
-    </div><!-- End .page-content -->
+                                        <a href="#">
+                                            <img src="assets/images/products/product-4-3-thumb.jpg" alt="product desc">
+                                        </a>
+                                    </div> {% endcomment %}
+                                </div><!-- End .product-body -->
+                            </div><!-- End .product -->
+                        </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                    </div><!-- End .row -->
+                </div>
 </main>
 
 {% endblock %}
