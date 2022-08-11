@@ -3,18 +3,18 @@
 <h1> hello and welcome </h1>
 <p>here you will find the templates I am creating for my tiktak store <p>
 
-<h2> <span style="color: green"> UPDATES </span></h2>
-## TO DO
+<h2 style="color:green;" >  UPDATES </h2>
+<h3> TO DO </h3>
 - Page fiche produit
-## DOING
+<h3> DOING </h3>
 - Page liste produit
-## DONE
-- Page d'acceuil
-- Page de recherche
-- Page panier
-- Page checkout
-- Page fail payment
-- Page success payment
+<h3> DONE </h3>
+- Page d'acceuil <br>
+- Page de recherche <br>
+- Page panier <br>
+- Page checkout <br>
+- Page fail payment <br>
+- Page success payment <br>
 
 
 
