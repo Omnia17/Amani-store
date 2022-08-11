@@ -1,7 +1,20 @@
 # Amani-store
 <h1> hello and welcome </h1>
 <p>here you will find the templates I am creating for my tiktak store <p>
-  <h2> +UPDATES</h2>
-  <h3>To DO</h3>
-   <h3>DOING</h3>
-    <h3>DONE </h3>
+### +UPDATES
+## TO DO
+- Page fiche produit
+## DOING
+- Page liste produit
+## DONE
+- Page d'acceuil
+- Page de recherche
+- Page panier
+- Page checkout
+- Page fail payment
+- Page success payment
+
+
+
+
+
