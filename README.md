@@ -5,9 +5,10 @@
 
 <h2 style="color:green;" >  UPDATES </h2>
 <h3> TO DO </h3>
-- Page fiche produit
+
 <h3> DOING </h3>
 - Page liste produit
+- Page fiche produit
 <h3> DONE </h3>
 - Page d'acceuil <br>
 - Page de recherche <br>
