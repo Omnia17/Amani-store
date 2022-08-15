@@ -5,7 +5,7 @@
 
 <h2 style="color:green;" >  UPDATES </h2>
 <h3> TO DO </h3>
-
+nothing for now
 <h3> DOING </h3>
 - Page liste produit <br>
 - Page fiche produit
