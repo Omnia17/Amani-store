@@ -3,17 +3,17 @@
 
 <header class="header-area sticky-header header-transparent">
 
-    <div class="container">
+    <div class="container" >
         <div class="header-top">
-            <div class="container">
-                <div class="header-right">
-                    <ul class="top-menu mb-1 mt-1">
+            <div class="container" >
+                <div class="header-right" >
+                    <ul class="top-menu mb-1 mt-1" >
                         <li>
                         
                             <ul>
                                 <li><a href="tel:{{ company.phone }}"><i class="icon-phone"></i>Tel: {{ company.phone }}</a></li>
-                                <li v-if="logged"><a href="/wishlist"><i class="icon-heart-o"></i>Mes Favoires<span>( [[ user.customer.favourite.length ]] )</span></a></li>
-                                <li v-if="logged"><a href="/account"><i class="icon-user"></i>Mon Compte</a></li>
+                                <li v-if="logged"><a href="/wishlist"><i class="icon-heart-o"></i>Mes Favoires<span>[[ user.customer.favourite.length ]] </span></a></li>
+                                <li v-if="logged"><a href="/amaniaccount"><i class="icon-user"></i>Mon Compte</a></li>
                                 <li v-if="!logged"><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Se Connecter</a></li>
                             </ul>
                         </li>
@@ -71,7 +71,7 @@
             <div class="dropdown cart-dropdown">
                 <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                     <img src="static/assets/amani/images/shopcart.png" width="25" height="38" alt="" >
-                    <span class="cart-count">[[ cart._details.length ]]</span>
+                    <span class="cart-count">[[ cart._details.length ]] </span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" v-if="cart._details.length > 0">

@@ -666,3 +666,60 @@ def search(request):
         "transporters": transporters
     }
     return HttpResponse(template.render(context, request))
+
+def amaniaccount(request):
+    company, header_menu, footer_menu, company_info = getCompanyData(request)   
+
+    template = loader.get_template('amani/pages/account/index.html')
+
+    context = {
+        "company": company,
+        "header": header_menu,
+        "footer": footer_menu,
+        "social_links": company_info.get('contact_settings', {}),
+        "company_info": company_info,
+        "page_type": "account",
+
+        "seo":{
+            "title": "mon compte", 
+            "description": "", 
+            "image": "", 
+            "url": request.build_absolute_uri()
+        }
+    }
+    return HttpResponse(template.render(context, request))
+
+# def amaniproduct(request, product_id, cat_id = "", cat_slug = "",  slug = ""):
+def amaniproduct(request):
+    company, header_menu, footer_menu, company_info = getCompanyData(request)   
+
+    # product = getProduct(company['id'], product_id)
+
+    # relatedProducts = getListOfProducts(ids_not_in = [product_id], has_category=cat_id, company_id = company['id'])
+
+    # colors = getProductColor(product)
+
+    template = loader.get_template('amani/pages/product/index.html')
+
+    context = {
+        "company": company,
+        "header": header_menu,
+        "footer": footer_menu,
+        "social_links": company_info.get('contact_settings', {}),
+        "company_info": company_info,
+        "page_type": "product",
+         "page_contents": product.get("id"),
+
+        "seo":{
+            "title": product.get('seo_title', ''),
+            "description": product.get('seo_description', ''),
+            "image": product.get('photo', ''),
+            "url": request.build_absolute_uri()
+        },
+
+        "product": product,
+        "category": product.get('_category', {}),
+        "relatedProducts": relatedProducts.get('results', [])
+    }
+    return HttpResponse(template.render(context, request))
+

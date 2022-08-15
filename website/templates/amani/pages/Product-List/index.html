@@ -19,7 +19,7 @@
                         <li><a href="newIndex">Home</a></li>
                         
     
-                    <li class="active"> </li>
+                    <li class="active"> Product List</li>
                        
                     </ul>
                 </div>
@@ -30,8 +30,8 @@
         <div class="shop-top-bar-area">
             <div class="container">
                 <div class="shop-top-bar">
-                    <select class="select-shoing">
-                        <option data-display="Trending">Trending</option>
+                    <select class="select-shoing"> ▼
+                        <option data-display="Trending">Trending  </option>
                         <option value="1">Featured</option>
                         <option value="2">Best Selling</option>
                         <option value="3">Alphabetically, A-Z</option>
@@ -42,24 +42,18 @@
                         <option value="8">Date, old to new</option>
                     </select>
 
-                    <div class="select-on-sale d-flex d-md-none">
-                        <span>On Sale :</span>
-                        <select class="select-on-sale-form">
-                            <option selected>Yes</option>
-                            <option value="1">No</option>
-                        </select>
-                    </div>
+               
 
                     <div class="select-price-range">
-                        Affichage de <span> [[ products.results.length ]] sur [[ products.count ]]</span> Produits
+                        Affichage de <span> [[products.results.length ]] sur [[ products.count ]] </span> Produits
 
                     </div>
 
                     <div class="select-on-sale d-none d-md-flex">
-                        <span>On Sale :</span>
+                        <span>On Sale:</span>
                         <select class="select-on-sale-form">
-                            <option selected>Yes</option>
-                            <option value="1">No</option>
+                            <option selected>Yes ▼</option>
+                            <option value="1">No ▼</option>
                         </select>
                     </div>
                 </div>
@@ -82,7 +76,7 @@
             </div>
             <div class="col-6 col-lg-4 col-lg-2 col-xl-2">
                 <!--== Start Product Category Item ==-->
-                <a href="product.html" class="product-category-item" data-bg-color="#6495ED">
+                <a href="/productList" class="product-category-item" data-bg-color="#6495ED">
                     <img class="icon" src="static/assets/amani/images/tops.png" width="80" height="80" alt="Image-HasTech">
                     <h3 class="title">tops</h3>
                 </a>
@@ -90,7 +84,7 @@
             </div>
             <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-lg-0 mt-sm-6 mt-4">
                 <!--== Start Product Category Item ==-->
-                <a href="product.html" class="product-category-item" data-bg-color="#DFE4FF">
+                <a href="/productList" class="product-category-item" data-bg-color="#DFE4FF">
                     <img class="icon" src="static/assets/amani/images/pants.png" width="80" height="80" alt="Image-HasTech">
                     <h3 class="title">pants</h3>
                 </a>
@@ -98,7 +92,7 @@
             </div>
             <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-xl-0 mt-sm-6 mt-4">
                 <!--== Start Product Category Item ==-->
-                <a href="product.html" class="product-category-item" data-bg-color="#FFEACC">
+                <a href="/productList" class="product-category-item" data-bg-color="#FFEACC">
                     <img class="icon" src="static/assets/amani/images/skirt.png" width="80" height="80" alt="Image-HasTech">
                     <h3 class="title">skirts</h3>
                   
@@ -107,7 +101,7 @@
             </div>
             <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-xl-0 mt-sm-6 mt-4">
                 <!--== Start Product Category Item ==-->
-                <a href="product.html" class="product-category-item" data-bg-color="#FFDAE0">
+                <a href="/productList" class="product-category-item" data-bg-color="#FFDAE0">
                     <img class="icon" src="static/assets/amani/images/shoess.png" width="80" height="80" alt="Image-HasTech" >
                     <h3 class="title">shoes</h3>
                 </a>
@@ -115,7 +109,7 @@
             </div>
             <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-xl-0 mt-sm-6 mt-4">
                 <!--== Start Product Category Item ==-->
-                <a href="product.html" class="product-category-item" data-bg-color="#FFF3DA">
+                <a href="/productList" class="product-category-item" data-bg-color="#FFF3DA">
                     <img class="icon" src="static/assets/amani/images/sunglasses.png" width="80" height="80" alt="Image-HasTech">
                     <h3 class="title">accessories</h3>
                 </a>
@@ -183,7 +177,7 @@
                                     <h3 class="product-title"><a v-bind:href="[[ getProductLink(product) ]]">[[ product.name ]]</a></h3><!-- End .product-title -->
                                     <div class="product-price" v-if="product.discount > 0">
                                         <span class="new-price">[[ product.price - product.discount ]] {{ company.currency }}</span>
-                                        <span class="old-price">[[ product.price ]] {{ company.currency }}</span>
+                                        <span class="old-price">[[ product.price ]]  {{ company.currency }}</span>
                                     </div>
                                     <div class="product-price" v-if="!product.discount > 0">
                                         [[ product.price ]] {{ company.currency }}

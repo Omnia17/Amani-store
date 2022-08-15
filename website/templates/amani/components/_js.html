@@ -323,28 +323,28 @@
                         discount += prod.discount
                         subtotal += prod.final_price
                     }
-                    this.cart.discount = discount
-                    this.cart.subtotal = this.cart.total_amount = subtotal
-                    this.cart.total = this.cart.total_amount +  this.cart.transport_price
+                    this.cart._discount = discount
+                    this.cart._subtotal = this.cart._total_amount = subtotal
+                    this.cart._total = this.cart._total_amount +  this.cart._transport_price
                     localStorage.setItem('cart', JSON.stringify(this.cart))
                 },
                 updateCartTransporter(transporter){
-                    this.cart.transport = transporter
-                    this.cart.transport_price = transporter.price
-                    this.cart.total = this.cart.subtotal
-                    this.cart.total += transporter.price
+                    this.cart._transport = transporter
+                    this.cart._transport_price = transporter.price
+                    this.cart._total = this.cart._subtotal
+                    this.cart._total += transporter.price
                     localStorage.setItem('cart', JSON.stringify(this.cart))
                 },
                 clearCart(){
                     this.cart._details = []
-                    this.cart.transport = null
-                    this.cart.transport_price = []
-                    this.cart.promoCode = ""
-                    this.cart.promoCodeDiscount = 0
-                    this.cart.discount = 0
-                    this.cart.subtotal = 0
-                    this.cart.total = 0
-                    this.cart.total_amount = 0
+                    this.cart._transport = null
+                    this.cart._transport_price = []
+                    this.cart._promoCode = ""
+                    this.cart._promoCodeDiscount = 0
+                    this.cart._discount = 0
+                    this.cart._subtotal = 0
+                    this.cart._total = 0
+                    this.cart._total_amount = 0
                     this.setCart();
                 },
                 setCart(event = ""){
@@ -358,7 +358,7 @@
                     }
 
                     event && event.preventDefault()
-                    if(this.cart.promoCode && this.cart.promoCode != ""){
+                    if(this.cart._promoCode && this.cart._promoCode != ""){
                         this.setPromoCodeValue()
                     }
                     setTimeout(()=>{
@@ -372,15 +372,15 @@
                         method: "POST",
                         data: {
                             details: this.cart._details,
-                            code: this.cart.promoCode,
+                            code: this.cart._promoCode,
                             slug: this.company.slug
                         }
                     })
                     .then(response => {
-                        this.cart.promoCodeDiscount = response.data.toFixed(2);
+                        this.cart._promoCodeDiscount = response.data.toFixed(2);
                     })
                     .catch(error => {
-                        this.cart.promoCodeDiscount = 0
+                        this.cart._promoCodeDiscount = 0
                     })
                 },
                 /****************************  END CART  ****************************/
@@ -844,8 +844,8 @@
 
                 /****************************  ORDER  ****************************/
                 createOrder(){
-                    this.order.transport_id = this.cart.transport ? this.cart.transport.id : null
-                    this.order.total_amount = this.cart.total_amount
+                    this.order.transport_id = this.cart._transport ? this.cart._transport.id : null
+                    this.order.total_amount = this.cart._total_amount
                     this.order._details = this.cart._details
                     this.has_pixel && fbq('track', 'Purchase', {currency: this.company.currency, value: this.order.total_after_discount});
                     this.loading = true;
@@ -859,7 +859,7 @@
                       headers: headerConfig,
                       data:{
                         order: this.order,
-                        promo_code: this.cart.promoCode,
+                        promo_code: this.cart._promoCode,
                         company: this.company.id,
                         create_account: this.createAccount
                       }

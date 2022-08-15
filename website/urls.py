@@ -26,7 +26,9 @@ urlpatterns = [
     path('amanicheckout', amanicheckout, name='checkout'),
     path('failPayment', failPayment, name='fail'),
     path('successPayment', successPayment, name='success'),
-    path('search', search, name='search')
+    path('search', search, name='search'),
+    path('amaniaccount', amaniaccount, name='account'),
+    path('amaniproduct', amaniproduct, name='amaniproduct')
 
 
 
