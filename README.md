@@ -1,8 +1,22 @@
 # Amani-store
-hello and welcome 
-here you will find the templates I am creating for my tiktak store 
-for now we have 3 pages that are almost ready but still always  in progress 
-1.Home
-2.Cart
-3.Checkout
-to check out their  code go website>templates>amani
+ 
+<h1> hello and welcome </h1>
+<p>here you will find the templates I am creating for my tiktak store <p>
+
+<h2 style="color:green;" >  UPDATES </h2>
+<h3> TO DO </h3>
+- Page fiche produit
+<h3> DOING </h3>
+- Page liste produit
+<h3> DONE </h3>
+- Page d'acceuil <br>
+- Page de recherche <br>
+- Page panier <br>
+- Page checkout <br>
+- Page fail payment <br>
+- Page success payment <br>
+
+
+
+
+
