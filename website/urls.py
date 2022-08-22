@@ -20,15 +20,11 @@ urlpatterns = [
     path('search', search, name='search'),
     path('sitemap.xml', sitemap, name='sitemap'),
     path("robots.txt",TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
-    path('newIndex', amaniindex, name='newindex'),
     path('productList', amaniproductlist, name='newlist'),
-    path('amanicart', amanicart, name='cart'),
-    path('amanicheckout', amanicheckout, name='checkout'),
     path('failPayment', failPayment, name='fail'),
     path('successPayment', successPayment, name='success'),
-    path('search', search, name='search'),
-    path('amaniaccount', amaniaccount, name='account'),
-    path('amaniproduct', amaniproduct, name='amaniproduct')
+    path('search', search, name='search')
+  
 
 
 

@@ -13,8 +13,10 @@
                                 <div class="widget-item">
                                     <div class="widget-about">
                                         <a class="widget-logo" href="index.html">
-                                            <img src="static/assets/amani/images/logo2.png" width="95" height="68" alt="Logo">
-                                        </a>
+                                            <img src="{{ "https://api.tiktak.space"|add:company.logo }}" class="footer-logo" alt="Footer Logo" width="105" height="25">
+                                            {% comment %} <img src="{{ "https://api.tiktak.space/"|add:company.logo }}" class="footer-logo" alt="Footer Logo" width="105" height="25"> {% endcomment %}
+                                            {{ company_info.homepage_settings.footer_description | safe }}
+                                                    </a>
                                         <p class="desc">TikTak PRO is your way for digital shopping , create your online store now and join the fam</p>
                                     </div>
                                 </div>
@@ -65,3 +67,4 @@
 
 
 
+    </div>
