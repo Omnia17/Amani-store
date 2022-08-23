@@ -1,5 +1,6 @@
 {% load images_tags %}
 <div class="container  banner-simple">
+  <br>
     <div class="row" style="align-items: center;">
         {% for key,item in data.values.items  %}
           {% for image in item %}
@@ -10,7 +11,7 @@
             {% endif %}
               <div class="mb-3" >
                   <a href="{{image.link}}">
-                      <img src="{{image.img.image|imghttps}}">
+                      <img   src="{{image.img.image|imghttps}}" style="border-radius:10px">
                   </a>
               </div>
             </div>

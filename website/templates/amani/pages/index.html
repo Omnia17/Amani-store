@@ -1,7 +1,10 @@
 <!-- header -->
 {% include 'amani/components/_header.html' %}
 
-
+<!-- TOP MESSAGES -->
+<template v-if="topSectionMessages.length > 0">
+    {% include "./home/components/messagesTop.html" %}
+</template>
 <!-- topbar -->
 {% include 'amani/components/_topbar.html' %}
 

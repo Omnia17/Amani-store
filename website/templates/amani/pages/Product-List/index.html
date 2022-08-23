@@ -6,7 +6,6 @@
 {% load to_json %}
 
 {% block body %}
-
 <main class="main">
     <br><br><br><br><br>
     <nav aria-label="breadcrumb" class="breadcrumb-style1">
@@ -30,16 +29,12 @@
         <div class="shop-top-bar-area">
             <div class="container">
                 <div class="shop-top-bar">
-                    <select class="select-shoing"> ▼
-                        <option data-display="Trending">Trending  </option>
-                        <option value="1">Featured</option>
-                        <option value="2">Best Selling</option>
-                        <option value="3">Alphabetically, A-Z</option>
-                        <option value="4">Alphabetically, Z-A</option>
-                        <option value="5">Price, low to high</option>
-                        <option value="6">Price, high to low</option>
-                        <option value="7">Date, new to old</option>
-                        <option value="8">Date, old to new</option>
+                    <select class="select-shoing"> 
+                            <option value="-updated_at" selected="selected">Plus Populaire</option>
+                            <option value="created_at">Nouveaux Produit</option>
+                            <option value="price">Prix Croissant</option>
+                            <option value="-price">Prix Décroissant</option>
+                        </select>
                     </select>
 
                
@@ -65,54 +60,7 @@
     {# <h2 class="fs-lg-56 fs-40 font-weight-normal text-center text-primary custom-font" data-animate="fadeInUp">Our Categories</h2> #}
     <div class="container">
         <div class="row g-3 g-sm-6">
-            <div class="col-6 col-lg-4 col-lg-2 col-xl-2">
-                <!--== Start Product Category Item ==-->
-                <a href="/productList" class="product-category-item" data-bg-color="#dcffd2">
-                    <img class="icon" src="static/assets/amani/images/dress.png" width="70" height="80" alt="Image-HasTech">
-                    <h3 class="title">dresses</h3>
-                    
-                </a>
-                <!--== End Product Category Item ==-->
-            </div>
-            <div class="col-6 col-lg-4 col-lg-2 col-xl-2">
-                <!--== Start Product Category Item ==-->
-                <a href="/productList" class="product-category-item" data-bg-color="#6495ED">
-                    <img class="icon" src="static/assets/amani/images/tops.png" width="80" height="80" alt="Image-HasTech">
-                    <h3 class="title">tops</h3>
-                </a>
-                <!--== End Product Category Item ==-->
-            </div>
-            <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-lg-0 mt-sm-6 mt-4">
-                <!--== Start Product Category Item ==-->
-                <a href="/productList" class="product-category-item" data-bg-color="#DFE4FF">
-                    <img class="icon" src="static/assets/amani/images/pants.png" width="80" height="80" alt="Image-HasTech">
-                    <h3 class="title">pants</h3>
-                </a>
-                <!--== End Product Category Item ==-->
-            </div>
-            <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-xl-0 mt-sm-6 mt-4">
-                <!--== Start Product Category Item ==-->
-                <a href="/productList" class="product-category-item" data-bg-color="#FFEACC">
-                    <img class="icon" src="static/assets/amani/images/skirt.png" width="80" height="80" alt="Image-HasTech">
-                    <h3 class="title">skirts</h3>
-                  
-                </a>
-                <!--== End Product Category Item ==-->
-            </div>
-            <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-xl-0 mt-sm-6 mt-4">
-                <!--== Start Product Category Item ==-->
-                <a href="/productList" class="product-category-item" data-bg-color="#FFDAE0">
-                    <img class="icon" src="static/assets/amani/images/shoess.png" width="80" height="80" alt="Image-HasTech" >
-                    <h3 class="title">shoes</h3>
-                </a>
-                <!--== End Product Category Item ==-->
-            </div>
-            <div class="col-6 col-lg-4 col-lg-2 col-xl-2 mt-xl-0 mt-sm-6 mt-4">
-                <!--== Start Product Category Item ==-->
-                <a href="/productList" class="product-category-item" data-bg-color="#FFF3DA">
-                    <img class="icon" src="static/assets/amani/images/sunglasses.png" width="80" height="80" alt="Image-HasTech">
-                    <h3 class="title">accessories</h3>
-                </a>
+           
                 <!--== End Product Category Item ==-->
             </div>
         </div>
@@ -189,18 +137,7 @@
                                         <span class="ratings-text">( 2 Reviews )</span>
                                     </div><!-- End .rating-container --> {% endcomment %}
 
-                                    {% comment %} <div class="product-nav product-nav-thumbs">
-                                        <a href="#" class="active">
-                                            <img src="static/assets/amani/images/products/failed.jpg" alt="product desc">
-                                        </a>
-                                        <a href="#">
-                                            <img src="assets/images/products/product-4-2-thumb.jpg" alt="product desc">
-                                        </a>
-
-                                        <a href="#">
-                                            <img src="assets/images/products/product-4-3-thumb.jpg" alt="product desc">
-                                        </a>
-                                    </div> {% endcomment %}
+                                  
                                 </div><!-- End .product-body -->
                             </div><!-- End .product -->
                         </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->

@@ -60,14 +60,12 @@
                                             
                                         </td>
                                         <td class="torress-product-price">[[ product.price_ttc_after_discount ]] {{ company.currency }}</td>
-                                        <td class="quantity">
-                                           
-                                            <div class="cart-plus-minus">
-                                                <input class="cart-plus-minus-box" value="1" type="text">
-                                                <div class="dec qtybutton"><i class="fa fa-angle-down"></i></div>
-                                                <div class="inc qtybutton"><i class="fa fa-angle-up"></i></div>
-                                            </div>
-                                        </td> 
+                                        <td class="quantity-col">
+                                            <div class="cart-product-quantity">
+                                                <input type="number" class="form-control" min="1" v-model="product.quantity"
+                                                  v-on:change="updateCart()" step="1" data-decimals="0" required="" style="display: none;">
+                                            </div><!-- End .cart-product-quantity -->
+                                        </td>
                                         <td class="product-subtotal">[[ product.final_price ]] {{ company.currency }}</td>
                                     </tr>
                                     <tr class="tbody-item-actions" align="center">
@@ -142,7 +140,7 @@
                                 </tbody>
                             </table><!-- End .table table-summary -->
 
-                            <a href="/amanicheckout" class="btn btn-outline-primary-2 btn-order btn-block">COMMANDER</a>
+                            <a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block">COMMANDER</a>
                         </div><!-- End .summary -->
 <br>
                         <a href="/" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUER MES ACHAT</span><i class="icon-refresh"></i></a>

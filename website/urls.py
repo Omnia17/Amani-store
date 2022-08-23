@@ -20,10 +20,8 @@ urlpatterns = [
     path('search', search, name='search'),
     path('sitemap.xml', sitemap, name='sitemap'),
     path("robots.txt",TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
-    path('productList', amaniproductlist, name='newlist'),
     path('failPayment', failPayment, name='fail'),
-    path('successPayment', successPayment, name='success'),
-    path('search', search, name='search')
+    path('successPayment', successPayment, name='success')
   
 
 

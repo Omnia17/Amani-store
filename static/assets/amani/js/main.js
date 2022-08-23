@@ -1,1360 +1,788 @@
-(function ($) {
+// Main Js File
+$(document).ready(function () {
     'use strict';
-    /*---------------------------------------
-		Torress's Preloader
----------------------------------*/
-    $(window).on('load', function () {
-        var wind = $(window);
-        $('.loading').delay(2000).fadeOut('slow');
-    });
-    /* ----------------------------------------------------------------
-		Torress's Adding active class to nav menu depending on page
--------------------------------------------------------------------*/
-    var pageUrl = window.location.href.substr(
-        window.location.href.lastIndexOf('/') + 1
-    );
-    $('.main_nav a').each(function () {
-        if ($(this).attr('href') === pageUrl || $(this).attr('href') === '') {
-            $(this).closest('li').addClass('active');
-            $(this).parents('li').addClass('active');
-        } else if (
-            window.location.pathname === '/' ||
-            window.location.pathname === '/index.html'
-        ) {
-            $('.main_nav a[href="index.html"]').parent('li').addClass('active');
-        }
-    });
-    /*----------------------------------------*/
-    /* Torress's Newsletter Popup
-/*----------------------------------------*/
-    setTimeout(function () {
-        $('.popup_wrapper').css({
-            opacity: '1',
-            visibility: 'visible',
+
+    owlCarousels();
+    quantityInputs();
+
+    // Header Search Toggle
+
+    var $searchWrapper = $('.header-search-wrapper'),
+    	$body = $('body'),
+        $searchToggle = $('.search-toggle');
+
+	$searchToggle.on('click', function (e) {
+		$searchWrapper.toggleClass('show');
+		$(this).toggleClass('active');
+		$searchWrapper.find('input').focus();
+		e.preventDefault();
+	});
+
+	$body.on('click', function (e) {
+		if ( $searchWrapper.hasClass('show') ) {
+			$searchWrapper.removeClass('show');
+			$searchToggle.removeClass('active');
+			$body.removeClass('is-search-active');
+		}
+	});
+
+	$('.header-search').on('click', function (e) {
+		e.stopPropagation();
+	});
+
+	// Sticky header 
+    var catDropdown = $('.category-dropdown'),
+        catInitVal = catDropdown.data('visible');
+        
+	if ( $('.sticky-header').length && $(window).width() >= 992 ) {
+		var sticky = new Waypoint.Sticky({
+			element: $('.sticky-header')[0],
+			stuckClass: 'fixed',
+			offset: -300,
+            handler: function ( direction ) {
+                // Show category dropdown
+                if ( catInitVal &&  direction == 'up') {
+                    catDropdown.addClass('show').find('.dropdown-menu').addClass('show');
+                    catDropdown.find('.dropdown-toggle').attr('aria-expanded', 'true');
+                    return false;
+                }
+
+                // Hide category dropdown on fixed header
+                if ( catDropdown.hasClass('show') ) {
+                    catDropdown.removeClass('show').find('.dropdown-menu').removeClass('show');
+                    catDropdown.find('.dropdown-toggle').attr('aria-expanded', 'false');
+                } 
+            }
+		});
+	}
+
+    // Menu init with superfish plugin
+    if ( $.fn.superfish ) {
+        $('.menu, .menu-vertical').superfish({
+            popUpSelector: 'ul, .megamenu',
+            hoverClass: 'show',
+            delay: 0,
+            speed: 80,
+            speedOut: 80 ,
+            autoArrows: true
         });
-        $('.popup_off').on('click', function () {
-            $('.popup_wrapper').fadeOut(500);
-        });
-    }, 2500);
-    /*----------------------------------------*/
-    /*  Torress's Sticky Menu Activation
-/*----------------------------------------*/
-    $(window).on('scroll', function () {
-        if ($(this).scrollTop() > 300) {
-            $('.header-sticky').addClass('sticky');
-        } else {
-            $('.header-sticky').removeClass('sticky');
-        }
-    });
-    /*----------------------------------------*/
-    /*  Torress's Main Slider
-/*----------------------------------------*/
-    $('.main-slider').slick({
-        infinite: true,
-        arrows: true,
-        autoplay: true,
-        fade: true,
-        dots: true,
-        autoplaySpeed: 7000,
-        speed: 1000,
-        adaptiveHeight: true,
-        easing: 'ease-in-out',
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
+    }
+
+	// Mobile Menu Toggle - Show & Hide
+    $('.mobile-menu-toggler').on('click', function (e) {
+		$body.toggleClass('mmenu-active');
+		$(this).toggleClass('active');
+		e.preventDefault();
     });
 
-    /*----------------------------------------*/
-    /*  Toolbar Button
-/*----------------------------------------*/
-    $('.toolbar-btn').on('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+    $('.mobile-menu-overlay, .mobile-menu-close').on('click', function (e) {
+		$body.removeClass('mmenu-active');
+		$('.menu-toggler').removeClass('active');
+		e.preventDefault();
+    });
+
+	// Add Mobile menu icon arrows to items with children
+    $('.mobile-menu').find('li').each(function () {
         var $this = $(this);
-        var target = $this.attr('href');
-        var prevTarget = $this
-            .parent()
-            .siblings()
-            .children('.toolbar-btn')
-            .attr('href');
-        $(target).toggleClass('open');
-        $(prevTarget).removeClass('open');
+
+        if ( $this.find('ul').length ) {
+            $('<span/>', {
+                'class': 'mmenu-btn'
+            }).appendTo($this.children('a'));
+        }
     });
-    /*----------------------------------------*/
-    /*  Close Button Actions
-/*----------------------------------------*/
-    $('.btn-close').on('click', function (e) {
-        e.preventDefault();
-        var $this = $(this);
-        $this.parents('.open').removeClass('open');
-        $('.menu-item-has-children').removeClass('menu-open');
-    });
-    /*----------------------------------------*/
-    /*  Torress's Offcanvas
-/*----------------------------------------*/
-    /*Variables*/
-    var $offcanvasNav = $('.offcanvas-search_menu, .mobile-menu'),
-        $offcanvasNavWrap = $(
-            '.offcanvas-search_wrapper, .mobile-menu_wrapper'
-        ),
-        $offcanvasNavSubMenu = $offcanvasNav.find('.sub-menu'),
-        $menuToggle = $('.menu-btn'),
-        $menuClose = $('.btn-close');
 
-    /*Add Toggle Button With Off Canvas Sub Menu*/
-    $offcanvasNavSubMenu
-        .parent()
-        .prepend(
-            '<span class="menu-expand"><i class="ion-chevron-right"></i></span>'
-        );
+    // Mobile Menu toggle children menu
+    $('.mmenu-btn').on('click', function (e) {
+        var $parent = $(this).closest('li'),
+            $targetUl = $parent.find('ul').eq(0);
 
-    /*Close Off Canvas Sub Menu*/
-    $offcanvasNavSubMenu.slideUp();
-
-    /*Category Sub Menu Toggle*/
-    $offcanvasNav.on('click', 'li a, li .menu-expand', function (e) {
-        var $this = $(this);
-        if (
-            $this
-                .parent()
-                .attr('class')
-                .match(
-                    /\b(menu-item-has-children|has-children|has-sub-menu)\b/
-                ) &&
-            ($this.attr('href') === '#' || $this.hasClass('menu-expand'))
-        ) {
-            e.preventDefault();
-            if ($this.siblings('ul:visible').length) {
-                $this.siblings('ul').slideUp('slow');
+            if ( !$parent.hasClass('open') ) {
+                $targetUl.slideDown(300, function () {
+                    $parent.addClass('open');
+                });
             } else {
-                $this
-                    .closest('li')
-                    .siblings('li')
-                    .find('ul:visible')
-                    .slideUp('slow');
-                $this.siblings('ul').slideDown('slow');
-            }
-        }
-        if (
-            $this.is('a') ||
-            $this.is('span') ||
-            $this.attr('class').match(/\b(menu-expand)\b/)
-        ) {
-            $this.parent().toggleClass('menu-open');
-        } else if (
-            $this.is('li') &&
-            $this.attr('class').match(/\b('menu-item-has-children')\b/)
-        ) {
-            $this.toggleClass('menu-open');
-        }
-    });
-
-    /*----------------------------------------*/
-    /*  Category Menu
-/*----------------------------------------*/
-    $('.rx-parent').on('click', function () {
-        $('.rx-child').slideToggle();
-        $(this).toggleClass('rx-change');
-    });
-    //    category heading
-    $('.category-heading').on('click', function () {
-        $('.category-menu-list').slideToggle(900);
-        $('.menu-expand').removeClass('active');
-    });
-    /*-- Category Menu Toggles --*/
-    function categorySubMenuToggle() {
-        var screenSize = $(window).width();
-        if (screenSize <= 991) {
-            $('#cate-toggle .right-menu > a').prepend(
-                '<i class="expand menu-expand"></i>'
-            );
-            $('.category-menu .right-menu ul').slideUp();
-        } else {
-            $('.category-menu .right-menu > a i').remove();
-            $('.category-menu .right-menu ul').slideDown();
-        }
-    }
-    categorySubMenuToggle();
-    $(window).resize(categorySubMenuToggle);
-    /*-- Category Sub Menu --*/
-    function categoryMenuHide() {
-        var screenSize = $(window).width();
-        if (screenSize <= 991) {
-            $('.category-menu-list').hide();
-        } else {
-            $('.category-menu-list').show();
-        }
-    }
-    categoryMenuHide();
-    // $(window).resize(categoryMenuHide);
-    $('.category-menu-hidden').find('.category-menu-list').hide();
-    $('.category-menu-list').on(
-        'click',
-        'li a, li a .menu-expand',
-        function (e) {
-            var $a = $(this).hasClass('menu-expand')
-                ? $(this).parent()
-                : $(this);
-            $(this).toggleClass('active');
-            if ($a.parent().hasClass('right-menu')) {
-                if (
-                    $a.attr('href') === '#' ||
-                    $(this).hasClass('menu-expand')
-                ) {
-                    if ($a.siblings('ul:visible').length > 0)
-                        $a.siblings('ul').slideUp();
-                    else {
-                        $(this)
-                            .parents('li')
-                            .siblings('li')
-                            .find('ul:visible')
-                            .slideUp();
-                        $a.siblings('ul').slideDown();
-                    }
-                }
-            }
-            if ($(this).hasClass('menu-expand') || $a.attr('href') === '#') {
-                e.preventDefault();
-                return false;
-            }
-        }
-    );
-
-    /*----------------------------------------*/
-    /*  Nice Select
-/*----------------------------------------*/
-    $(document).ready(function () {
-        $('.nice-select').niceSelect();
-    });
-    /*----------------------------------------*/
-    /*  Torress's Product Slider
-/*----------------------------------------*/
-    $('.torress-product_slider').slick({
-        infinite: true,
-        arrows: true,
-        dots: false,
-        speed: 2000,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1501,
-                settings: {
-                    slidesToShow: 3,
-                },
-            },
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 575,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    });
-    /*----------------------------------------*/
-    /*  Torress's Product Slider Two
-/*----------------------------------------*/
-    $('.torress-product_slider-2').slick({
-        infinite: true,
-        arrows: true,
-        dots: false,
-        speed: 2000,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1501,
-                settings: {
-                    slidesToShow: 4,
-                },
-            },
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 3,
-                },
-            },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 575,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    });
-    /*----------------------------------------*/
-    /*  Torress's Product Tab Slider
-/*----------------------------------------*/
-    $('.torress-product-tab_slider').slick({
-        infinite: true,
-        arrows: false,
-        dots: false,
-        speed: 2000,
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        rows: 2,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1501,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 575,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    });
-    /*----------------------------------------*/
-    /*  Torress's Product Tab Slider Two
-/*----------------------------------------*/
-    $('.torress-product-tab_slider-2').slick({
-        infinite: true,
-        arrows: false,
-        dots: false,
-        speed: 2000,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1501,
-                settings: {
-                    slidesToShow: 4,
-                },
-            },
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 3,
-                },
-            },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 575,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    });
-    /*----------------------------------------*/
-    /*  Torress's Product Tab Slider Three
-/*----------------------------------------*/
-    $('.torress-product-tab_slider-3').slick({
-        infinite: true,
-        arrows: false,
-        dots: false,
-        speed: 2000,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        rows: 2,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1501,
-                settings: {
-                    slidesToShow: 4,
-                },
-            },
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 3,
-                },
-            },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 575,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    });
-    /*----------------------------------------*/
-    /*  Torress's Blog Slider
-/*----------------------------------------*/
-    $('.torress-blog_slider').slick({
-        infinite: true,
-        arrows: true,
-        dots: false,
-        speed: 2000,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1501,
-                settings: {
-                    slidesToShow: 3,
-                },
-            },
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 575,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    });
-    /*----------------------------------------*/
-    /*  Torress's Single Blog Slider
-/*----------------------------------------*/
-    $('.torress-single-blog_slider').slick({
-        infinite: true,
-        arrows: true,
-        dots: false,
-        speed: 2000,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1501,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 575,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    });
-    $('.torress-single-blog_slider').on('wheel', function (e) {
-        e.preventDefault();
-
-        if (e.originalEvent.deltaY < 0) {
-            $(this).slick('slickNext');
-        } else {
-            $(this).slick('slickPrev');
-        }
-    });
-    /*---------------------------------------------*/
-    /*  Torress's Brand Slider
-/*----------------------------------------------*/
-    $('.torress-brand_slider').slick({
-        infinite: true,
-        arrows: true,
-        autoplay: true,
-        dots: false,
-        speed: 2000,
-        slidesToShow: 6,
-        slidesToScroll: 1,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1501,
-                settings: {
-                    slidesToShow: 6,
-                },
-            },
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 5,
-                },
-            },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 4,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 3,
-                },
-            },
-            {
-                breakpoint: 576,
-                settings: {
-                    slidesToShow: 3,
-                },
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-        ],
-    });
-    /*---------------------------------------------*/
-    /*  Torress's Testimonial Slider
-/*----------------------------------------------*/
-    $('.testimonial-slider').slick({
-        infinite: true,
-        arrows: true,
-        autoplay: true,
-        dots: false,
-        speed: 2000,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1501,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 576,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    });
-    /*----------------------------------------*/
-    /* Torress's Countdown
-/*----------------------------------------*/
-    $('.torress-countdown').countdown('2021/12/20', function (event) {
-        $(this).html(
-            event.strftime(
-                '<div class="count"><span class="count-amount">%D</span><span class="count-period">Days</span></div><div class="count"><span class="count-amount">%H</span><span class="count-period">Hrs</span></div><div class="count"><span class="count-amount">%M</span><span class="count-period">Mins</span></div><div class="count"><span class="count-amount">%S</span><span class="count-period">Secs</span></div>'
-            )
-        );
-    });
-
-    /*----------------------------------------*/
-    /*  Torress's Scroll To Top
-/*----------------------------------------*/
-    $.scrollUp({
-        scrollText: '<i class="fa fa-angle-double-up"></i>',
-        easingType: 'linear',
-        scrollSpeed: 900,
-    });
-
-    /*----------------------------------------*/
-    /*  Cart Plus Minus Button
-/*----------------------------------------*/
-    $('.cart-plus-minus').append(
-        '<div class="dec qtybutton"><i class="fa fa-angle-down"></i></div><div class="inc qtybutton"><i class="fa fa-angle-up"></i></div>'
-    );
-    $('.qtybutton').on('click', function () {
-        var $button = $(this);
-        var oldValue = $button.parent().find('input').val();
-        if ($button.hasClass('inc')) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            // Don't allow decrementing below zero
-            if (oldValue > 1) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 1;
-            }
-        }
-        $button.parent().find('input').val(newVal);
-    });
-
-    /*----------------------------------------*/
-    /* Toggle Function Active
-/*----------------------------------------*/
-    // showlogin toggle
-    $('#showlogin').on('click', function () {
-        $('#checkout-login').slideToggle(900);
-    });
-    // showlogin toggle
-    $('#showcoupon').on('click', function () {
-        $('#checkout_coupon').slideToggle(900);
-    });
-    // showlogin toggle
-    $('#cbox').on('click', function () {
-        $('#cbox-info').slideToggle(900);
-    });
-
-    // showlogin toggle
-    $('#ship-box').on('click', function () {
-        $('#ship-box-info').slideToggle(1000);
-    });
-
-    /*----------------------------------------*/
-    /* FAQ Accordion
-/*----------------------------------------*/
-    $('.card-header a').on('click', function () {
-        $('.card').removeClass('actives');
-        $(this).parents('.card').addClass('actives');
-    });
-
-    /*----------------------------------------*/
-    /*  Sidebar Categories Menu Activation
-/*----------------------------------------*/
-    $('.sidebar-categories_menu li.has-sub > a').on('click', function () {
-        $(this).removeAttr('href');
-        var element = $(this).parent('li');
-        if (element.hasClass('open')) {
-            element.removeClass('open');
-            element.find('li').removeClass('open');
-            element.find('ul').slideUp();
-        } else {
-            element.addClass('open');
-            element.children('ul').slideDown();
-            element.siblings('li').children('ul').slideUp();
-            element.siblings('li').removeClass('open');
-            element.siblings('li').find('li').removeClass('open');
-            element.siblings('li').find('ul').slideUp();
-        }
-    });
-
-    /*---------------------------------------------*/
-    /*  Torress's CounterUp
-/*----------------------------------------------*/
-    $('.count').counterUp({
-        delay: 10,
-        time: 1000,
-    });
-
-    /*----------------------------------------*/
-    /*  Torress's Product View Mode
-/*----------------------------------------*/
-    function porductViewMode() {
-        $(window).on({
-            load: function () {
-                var activeChild = $('.product-view-mode a.active');
-                var firstChild = $('.product-view-mode').children().first();
-                var window_width = $(window).width();
-
-                if (window_width < 576) {
-                    $('.product-view-mode a').removeClass('active');
-                    $('.product-view-mode')
-                        .children()
-                        .first()
-                        .addClass('active');
-                    $('.shop-product-wrap')
-                        .removeClass('gridview-3 gridview-4 gridview-5')
-                        .addClass('gridview-2');
-                }
-            },
-            resize: function () {
-                var ww = $(window).width();
-                var activeChild = $('.product-view-mode a.active');
-                var firstChild = $('.product-view-mode').children().first();
-                var defaultView = $('.product-view-mode').data('default');
-
-                if (ww < 1200 && ww > 575) {
-                    if (activeChild.hasClass('grid-5')) {
-                        $('.product-view-mode a.grid-5').removeClass('active');
-                        if (defaultView == 4) {
-                            $('.product-view-mode a.grid-4').addClass('active');
-                            $('.shop-product-wrap')
-                                .removeClass('gridview-2 gridview-3 gridview-5')
-                                .addClass('gridview-4');
-                        } else if (defaultView == 'list') {
-                            $('.product-view-mode a.list').addClass('active');
-                            $('.shop-product-wrap')
-                                .removeClass(
-                                    'gridview-2 gridview-3 gridview-4 gridview-5'
-                                )
-                                .addClass('listview');
-                        } else {
-                            $('.product-view-mode a.grid-3').addClass('active');
-                            $('.shop-product-wrap')
-                                .removeClass('gridview-2 gridview-4 gridview-5')
-                                .addClass('gridview-3');
-                        }
-                    }
-                }
-
-                if (ww < 768 && ww > 575) {
-                    if (activeChild.hasClass('grid-4')) {
-                        $('.product-view-mode a.grid-4').removeClass('active');
-                        if (defaultView == 'list') {
-                            $('.product-view-mode a.list').addClass('active');
-                            $('.shop-product-wrap')
-                                .removeClass(
-                                    'gridview-2 gridview-3 gridview-4 gridview-5'
-                                )
-                                .addClass('listview');
-                        } else {
-                            $('.product-view-mode a.grid-3').addClass('active');
-                            $('.shop-product-wrap')
-                                .removeClass('gridview-2 gridview-4 gridview-5')
-                                .addClass('gridview-3');
-                        }
-                    }
-                }
-                if (activeChild.hasClass('list')) {
-                } else {
-                    if (ww < 576) {
-                        $('.product-view-mode a').removeClass('active');
-                        $('.product-view-mode')
-                            .children()
-                            .first()
-                            .addClass('active');
-                        $('.shop-product-wrap')
-                            .removeClass('gridview-3 gridview-4 gridview-5')
-                            .addClass('gridview-2');
-                    } else {
-                        if (activeChild.hasClass('grid-2')) {
-                            if (ww < 1200) {
-                                $(
-                                    '.product-view-mode a:not(:first-child)'
-                                ).removeClass('active');
-                            } else {
-                                $('.product-view-mode a').removeClass('active');
-                                $('.product-view-mode a:nth-child(2)').addClass(
-                                    'active'
-                                );
-                                $('.shop-product-wrap')
-                                    .removeClass(
-                                        'gridview-2 gridview-4 gridview-5'
-                                    )
-                                    .addClass('gridview-3');
-                            }
-                        }
-                    }
-                }
-            },
-        });
-        $('.product-view-mode a').on('click', function (e) {
-            e.preventDefault();
-
-            var shopProductWrap = $('.shop-product-wrap');
-            var viewMode = $(this).data('target');
-
-            $('.product-view-mode a').removeClass('active');
-            $(this).addClass('active');
-            if (viewMode == 'listview') {
-                shopProductWrap.removeClass('grid');
-            } else {
-                if (shopProductWrap.not('.grid'))
-                    shopProductWrap.addClass('grid');
-            }
-            shopProductWrap
-                .removeClass(
-                    'gridview-2 gridview-3 gridview-4 gridview-5 listview'
-                )
-                .addClass(viewMode);
-        });
-    }
-    porductViewMode();
-
-    /*----------------------------------------*/
-    /*  Star Rating Js
-/*----------------------------------------*/
-    $(function () {
-        $('.star-rating').barrating({
-            theme: 'fontawesome-stars',
-        });
-    });
-
-    /*-------------------------------------------------*/
-    /* Torress's Sticky Sidebar
-/*-------------------------------------------------*/
-    $('#sticky-sidebar').theiaStickySidebar({
-        // Settings
-        additionalMarginTop: 80,
-    });
-
-    /*--------------------------------
-    Price Slider Active
--------------------------------- */
-    var sliderrange = $('#slider-range');
-    var amountprice = $('#amount');
-    $(function () {
-        sliderrange.slider({
-            range: true,
-            min: 20,
-            max: 100,
-            values: [0, 100],
-            slide: function (event, ui) {
-                amountprice.val('$' + ui.values[0] + ' - $' + ui.values[1]);
-            },
-        });
-        amountprice.val(
-            '$' +
-                sliderrange.slider('values', 0) +
-                ' - $' +
-                sliderrange.slider('values', 1)
-        );
-    });
-    /*----------------------------------------*/
-    /*  Torress's Slick Carousel
- /*----------------------------------------*/
-    var $html = $('html');
-    var $body = $('body');
-    var $elementCarousel = $('.torress-slick-slider');
-    // Check if element exists
-    $.fn.elExists = function () {
-        return this.length > 0;
-    };
-
-    /*For RTL*/
-    if ($html.attr('dir') == 'rtl' || $body.attr('dir') == 'rtl') {
-        $elementCarousel.attr('dir', 'rtl');
-    }
-
-    if ($elementCarousel.elExists()) {
-        var slickInstances = [];
-
-        /*For RTL*/
-        if ($html.attr('dir') == 'rtl' || $body.attr('dir') == 'rtl') {
-            $elementCarousel.attr('dir', 'rtl');
-        }
-
-        $elementCarousel.each(function (index, element) {
-            var $this = $(this);
-
-            // Carousel Options
-
-            var $options =
-                typeof $this.data('slick-options') !== 'undefined'
-                    ? $this.data('slick-options')
-                    : '';
-
-            var $spaceBetween = $options.spaceBetween
-                    ? parseInt($options.spaceBetween, 10)
-                    : 0,
-                $spaceBetween_xl = $options.spaceBetween_xl
-                    ? parseInt($options.spaceBetween_xl, 10)
-                    : 0,
-                $rowSpace = $options.rowSpace
-                    ? parseInt($options.rowSpace, 10)
-                    : 0,
-                $vertical = $options.vertical ? $options.vertical : false,
-                $focusOnSelect = $options.focusOnSelect
-                    ? $options.focusOnSelect
-                    : false,
-                $asNavFor = $options.asNavFor ? $options.asNavFor : '',
-                $fade = $options.fade ? $options.fade : false,
-                $autoplay = $options.autoplay ? $options.autoplay : false,
-                $autoplaySpeed = $options.autoplaySpeed
-                    ? parseInt($options.autoplaySpeed, 10)
-                    : 5000,
-                $swipe = $options.swipe ? $options.swipe : true,
-                $swipeToSlide = $options.swipeToSlide
-                    ? $options.swipeToSlide
-                    : true,
-                $touchMove = $options.touchMove ? $options.touchMove : false,
-                $verticalSwiping = $options.verticalSwiping
-                    ? $options.verticalSwiping
-                    : true,
-                $draggable = $options.draggable ? $options.draggable : false,
-                $arrows = $options.arrows ? $options.arrows : false,
-                $dots = $options.dots ? $options.dots : false,
-                $adaptiveHeight = $options.adaptiveHeight
-                    ? $options.adaptiveHeight
-                    : true,
-                $infinite = $options.infinite ? $options.infinite : false,
-                $centerMode = $options.centerMode ? $options.centerMode : false,
-                $centerPadding = $options.centerPadding
-                    ? $options.centerPadding
-                    : '',
-                $variableWidth = $options.variableWidth
-                    ? $options.variableWidth
-                    : false,
-                $speed = $options.speed ? parseInt($options.speed, 10) : 500,
-                $appendArrows = $options.appendArrows
-                    ? $options.appendArrows
-                    : $this,
-                $prevArrow =
-                    $arrows === true
-                        ? $options.prevArrow
-                            ? '<span class="' +
-                              $options.prevArrow.buttonClass +
-                              '"><i class="' +
-                              $options.prevArrow.iconClass +
-                              '"></i></span>'
-                            : '<button class="tty-slick-text-btn tty-slick-text-prev">previous</span>'
-                        : '',
-                $nextArrow =
-                    $arrows === true
-                        ? $options.nextArrow
-                            ? '<span class="' +
-                              $options.nextArrow.buttonClass +
-                              '"><i class="' +
-                              $options.nextArrow.iconClass +
-                              '"></i></span>'
-                            : '<button class="tty-slick-text-btn tty-slick-text-next">next</span>'
-                        : '',
-                $rows = $options.rows ? parseInt($options.rows, 10) : 1,
-                $rtl =
-                    $options.rtl ||
-                    $html.attr('dir="rtl"') ||
-                    $body.attr('dir="rtl"')
-                        ? true
-                        : false,
-                $slidesToShow = $options.slidesToShow
-                    ? parseInt($options.slidesToShow, 10)
-                    : 1,
-                $slidesToScroll = $options.slidesToScroll
-                    ? parseInt($options.slidesToScroll, 10)
-                    : 1;
-
-            /*Responsive Variable, Array & Loops*/
-            var $responsiveSetting =
-                    typeof $this.data('slick-responsive') !== 'undefined'
-                        ? $this.data('slick-responsive')
-                        : '',
-                $responsiveSettingLength = $responsiveSetting.length,
-                $responsiveArray = [];
-            for (var i = 0; i < $responsiveSettingLength; i++) {
-                $responsiveArray[i] = $responsiveSetting[i];
-            }
-
-            // Adding Class to instances
-            $this.addClass('slick-carousel-' + index);
-            $this
-                .parent()
-                .find('.slick-dots')
-                .addClass('dots-' + index);
-            $this
-                .parent()
-                .find('.slick-btn')
-                .addClass('btn-' + index);
-
-            if ($spaceBetween != 0) {
-                $this.addClass('slick-gutter-' + $spaceBetween);
-            }
-            if ($spaceBetween_xl != 0) {
-                $this.addClass('slick-gutter-xl-' + $spaceBetween_xl);
-            }
-            var $slideCount = null;
-            $this.on('init', function (event, slick) {
-                $this.find('.slick-active').first().addClass('first-active');
-                $this.find('.slick-active').last().addClass('last-active');
-                $slideCount = slick.slideCount;
-                if ($slideCount <= $slidesToShow) {
-                    $this.children('.slick-dots').hide();
-                }
-                var $firstAnimatingElements =
-                    $('.slick-slide').find('[data-animation]');
-                doAnimations($firstAnimatingElements);
-            });
-
-            $this.slick({
-                slidesToShow: $slidesToShow,
-                slidesToScroll: $slidesToScroll,
-                asNavFor: $asNavFor,
-                autoplay: $autoplay,
-                autoplaySpeed: $autoplaySpeed,
-                speed: $speed,
-                infinite: $infinite,
-                arrows: $arrows,
-                dots: $dots,
-                adaptiveHeight: $adaptiveHeight,
-                vertical: $vertical,
-                focusOnSelect: $focusOnSelect,
-                centerMode: $centerMode,
-                centerPadding: $centerPadding,
-                variableWidth: $variableWidth,
-                swipe: $swipe,
-                swipeToSlide: $swipeToSlide,
-                touchMove: $touchMove,
-                draggable: $draggable,
-                fade: $fade,
-                appendArrows: $appendArrows,
-                prevArrow: $prevArrow,
-                nextArrow: $nextArrow,
-                rtl: $rtl,
-                responsive: $responsiveArray,
-            });
-
-            $this.on(
-                'beforeChange',
-                function (e, slick, currentSlide, nextSlide) {
-                    $this
-                        .find('.slick-active')
-                        .first()
-                        .removeClass('first-active');
-                    $this
-                        .find('.slick-active')
-                        .last()
-                        .removeClass('last-active');
-                    var $animatingElements = $(
-                        '.slick-slide[data-slick-index="' + nextSlide + '"]'
-                    ).find('[data-animation]');
-                    doAnimations($animatingElements);
-                }
-            );
-            function doAnimations(elements) {
-                var animationEndEvents =
-                    'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-                elements.each(function () {
-                    var $el = $(this);
-                    var $animationDelay = $el.data('delay');
-                    var $animationDuration = $el.data('duration');
-                    var $animationType = 'animated ' + $el.data('animation');
-                    $el.css({
-                        'animation-delay': $animationDelay,
-                        'animation-duration': $animationDuration,
-                    });
-                    $el.addClass($animationType).one(
-                        animationEndEvents,
-                        function () {
-                            $el.removeClass($animationType);
-                        }
-                    );
+                $targetUl.slideUp(300, function () {
+                    $parent.removeClass('open');
                 });
             }
 
-            $this.on('afterChange', function (e, slick) {
-                $this.find('.slick-active').first().addClass('first-active');
-                $this.find('.slick-active').last().addClass('last-active');
-            });
+        e.stopPropagation();
+        e.preventDefault();
+    });
 
-            // Updating the sliders in tab
-            $('body').on(
-                'shown.bs.tab',
-                'a[data-bs-toggle="tab"], a[data-bs-toggle="pill"]',
-                function (e) {
-                    $this.slick('setPosition');
-                }
-            );
+	// Sidebar Filter - Show & Hide
+    var $sidebarToggler = $('.sidebar-toggler');
+    $sidebarToggler.on('click', function (e) {
+		$body.toggleClass('sidebar-filter-active');
+		$(this).toggleClass('active');
+		e.preventDefault();
+    });
+
+    $('.sidebar-filter-overlay').on('click', function (e) {
+		$body.removeClass('sidebar-filter-active');
+		$sidebarToggler.removeClass('active');
+		e.preventDefault();
+    });
+
+    // Clear All checkbox/remove filters in sidebar filter
+    $('.sidebar-filter-clear').on('click', function (e) {
+    	$('.sidebar-shop').find('input').prop('checked', false);
+
+    	e.preventDefault();
+    });
+
+    // Popup - Iframe Video - Map etc.
+    if ( $.fn.magnificPopup ) {
+        $('.btn-iframe').magnificPopup({
+            type: 'iframe',
+            removalDelay: 600,
+            preloader: false,
+            fixedContentPos: false,
+            closeBtnInside: false
         });
     }
-    /*----------------------------------------*/
-    /*  Single Product Image Slider
- /*----------------------------------------*/
-    $('.sp-img_slider').slick({
-        infinite: true,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1199,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                },
-            },
-            {
-                breakpoint: 767,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                },
-            },
-            {
-                breakpoint: 575,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                },
-            },
-        ],
-    });
-    /*----------------------------------------*/
-    /*  Torress's Color List
- /*----------------------------------------*/
 
-    $('.color-list a').on('click', function (e) {
-        e.preventDefault();
+    // Product hover
+    if ( $.fn.hoverIntent ) {
+        $('.product-3').hoverIntent(function () {
+            var $this = $(this),
+                animDiff = ( $this.outerHeight() - ( $this.find('.product-body').outerHeight() + $this.find('.product-media').outerHeight()) ),
+                animDistance = ( $this.find('.product-footer').outerHeight() - animDiff );
+
+            $this.find('.product-footer').css({ 'visibility': 'visible', 'transform': 'translateY(0)' });
+            $this.find('.product-body').css('transform', 'translateY('+ -animDistance +'px)');
+
+        }, function () {
+            var $this = $(this);
+
+            $this.find('.product-footer').css({ 'visibility': 'hidden', 'transform': 'translateY(100%)' });
+            $this.find('.product-body').css('transform', 'translateY(0)');
+        });
+    }
+
+    // Slider For category pages / filter price
+    if ( typeof noUiSlider === 'object' ) {
+		var priceSlider  = document.getElementById('price-slider');
+
+		// Check if #price-slider elem is exists if not return
+		// to prevent error logs
+		if (priceSlider == null) return;
+
+		noUiSlider.create(priceSlider, {
+			start: [ 0, 750 ],
+			connect: true,
+			step: 50,
+			margin: 200,
+			range: {
+				'min': 0,
+				'max': 1000
+			},
+			tooltips: true,
+			format: wNumb({
+		        decimals: 0,
+		        prefix: '$'
+		    })
+		});
+
+		// Update Price Range
+		priceSlider.noUiSlider.on('update', function( values, handle ){
+			$('#filter-price-range').text(values.join(' - '));
+		});
+	}
+
+	// Product countdown
+	if ( $.fn.countdown ) {
+		$('.product-countdown').each(function () {
+			var $this = $(this), 
+				untilDate = $this.data('until'),
+				compact = $this.data('compact'),
+                dateFormat = ( !$this.data('format') ) ? 'DHMS' : $this.data('format'),
+                newLabels = ( !$this.data('labels-short') ) ? 
+                                ['Years', 'Months', 'Weeks', 'Days', 'Hours', 'Minutes', 'Seconds'] :
+                                ['Years', 'Months', 'Weeks', 'Days', 'Hours', 'Mins', 'Secs'],
+                newLabels1 = ( !$this.data('labels-short') ) ? 
+                                ['Year', 'Month', 'Week', 'Day', 'Hour', 'Minute', 'Second'] :
+                                ['Year', 'Month', 'Week', 'Day', 'Hour', 'Min', 'Sec'];
+
+            var newDate;
+
+            // Split and created again for ie and edge 
+            if ( !$this.data('relative') ) {
+                var untilDateArr = untilDate.split(", "), // data-until 2019, 10, 8 - yy,mm,dd
+                    newDate = new Date(untilDateArr[0], untilDateArr[1] - 1, untilDateArr[2]);
+            } else {
+                newDate = untilDate;
+            }
+
+			$this.countdown({
+			    until: newDate,
+			    format: dateFormat,
+			    padZeroes: true,
+			    compact: compact,
+			    compactLabels: ['y', 'm', 'w', ' days,'],
+			    timeSeparator: ' : ',
+                labels: newLabels,
+                labels1: newLabels1
+
+			});
+		});
+
+		// Pause
+		// $('.product-countdown').countdown('pause');
+	}
+
+	// Quantity Input - Cart page - Product Details pages
+    function quantityInputs() {
+        if ( $.fn.inputSpinner ) {
+            $("input[type='number']").inputSpinner({
+                decrementButton: '<i class="icon-minus"></i>',
+                incrementButton: '<i class="icon-plus"></i>',
+                groupClass: 'input-spinner',
+                buttonsClass: 'btn-spinner',
+                buttonsWidth: '26px'
+            });
+        }
+    }
+
+    // Sticky Content - Sidebar - Social Icons etc..
+    // Wrap elements with <div class="sticky-content"></div> if you want to make it sticky
+    if ( $.fn.stick_in_parent && $(window).width() >= 992 ) {
+    	$('.sticky-content').stick_in_parent({
+			offset_top: 80,
+            inner_scrolling: false
+		});
+    }
+
+    function owlCarousels($wrap, options) {
+        if ( $.fn.owlCarousel ) {
+            var owlSettings = {
+                items: 1,
+                loop: true,
+                margin: 0,
+                responsiveClass: true,
+                nav: true,
+                navText: ['<i class="icon-angle-left">', '<i class="icon-angle-right">'],
+                dots: true,
+                smartSpeed: 400,
+                autoplay: false,
+                autoplayTimeout: 15000
+            };
+            if (typeof $wrap == 'undefined') {
+                $wrap = $('body');
+            }
+            if (options) {
+                owlSettings = $.extend({}, owlSettings, options);
+            }
+
+            // Init all carousel
+            $wrap.find('[data-toggle="owl"]').each(function () {
+                var $this = $(this),
+                    newOwlSettings = $.extend({}, owlSettings, $this.data('owl-options'));
+
+                $this.owlCarousel(newOwlSettings);
+
+                // $('body').addClass('loaded');
+            });   
+        }
+    }
+
+    // Product Image Zoom plugin - product pages
+    if ( $.fn.elevateZoom ) {
+        $('#product-zoom').elevateZoom({
+            gallery:'product-zoom-gallery',
+            galleryActiveClass: 'active',
+            zoomType: "inner",
+            cursor: "crosshair",
+            zoomWindowFadeIn: 400,
+            zoomWindowFadeOut: 400,
+            responsive: true
+        });
+
+        // On click change thumbs active item
+        $('.product-gallery-item').on('click', function (e) {
+            $('#product-zoom-gallery').find('a').removeClass('active');
+            $(this).addClass('active');
+
+            e.preventDefault();
+        });
+
+        var ez = $('#product-zoom').data('elevateZoom');
+
+        // Open popup - product images
+        $('#btn-product-gallery').on('click', function (e) {
+            if ( $.fn.magnificPopup ) {
+                $.magnificPopup.open({
+                    items: ez.getGalleryList(),
+                    type: 'image',
+                    gallery:{
+                        enabled:true
+                    },
+                    fixedContentPos: false,
+                    removalDelay: 600,
+                    closeBtnInside: false
+                }, 0);
+
+                e.preventDefault();
+            }
+        });
+    }
+
+    // Product Gallery - product-gallery.html 
+    if ( $.fn.owlCarousel && $.fn.elevateZoom ) {
+        var owlProductGallery = $('.product-gallery-carousel');
+
+        owlProductGallery.on('initialized.owl.carousel', function () {
+            owlProductGallery.find('.active img').elevateZoom({
+                zoomType: "inner",
+                cursor: "crosshair",
+                zoomWindowFadeIn: 400,
+                zoomWindowFadeOut: 400,
+                responsive: true
+            });
+        });
+
+        owlProductGallery.owlCarousel({
+            loop: false,
+            margin: 0,
+            responsiveClass: true,
+            nav: true,
+            navText: ['<i class="icon-angle-left">', '<i class="icon-angle-right">'],
+            dots: false,
+            smartSpeed: 400,
+            autoplay: false,
+            autoplayTimeout: 15000,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                560: {
+                    items: 2
+                },
+                992: {
+                    items: 3
+                },
+                1200: {
+                    items: 3
+                }
+            }
+        });
+
+        owlProductGallery.on('change.owl.carousel', function () {
+            $('.zoomContainer').remove();
+        });
+
+        owlProductGallery.on('translated.owl.carousel', function () {
+            owlProductGallery.find('.active img').elevateZoom({
+                zoomType: "inner",
+                cursor: "crosshair",
+                zoomWindowFadeIn: 400,
+                zoomWindowFadeOut: 400,
+                responsive: true
+            });
+        });
+    }
+
+     // Product Gallery Separeted- product-sticky.html 
+    if ( $.fn.elevateZoom ) {
+        $('.product-separated-item').find('img').elevateZoom({
+            zoomType: "inner",
+            cursor: "crosshair",
+            zoomWindowFadeIn: 400,
+            zoomWindowFadeOut: 400,
+            responsive: true
+        });
+
+        // Create Array for gallery popup
+        var galleryArr = [];
+        $('.product-gallery-separated').find('img').each(function () {
+            var $this = $(this),
+                imgSrc = $this.attr('src'),
+                imgTitle= $this.attr('alt'),
+                obj = {'src': imgSrc, 'title': imgTitle };
+
+            galleryArr.push(obj);
+        })
+
+        $('#btn-separated-gallery').on('click', function (e) {
+            if ( $.fn.magnificPopup ) {
+                $.magnificPopup.open({
+                    items: galleryArr,
+                    type: 'image',
+                    gallery:{
+                        enabled:true
+                    },
+                    fixedContentPos: false,
+                    removalDelay: 600,
+                    closeBtnInside: false
+                }, 0);
+
+                e.preventDefault();
+            }
+        });
+    }
+
+    // Checkout discount input - toggle label if input is empty etc...
+    $('#checkout-discount-input').on('focus', function () {
+        // Hide label on focus
+        $(this).parent('form').find('label').css('opacity', 0);
+    }).on('blur', function () {
+        // Check if input is empty / toggle label
         var $this = $(this);
-        $this.addClass('active');
-        $this.siblings().removeClass('active');
-        var $navs = document.querySelectorAll(
-            '.slick-slider-nav .single-slide'
-        );
-        var $details = document.querySelectorAll(
-            '.slick-img-slider .single-slide'
-        );
-        console.log($navs);
-        var $btnColor = $this.data('swatch-color');
-        for (var i = 0; i < $navs.length; i++) {
-            $navs[i].classList.remove('slick-current');
-            if ($navs[i].classList.contains($btnColor)) {
-                $navs[i].classList.add('slick-current');
-            }
-        }
-        for (var i = 0; i < $details.length; i++) {
-            $details[i].classList.remove('slick-current');
-            $details[i].style.opacity = 0;
-            if ($details[i].classList.contains($btnColor)) {
-                $details[i].classList.add('slick-current');
-                $details[i].style.opacity = 1;
-            }
+
+        if( $this.val().length !== 0 ) {
+            $this.parent('form').find('label').css('opacity', 0);
+        } else {
+            $this.parent('form').find('label').css('opacity', 1);
         }
     });
-    /*----------------------------------------*/
-    /*  Single Product Image Slider Three
- /*----------------------------------------*/
-    $('.sp-img_slider-3').slick({
-        infinite: true,
-        slidesToShow: 4,
-        vertical: true,
-        slidesToScroll: 1,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-up"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-down"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 4,
-                },
-            },
-            {
-                breakpoint: 1199,
-                settings: {
-                    slidesToShow: 4,
-                },
-            },
-            {
-                breakpoint: 992,
-                settings: {
-                    slidesToShow: 5,
-                },
-            },
-            {
-                breakpoint: 767,
-                settings: {
-                    slidesToShow: 4,
-                },
-            },
-            {
-                breakpoint: 321,
-                settings: {
-                    slidesToShow: 3,
-                },
-            },
-        ],
+
+    // Dashboard Page Tab Trigger
+    $('.tab-trigger-link').on('click', function (e) {
+    	var targetHref = $(this).attr('href');
+
+    	$('.nav-dashboard').find('a[href="'+targetHref+'"]').trigger('click');
+
+    	e.preventDefault();
     });
-    /*--------------------------
-        Torress's Product Zoom
-	---------------------------- */
-    $('.zoompro').elevateZoom({
-        gallery: 'gallery',
-        galleryActiveClass: 'active',
-        zoomWindowWidth: 300,
-        zoomWindowHeight: 100,
-        scrollZoom: false,
-        zoomType: 'inner',
-        cursor: 'all-scroll',
+
+    // Masonry / Grid layout fnction
+	var layoutInit = function( container, selector, space ) {
+		$(container).each(function () {
+            var $this = $(this);
+
+            $this.isotope({
+                itemSelector: selector,
+                layoutMode: ( $this.data('layout') ? $this.data('layout'): 'masonry' ),
+                masonry: {
+                    columnWidth: space
+                }
+            });
+        });
+	}
+ 
+	var isotopeFilter = function( filterNav, container) {
+		$(filterNav).find('a').on('click', function(e) {
+			var $this = $(this),
+				filter = $this.attr('data-filter');
+
+			// Remove active class
+			$(filterNav).find('.active').removeClass('active');
+
+			// Init filter
+			$(container).isotope({
+				filter: filter,
+				transitionDuration: '0.7s'
+			});
+			
+			// Add active class
+			$this.closest('li').addClass('active');
+			e.preventDefault();
+		});
+	}
+
+    /* Masonry / Grid Layout & Isotope Filter for blog/portfolio etc... */
+    if ( typeof imagesLoaded === 'function' && $.fn.isotope) {
+        // Portfolio
+        $('.portfolio-container').imagesLoaded(function () {
+            // Portfolio Grid/Masonry
+            layoutInit( '.portfolio-container', '.portfolio-item' ); // container - selector
+            // Portfolio Filter
+            isotopeFilter( '.portfolio-filter',  '.portfolio-container'); //filterNav - .container
+        });
+
+        // Blog
+        $('.entry-container').imagesLoaded(function () {
+            // Blog Grid/Masonry
+            layoutInit( '.entry-container', '.entry-item' ); // container - selector
+            // Blog Filter
+            isotopeFilter( '.entry-filter',  '.entry-container'); //filterNav - .container
+        });
+
+        // Product masonry product-masonry.html
+        $('.product-gallery-masonry').imagesLoaded(function () {
+            // Products Grid/Masonry
+            layoutInit( '.product-gallery-masonry', '.product-gallery-item' ); // container - selector
+        });
+
+        // Products - Demo 11
+        $('.products-container').imagesLoaded(function () {
+            // Products Grid/Masonry
+            layoutInit( '.products-container', '.product-item' ); // container - selector
+            // Product Filter
+            isotopeFilter( '.product-filter',  '.products-container'); //filterNav - .container
+        });
+
+        layoutInit('.grid', '.grid-item', '.grid-space');
+    }
+
+	// Count
+    var $countItem = $('.count');
+	if ( $.fn.countTo ) {
+        if ($.fn.waypoint) {
+            $countItem.waypoint( function () {
+                $(this.element).countTo();
+            }, {
+                offset: '90%',
+                triggerOnce: true 
+            });
+        } else {
+            $countItem.countTo();
+        }    
+    } else { 
+        // fallback
+        // Get the data-to value and add it to element
+        $countItem.each(function () {
+            var $this = $(this),
+                countValue = $this.data('to');
+            $this.text(countValue);
+        });
+    }
+
+    // Scroll To button
+    var $scrollTo = $('.scroll-to');
+    // If button scroll elements exists
+    if ( $scrollTo.length ) {
+        // Scroll to - Animate scroll
+        $scrollTo.on('click', function(e) {
+            var target = $(this).attr('href'),
+                $target = $(target);
+            if ($target.length) {
+                // Add offset for sticky menu
+                var scrolloffset = ( $(window).width() >= 992 ) ? ($target.offset().top - 52) : $target.offset().top
+                $('html, body').animate({
+                    'scrollTop': scrolloffset
+                }, 600);
+                e.preventDefault();
+            }
+        });
+    }
+
+    // Review tab/collapse show + scroll to tab
+    $('#review-link').on('click', function (e) {
+        var target = $(this).attr('href'),
+            $target = $(target);
+
+        if ( $('#product-accordion-review').length ) {
+            $('#product-accordion-review').collapse('show');
+        }
+
+        if ($target.length) {
+            // Add offset for sticky menu
+            var scrolloffset = ( $(window).width() >= 992 ) ? ($target.offset().top - 72) : ( $target.offset().top - 10 )
+            $('html, body').animate({
+                'scrollTop': scrolloffset
+            }, 600);
+
+            $target.tab('show');
+        }
+
+    	e.preventDefault();
     });
-    /*----------------------------------------*/
-    /*  Single Product Slider
- /*----------------------------------------*/
-    $('.sp-slider').slick({
-        infinite: true,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        arrows: true,
-        dots: false,
-        prevArrow:
-            '<button class="slick-prev"><i class="ion-ios-arrow-back"></i></button>',
-        nextArrow:
-            '<button class="slick-next"><i class="ion-ios-arrow-forward"></i></button>',
-        responsive: [
-            {
-                breakpoint: 1199,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                },
-            },
-            {
-                breakpoint: 767,
-                settings: {
-                    slidesToShow: 4,
-                    slidesToScroll: 1,
-                },
-            },
-            {
-                breakpoint: 575,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                },
-            },
-        ],
+
+	// Scroll Top Button - Show
+    var $scrollTop = $('#scroll-top');
+
+    $(window).on('load scroll', function() {
+        if ( $(window).scrollTop() >= 400 ) {
+            $scrollTop.addClass('show');
+        } else {
+            $scrollTop.removeClass('show');
+        }
     });
-    /*----------------------------------------*/
-    /*  Torress's Venobox
-/*----------------------------------------*/
-    $('.venobox').venobox({
-        spinner: 'wave',
-        spinColor: '#fed100',
+
+    // On click animate to top
+    $scrollTop.on('click', function (e) {
+        $('html, body').animate({
+            'scrollTop': 0
+        }, 800);
+        e.preventDefault();
     });
-})(jQuery);
+
+    // Google Map api v3 - Map for contact pages
+    if ( document.getElementById("map") && typeof google === "object" ) {
+
+        var content =   '<address>' +
+                            '88 Pine St,<br>' +
+                            'New York, NY 10005, USA<br>'+
+                            '<a href="#" class="direction-link" target="_blank">Get Directions <i class="icon-angle-right"></i></a>'+
+                        '</address>';
+
+        var latLong = new google.maps.LatLng(40.8127911,-73.9624553);
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: latLong, // Map Center coordinates
+            scrollwheel: false,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+
+        });
+
+        var infowindow = new google.maps.InfoWindow({
+            content: content,
+            maxWidth: 360
+        });
+
+        var marker;
+        marker = new google.maps.Marker({
+            position: latLong,
+            map: map,
+            animation: google.maps.Animation.DROP
+        });
+
+        google.maps.event.addListener(marker, 'click', (function (marker) {
+            return function() {
+              infowindow.open(map, marker);
+            }
+        })(marker));
+    }
+
+    var $viewAll = $('.view-all-demos');
+    $viewAll.on('click', function (e) {
+        e.preventDefault();
+        $('.demo-item.hidden').addClass('show');
+        $(this).addClass('disabled-hidden');
+    })
+
+    var $megamenu = $('.megamenu-container .sf-with-ul');
+    $megamenu.hover(function() {
+        $('.demo-item.show').addClass('hidden');
+        $('.demo-item.show').removeClass('show');
+        $viewAll.removeClass('disabled-hidden');
+    });
+
+    // Product quickView popup
+    $('.btn-quickview').on('click', function (e) {
+        var ajaxUrl = $(this).attr('href');
+        if ( $.fn.magnificPopup ) {
+            setTimeout(function () {
+                $.magnificPopup.open({
+                    type: 'ajax',
+                    mainClass: "mfp-ajax-product",
+                    tLoading: '',
+                    preloader: false,
+                    removalDelay: 350,
+                    items: {
+                      src: ajaxUrl
+                    },
+                    callbacks: {
+                        ajaxContentAdded: function () {
+                            owlCarousels($('.quickView-content'), {
+                                onTranslate: function(e) {
+                                    var $this = $(e.target),
+                                        currentIndex = ($this.data('owl.carousel').current() + e.item.count - Math.ceil(e.item.count / 2)) % e.item.count;
+                                    $('.quickView-content .carousel-dot').eq(currentIndex).addClass('active').siblings().removeClass('active');
+                                }
+                            });
+                            quantityInputs();
+                        },
+                        open: function() {
+                            $('body').css('overflow-x', 'visible');
+                            $('.sticky-header.fixed').css('padding-right', '1.7rem');
+                        },
+                        close: function() {
+                            $('body').css('overflow-x', 'hidden');
+                            $('.sticky-header.fixed').css('padding-right', '0');
+                        }
+                    },
+
+                    ajax: {
+                        tError: '',
+                    }
+                }, 0);
+            }, 500);
+
+            e.preventDefault();
+        }
+    });
+    $('body').on('click', '.carousel-dot', function () {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+    });
+
+    $('body').on('click', '.btn-fullscreen', function(e) {
+        var galleryArr = [];
+        $(this).parents('.owl-stage-outer').find('.owl-item:not(.cloned)').each(function() {
+            var $this = $(this).find('img'),
+                imgSrc = $this.attr('src'),
+                imgTitle= $this.attr('alt'),
+                obj = {'src': imgSrc, 'title': imgTitle };
+            galleryArr.push(obj);
+        });
+
+        var ajaxUrl = $(this).attr('href');
+
+        var mpInstance = $.magnificPopup.instance;
+        if (mpInstance.isOpen)
+            mpInstance.close();
+
+        setTimeout(function () {
+            $.magnificPopup.open({
+                type: 'ajax',
+                mainClass: "mfp-ajax-product",
+                tLoading: '',
+                preloader: false,
+                removalDelay: 350,
+                items: {
+                  src: ajaxUrl
+                },
+                callbacks: {
+                    ajaxContentAdded: function () {
+                        owlCarousels($('.quickView-content'), {
+                            onTranslate: function(e) {
+                                var $this = $(e.target),
+                                    currentIndex = ($this.data('owl.carousel').current() + e.item.count - Math.ceil(e.item.count / 2)) % e.item.count;
+                                $('.quickView-content .carousel-dot').eq(currentIndex).addClass('active').siblings().removeClass('active');
+                                $('.curidx').html(currentIndex + 1);
+                            }
+                        });
+                        quantityInputs();
+                    },
+                    open: function() {
+                        $('body').css('overflow-x', 'visible');
+                        $('.sticky-header.fixed').css('padding-right', '1.7rem');
+                    },
+                    close: function() {
+                        $('body').css('overflow-x', 'hidden');
+                        $('.sticky-header.fixed').css('padding-right', '0');
+                    }
+                },
+
+                ajax: {
+                    tError: '',
+                }
+            }, 0);
+        }, 500);
+        
+        e.preventDefault();
+    });
+
+    if(document.getElementById('newsletter-popup-form')) {
+        setTimeout(function() {
+            var mpInstance = $.magnificPopup.instance;
+            if (mpInstance.isOpen) {
+                mpInstance.close();
+            }
+
+            setTimeout(function() {
+                $.magnificPopup.open({
+                    items: {
+                        src: '#newsletter-popup-form'
+                    },
+                    type: 'inline',
+                    removalDelay: 350,
+                    callbacks: {
+                        open: function() {
+                            $('body').css('overflow-x', 'visible');
+                            $('.sticky-header.fixed').css('padding-right', '1.7rem');
+                        },
+                        close: function() {
+                            $('body').css('overflow-x', 'hidden');
+                            $('.sticky-header.fixed').css('padding-right', '0');
+                        }
+                    }
+                });
+            }, 500)
+        }, 900)
+    }
+});

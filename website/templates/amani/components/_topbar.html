@@ -1,6 +1,7 @@
 {% load get_link %}
 {% load prod_tags %} 
 
+<!--header class="header header-8">-->
 <header class="header-area sticky-header header-transparent">
 
     <div class="container" >
@@ -9,7 +10,8 @@
                 <div class="header-right" >
                     <ul class="top-menu mb-1 mt-1" >
                         <li>
-                        
+                            <a href="#">Liens</a>
+
                             <ul>
                                 <li><a href="tel:{{ company.phone }}"><i class="icon-phone"></i>Tel: {{ company.phone }}</a></li>
                                 <li v-if="logged"><a href="/wishlist"><i class="icon-heart-o"></i>Mes Favoires<span>[[ user.customer.favourite.length ]] </span></a></li>
@@ -22,11 +24,12 @@
             </div><!-- End .container -->
         </div><!-- End .header-top -->
     
-    
+
         
-        <div class="row align-items-center">
+        <div class="row align-items-center" >
+
             <div class="col-5 col-lg-2 col-xl-1">
-                <div class="header-logo">
+                <div class="logo">
                     <h1> 
                         <a href="/" class="logo">
                             <img src="{{ "https://api.tiktak.space"|add:company.logo }}" alt="company logo" width="105" height="25">
@@ -36,9 +39,10 @@
                     </h1>
                 </div>
             </div>
-            <div class="col-lg-7 col-xl-7 d-none d-lg-block">
+
+            <div class="col-lg-4 col-xl-9 d-none d-lg-block">
                 <div class="header-navigation ps-7">
-                    <ul class="main-nav justify-content-start">
+                    <ul class="main-nav justify-content-start" >
                         {% for menu in header  %}
                         <li class="has-submenu">{% if menu.type == "extern" %}
                             <a href="{{ menu.href }}" class="">{{menu.label}}</a>
@@ -88,7 +92,7 @@
 
                                 <span class="cart-product-info">
                                     <span class="cart-product-qty">[[ product.quantity ]]</span>
-                                    x [[ product.price_ttc_after_discount ]] {{ company.currency }}
+                                    x [[ product.price_ttc_after_discount ]]  {{ company.currency }} 
                                 </span>
                             </div><!-- End .product-cart-details -->
 

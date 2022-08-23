@@ -1,5 +1,6 @@
 {% load to_json %}
-
+{% load get_link %}
+{% load prod_tags %} 
 
 
 
@@ -46,7 +47,7 @@
                       
                         <h4 class="title"><a v-bind:href="[[ getProductLink(product) ]]">[[ product.name ]]</a></h4>
                         <div class="prices">
-                            <a>[[ product?._category?.name ]]</a>
+                            <a>[[ product]]</a>
                             <span class="price">[[ product.price - product.discount ]] {{ company.currency }}</span>
                             <span class="price-old">[[ product.price ]] {{ company.currency }}</span>
                         </div>

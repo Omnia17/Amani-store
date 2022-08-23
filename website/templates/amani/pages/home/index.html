@@ -63,6 +63,7 @@
 
                         {% if section.slug == 'banner-slider-template-10' %}
                             {% include "./components/banner-slider-template-10.html" with data=section %}
+
                         {% endif %}
                         
                         {% if section.slug == 'banner-slider-template-32' %}
@@ -79,7 +80,8 @@
 
 
                         {% if section.slug == 'products-list-simple-template-9' %}
-                            {% include "./components/products-list-simple-template-9.html" with data=section key=key %}
+                            {% include "amani/pages/home/components/products-list-simple-template-9.html" with data=section key=key %}
+
                         {% endif %}
                     {% endif %}
 

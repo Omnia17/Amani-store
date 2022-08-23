@@ -177,7 +177,7 @@ def product_list(request, cat_id, cat_slug):
     category = getCategory(company['id'], cat_id)
 
 
-    template = loader.get_template('molla-1/pages/product-list/index.html')
+    template = loader.get_template('amani/pages/product-list/index.html')
 
     context = {
         "company": company,
@@ -319,7 +319,7 @@ GET SEARCH PAGE
 def search(request):
     company, header_menu, footer_menu, company_info = getCompanyData(request)   
 
-    template = loader.get_template('molla-1/pages/search/index.html')
+    template = loader.get_template('amani/pages/search/index.html')
 
     context = {
         "company": company,
