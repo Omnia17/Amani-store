@@ -3,153 +3,156 @@
 {% load to_json %}
 {% load static %}
 {% load paginate %}
-{% load prod_tags %} 
+{% load prod_tags %}
 
 {% block body %}
 
 <main class="main">
-    <br><br><br><br><br>
-   
+
     <nav aria-label="breadcrumb" class="breadcrumb-style1">
 
-    <div class="breadcrumb-area">
-        <div class="container">
-            <div class="breadcrumb-content">
-                <h2>Welcome to your Cart</h2>
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li class="active">Cart</li>
-                </ul>
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <h2>Welcome to your Cart</h2>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li class="active">Cart</li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
     </nav>
 
-     <!-- Begin Torress's Cart Area -->
-     <div class="torress-cart-area">
-        <br><br>
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <form action="javascript:void(0)">
-                        <div class="table-content table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th class="torress-product-remove">remove</th>
-                                        <th class="torress-product-thumbnail">images</th>
-                                        <th class="cart-product-name">Product</th>
-                                        <th class="torress-product-price">Unit Price</th>
-                                        <th class="torress-product-quantity">Quantity</th>
-                                        <th class="torress-product-subtotal">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="torress-product-remove"><a href="javascript:void(0)"><img src="static/assets/amani/images/delete.png" width="15" height="18" alt="delete" align="" ></a></td>
-                                        <td class="torress-product-thumbnail">
-                                            
-                                                    <a v-bind:href="[[ getProductLink(product._product) ]]">
-                                                        <img v-bind:src="[[ product.product_thumb ]]" alt="Product image">
-                                                    </a>
-                                                
-                                         </td>
-                                                    <td class="torress-product-name">
-                                                    <a v-bind:href="[[ getProductLink(product._product) ]]">[[ product.product_name ]]</a>
-                                                
-                                            
-                                        </td>
-                                        <td class="torress-product-price">[[ product.price_ttc_after_discount ]] {{ company.currency }}</td>
-                                        <td class="quantity-col">
-                                            <div class="cart-product-quantity">
-                                                <input type="number" class="form-control" min="1" v-model="product.quantity"
-                                                  v-on:change="updateCart()" step="1" data-decimals="0" required="" style="display: none;">
-                                            </div><!-- End .cart-product-quantity -->
-                                        </td>
-                                        <td class="product-subtotal">[[ product.final_price ]] {{ company.currency }}</td>
-                                    </tr>
-                                    <tr class="tbody-item-actions" align="center">
-                                        <td colspan="6">
-                                            <a href="#" @click="setCart($event)" class="btn btn-outline-dark-2">
-                                                <span >MISE À JOUR DU PANIER</span><i class="icon-refresh"></i>
-                                            </a>                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <br><br>
-                       
-                        <div class="row">
-                            <div class="col-12 col-lg-6">
-                                <div class="coupon-wrap">
-                                    <h4 class="title">Code Promo</h4>
-                                    <p class="desc">Enter your code promo code if you have one.</p>
-                                    <input type="text" class="form-control" placeholder="Coupon code">
-                                    <button type="button" class="btn-coupon">Apply Code Promo</button>
-                                </div>
-                            </div>
-    
-                           
 
-                       
-                    <div class="col-12 col-lg-6">
-                        <div class="cart-totals-wrap">
-                          
-                            <h3 class="summary-title">Total du panier</h3><!-- End .summary-title -->
+    <div class="page-content">
+        <div class="cart">
 
-                            <table class="table table-summary">
-                                <tbody>
-                                    <tr class="summary-subtotal">
-                                        <td>Sous-total:</td>
-                                        <td>[[ cart.subtotal ]] {{ company.currency }}</td>
-                                    </tr><!-- End .summary-subtotal -->
-                                    <tr class="summary-subtotal">
-                                        <td>Remise:</td>
-                                        <td>[[ cart.promoCodeDiscount ]] {{ company.currency }}</td>
-                                    </tr>
-                                    {% if company.works_with_transport and transporters and transporters|length > 0 %}
-                                        <tr class="summary-shipping">
-                                            <td>Transport:</td>
-                                            <td>&nbsp;</td>
+            <div class="torress-cart-area">
+                <br><br>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="table-content table-responsive">
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="torress-product-remove">remove</th>
+                                            <th class="torress-product-thumbnail">images</th>
+                                            <th class="cart-product-name">Product</th>
+                                            <th class="torress-product-quantity">Quantity</th>
+                                            <th class="torress-product-subtotal">Total</th>
                                         </tr>
-                                        {% for transporter in transporters %}
-                                            <tr class="summary-shipping-row">
-                                                <td>
-                                                    <div class="custom-control custom-radio">
-                                                        <input type="radio" id="{{transporter.id}}" name="shipping"
-                                                            class="custom-control-input" @change="updateCartTransporter({{transporter}})" value="{{transporter|to_json}}"
-                                                            {% if transporter.default %}
-                                                                checked="checked"
-                                                            {% endif %}
-                                                            >
-                                                        <label class="custom-control-label" for="{{transporter.id}}">{{ transporter.name }}</label>
-                                                    </div><!-- End .custom-control -->
-                                                </td>
-                                                <td>{{ transporter.price }} {{ company.currency }}</td>
-                                            </tr><!-- End .summary-shipping-row -->
-                                        {% endfor %}
-                                    {% endif %}
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr v-for="(product, index) in cart._details" :key="product.name">
+                                            <td class="torress-product-remove"><a href="javascript:void(0)"><i
+                                                        class="fa fa-solid fa-trash"></i></a></td>
+
+
+                                            <td class="torress-product-thumbnail">
+
+                                                <a v-bind:href="[[ getProductLink(product._product) ]]">
+                                                    <img v-bind:src="[[ product.product_thumb ]]" alt="Product image">
+                                                </a>
+                                                <h3 class="product-title">
+                                                    <a v-bind:href="[[ getProductLink(product._product) ]]">[[ product.product_name ]]</a>
+                                                </h3><!-- End .product-title -->
+                                            </td>
+                                            <td class="price-col">[[ product.price_ttc_after_discount ]] {{ company.currency }}</td>
+                                            <td class="quantity-col">
+                                                <div class="cart-product-quantity">
+                                                    <input type="number" class="form-control" min="1"
+                                                        v-model="product.quantity" v-on:change="updateCart()" step="1"
+                                                        data-decimals="0" required="" style="display: none;">
+                                                </div><!-- End .cart-product-quantity -->
+                                            </td>
+                                            <td class="total-col">[[ product.final_price ]] {{ company.currency }}</td>
+                                        </tr>
+                                        <tr class="tbody-item-actions" align="center">
+                                            <td colspan="6">
+                                                <a href="#" @click="setCart($event)" class="btn btn-outline-dark-2">
+                                                    <span>MISE À JOUR DU PANIER</span><i class="fa icon-refresh"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!-- End .table table-wishlist -->
+                           <!--code promo-->
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    <div class="coupon-wrap">
+                                        <h4 class="title">Code Promo</h4>
+                                        <p class="desc">Enter your code promo code if you have one.</p>
+                                        <input type="text" class="form-control" placeholder="Coupon code">
+                                        <button type="button" class="btn-coupon">Apply Code Promo</button>
+                                    </div>
+                                </div><!--end code promo-->
+                            
+                                <!--total de panier-->
+                                <aside class="col-12 col-lg-6">
+
+                                    <div class="cart-totals-wrap">
+                                        <h3 class="summary-title">Total du panier</h3><!-- End .summary-title -->
+
+                                        <table class="table table-summary">
+                                            <tbody>
+                                                <tr class="summary-subtotal">
+                                                    <td>Sous-total:</td>
+                                                    <td>[[ cart.subtotal ]] {{ company.currency }}</td>
+                                                </tr><!-- End .summary-subtotal -->
+                                                <tr class="summary-subtotal">
+                                                    <td>Remise:</td>
+                                                    <td>[[ cart.promoCodeDiscount ]] {{ company.currency }}</td>
+                                                </tr>
+                                                {% if company.works_with_transport and transporters and transporters|length > 0 %}
+                                                <tr class="summary-shipping">
+                                                    <td>Transport:</td>
+                                                    <td>&nbsp;</td>
+                                                </tr>
+                                                {% for transporter in transporters %}
+                                                <tr class="summary-shipping-row">
+                                                    <td>
+                                                        <div class="custom-control custom-radio">
+                                                            <input type="radio" id="{{transporter.id}}" name="shipping"
+                                                                class="custom-control-input" @change="updateCartTransporter({{transporter}})" value="{{transporter|to_json}}"
+                                                                {% if transporter.default %}
+                                                                    checked="checked"
+                                                                {% endif %}
+                                                                >
+                                                            <label class="custom-control-label"
+                                                                for="{{transporter.id}}">{{ transporter.name }}</label>
+                                                        </div><!-- End .custom-control -->
+                                                    </td>
+                                                    <td>{{ transporter.price }} {{ company.currency }}</td>
+                                                </tr><!-- End .summary-shipping-row -->
+                                                {% endfor %}
+                                                {% endif %}
 
 
 
 
-                                    <tr class="summary-total">
-                                        <td>Total:</td>
-                                        <td>[[ cart.total ]] {{ company.currency }}</td>
-                                    </tr><!-- End .summary-total -->
-                                </tbody>
-                            </table><!-- End .table table-summary -->
+                                                <tr class="summary-total">
+                                                    <td>Total:</td>
+                                                    <td>[[ cart.total ]] {{ company.currency }}</td>
+                                                </tr><!-- End .summary-total -->
+                                            </tbody>
+                                        </table><!-- End .table table-summary -->
 
-                            <a href="/checkout" class="btn btn-outline-primary-2 btn-order btn-block">COMMANDER</a>
-                        </div><!-- End .summary -->
-<br>
-                        <a href="/" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUER MES ACHAT</span><i class="icon-refresh"></i></a>
-                    </div><!-- End .col-lg-3 -->
-                </div><!-- End .row -->
-            </div><!-- End .container -->
-        </div><!-- End .cart -->
-   <!-- End .page-content -->
-    
+                                        <a href="/checkout"
+                                            class="btn btn-outline-primary-2 btn-order btn-block">COMMANDER</a>
+                                    </div><!-- End .summary -->
+                                    <a href="/" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUER MES
+                                            ACHAT</span><i class="icon-refresh"></i></a>
+                                </aside><!-- End .col-lg-3 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .container -->
+                    </div><!-- End .cart -->
+                </div><!-- End .page-content -->
 </main>
 
 {% endblock %}

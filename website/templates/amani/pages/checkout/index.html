@@ -2,7 +2,6 @@
 
 {% block body %}
 <main class="main">
-    <br><br><br><br><br>
    
     <nav aria-label="breadcrumb" class="breadcrumb-style1">
 
@@ -12,7 +11,7 @@
                 <h2>Welcome to your checkout</h2>
                 <ul>
                     <li><a href="/">Home</a></li>
-                    <li ><a href="amanicart">cart</a></li>
+                    <li ><a href="cart">cart</a></li>
                 <li class="active">Checkout</li>
                    
                 </ul>
@@ -31,7 +30,80 @@
         <!--== Start Billing Accordion ==-->
         <div class="checkout-billing-details-wrap">
             <h3 class="title">Détails de la commande</h3>
-            <div class="billing-form-wrap">
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Nom et Prénom*</label>
+                    <input type="text" v-model="order.name" class="form-control" required>
+                </div><!-- End .col-sm-6 -->
+
+            </div><!-- End .row -->
+
+            <label>Adresse *</label>
+            <input type="text" v-model="order.address" class="form-control" required>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Gouvernorat *</label>
+                    <select class="form-control" v-model="order.gouvernorat" @change="updateGouvernorat($event.target.value)">
+                        <option v-for="(gouv, name, index) in gouvernorats" :value="name">[[ name ]]</option>
+                    </select>
+                
+                </div><!-- End .col-sm-6 -->
+
+                <div class="col-sm-6">
+                    <label>Délégation *</label>
+                    <input type="text" name="city" list="delegations" v-model="order.delegation" class="form-control" required>
+                    <datalist id="delegations">
+                        <option v-for="dlg in options">[[ dlg ]]</option>
+                    </datalist>
+                </div><!-- End .col-sm-6 -->
+            </div><!-- End .row -->
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Code postal</label>
+                    <input type="text" v-model="order.code_postal"  class="form-control">
+                </div><!-- End .col-sm-6 -->
+            </div><!-- End .row -->
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Téléphone *</label>
+                    <input type="tel" v-model="order.phone" class="form-control" required>
+                </div><!-- End .col-sm-6 -->
+
+                <div class="col-sm-6">
+                    <label>Téléphone supplémentaire</label>
+                    <input type="tel" v-model="order.phone_extra" class="form-control">
+                </div><!-- End .col-sm-6 -->
+            </div><!-- End .row -->
+
+            <label v-if="createAccount || logged">Email *</label>
+            <label v-if="!createAccount && !logged">Email</label>
+            <input type="email" v-model="order.email" class="form-control">
+
+
+            <div class="row" v-if="createAccount">
+                <div class="col-sm-6">
+                    <label>Mot de passe *</label>
+                    <input type="password" class="form-control" required>
+                </div><!-- End .col-sm-6 -->
+
+                <div class="col-sm-6">
+                    <label>Confirmer mot de passe *</label>
+                    <input type="password" class="form-control">
+                </div><!-- End .col-sm-6 -->
+            </div><!-- End .row -->
+
+            <div class="custom-control custom-checkbox" v-if="!logged">
+                <input type="checkbox" v-model="createAccount" class="custom-control-input" id="checkout-create-acc">
+                <label class="custom-control-label" for="checkout-create-acc">Créer un compte?</label>
+            </div><!-- End .custom-checkbox -->
+
+            <label>Notes de commande (facultatif)</label>
+            <textarea class="form-control" cols="30" rows="4" placeholder="Remarques concernant votre commande, par exemple notes spéciales pour la livraison"></textarea>
+    </div><!-- End .col-lg-9 -->
+    </div>
+          <!--  {# <div class="billing-form-wrap">
                 <form action="#" method="post">
                     <div class="row">
                         <div class="col-md-12">
@@ -106,7 +178,7 @@
                     </form>
                 </div>
             </div>
-</div>
+</div> #} -->
 
                         <div class="col-12 col-lg-6">
                             <div class="checkout-order-details-wrap">
@@ -201,8 +273,7 @@
                                     </div><!-- End .accordion -->
                                         <br>
                                     <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
-                                        <span class="btn-text">Passer la commande</span>
-                                        <span class="btn-hover-text">Passer la commande</span>
+                                        <span class="btn-text">Passer  commande</span>
                                     </button>
                                     </div>
                                 </div>

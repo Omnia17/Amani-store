@@ -236,7 +236,7 @@ $(document).ready(function () {
     function quantityInputs() {
         if ( $.fn.inputSpinner ) {
             $("input[type='number']").inputSpinner({
-                decrementButton: '<i class="icon-minus"></i>',
+                decrementButton: '<i class="fa fa-solid fa-minus"></i>',
                 incrementButton: '<i class="icon-plus"></i>',
                 groupClass: 'input-spinner',
                 buttonsClass: 'btn-spinner',

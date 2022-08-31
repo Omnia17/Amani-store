@@ -1,85 +1,99 @@
 {% load get_link %}
-{% load prod_tags %} 
+{% load prod_tags %}
+
 
 <!--header class="header header-8">-->
-<header class="header-area sticky-header header-transparent">
+<!--<header class="header-area sticky-header header-transparent">-->
+<header class="header header-8">
 
-    <div class="container" >
-        <div class="header-top">
-            <div class="container" >
-                <div class="header-right" >
-                    <ul class="top-menu mb-1 mt-1" >
-                        <li>
-                            <a href="#">Liens</a>
+    <div class="header-top">
+        <div class="container">
+            <div class="header-right">
+                <ul class="top-menu mb-1 mt-1">
+                    <li>
+                        <a href="#">Liens</a>
 
-                            <ul>
-                                <li><a href="tel:{{ company.phone }}"><i class="icon-phone"></i>Tel: {{ company.phone }}</a></li>
-                                <li v-if="logged"><a href="/wishlist"><i class="icon-heart-o"></i>Mes Favoires<span>[[ user.customer.favourite.length ]] </span></a></li>
-                                <li v-if="logged"><a href="/account"><i class="icon-user"></i>Mon Compte</a></li>
-                                <li v-if="!logged"><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Se Connecter</a></li>
-                            </ul>
-                        </li>
-                    </ul><!-- End .top-menu -->
-                </div><!-- End .header-right -->
-            </div><!-- End .container -->
-        </div><!-- End .header-top -->
-    
+                        <ul>
+                            <li><a href="tel:{{ company.phone }}"><i class=" fa fa-thin fa-phone"></i>Tel: {{ company.phone }}</a></li>
+                            <li v-if="logged"><a href="/wishlist"><i class="icon-heart-o"></i>Mes Favoires<span>[[
+                                        user.customer.favourite.length ]] </span></a></li>
+                            <li v-if="logged"><a href="/account"><i class=" fa fa-thin fa-user"></i>></i>Mon Compte</a>
+                            </li>
+                            <li v-if="!logged"><a href="#signin-modal" data-toggle="modal"><i
+                                        class=" fa fa-thin fa-user"></i>Se Connecter</a></li>
+                        </ul>
+                    </li>
+                </ul><!-- End .top-menu -->
+                <hr>
+            </div><!-- End .header-right -->
+        </div><!-- End .container -->
+    </div><!-- End .header-top -->
 
-        
-        <div class="row align-items-center" >
 
-            <div class="col-5 col-lg-2 col-xl-1">
+    <div class="header-area sticky-header header-transparent">
+        <div class="container">
+
+
+            <div class="row align-items-center">
+
+
                 <div class="logo">
-                    <h1> 
+                    <h1>
                         <a href="/" class="logo">
-                            <img src="{{ "https://api.tiktak.space"|add:company.logo }}" alt="company logo" width="105" height="25">
-                            {% comment %} <img src="{{ "https://api.tiktak.space/"|add:company.logo }}" alt="company logo" width="105" height="25"> {% endcomment %}
+                            <img src="{{ " https://api.tiktak.space"|add:company.logo }}" alt="company logo" width="105"
+                                height="25">
+                            {% comment %} <img src="{{ " https://api.tiktak.space/"|add:company.logo }}"
+                                alt="company logo" width="105" height="25"> {% endcomment %}
 
-                        </a>    
+                        </a>
                     </h1>
                 </div>
             </div>
 
             <div class="col-lg-4 col-xl-9 d-none d-lg-block">
                 <div class="header-navigation ps-7">
-                    <ul class="main-nav justify-content-start" >
-                        {% for menu in header  %}
+                    <ul class="main-nav justify-content-start">
+                        {% for menu in header %}
                         <li class="has-submenu">{% if menu.type == "extern" %}
                             <a href="{{ menu.href }}" class="">{{menu.label}}</a>
-                        {% else %}
+                            {% else %}
                             <a href="{{ menu | get_link }}" class="">{{menu.label}}</a>
-                        {% endif %}
+                            {% endif %}
 
-                        {% if menu.submenu|length > 0 %}
+                            {% if menu.submenu|length > 0 %}
 
-                         <ul>    
-                                        {% for submenu in menu.submenu %}
-                                            {% if submenu.type == "extern" %}
-                                                <li><a href="{{ submenu.href }}">{{submenu.label}}</a></li>
-                                            {% else %}
-                                                <li><a href="{{ submenu | get_link }}">{{submenu.label}}</a></li>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </ul>
+                            <ul>
+                                {% for submenu in menu.submenu %}
+                                {% if submenu.type == "extern" %}
+                                <li><a href="{{ submenu.href }}">{{submenu.label}}</a></li>
+                                {% else %}
+                                <li><a href="{{ submenu | get_link }}">{{submenu.label}}</a></li>
                                 {% endif %}
-                            </li>
-                        {% endfor %}       
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
             <div class="header-search">
-                <a href="/search" class="search-toggle" role="button">  <img src="static/assets/amani/images/search.png" width="25" height="38" alt="" ></a>
-                <form @submit.prevent="searchCall()">
-                    <div class="header-search-wrapper">
-                        <label for="search" class="sr-only">Rechercher</label>
-                        <input type="search" class="form-control" v-model="search" placeholder="Rechercher..." required>
-                    </div><!-- End .header-search-wrapper -->
-                </form>
-            </div><!-- End .header-search --> 
+                <a href="/search" class="search-toggle" role="button">
+                    <!--<img src="static/assets/amani/images/search.png" width="25" height="38" alt="" ></a>-->
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <form @submit.prevent="searchCall()">
+                        <div class="header-search-wrapper">
+                            <label for="search" class="sr-only">Rechercher</label>
+                            <input type="search" class="form-control" v-model="search" placeholder="Rechercher..."
+                                required>
+                        </div><!-- End .header-search-wrapper -->
+                    </form>
+            </div><!-- End .header-search -->
             <div class="dropdown cart-dropdown">
-                <a href="cart" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                    <img  href="cart" src="static/assets/amani/images/shopcart.png" width="25" height="38" alt="" >
-                    <span class="cart-count">[[ cart._details.length ]] </span>
+                <a href="cart" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false" data-display="static">
+                    <!--  <img  href="cart" src="static/assets/amani/images/shopcart.png" width="25" height="38" alt="" >-->
+                    <i class="fas fa-shopping-cart"></i> <span class="cart-count">[[ cart._details.length ]] </span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" v-if="cart._details.length > 0">
@@ -87,12 +101,13 @@
                         <div class="product" v-for="(product, index) in cart._details" :key="product.name">
                             <div class="product-cart-details">
                                 <h4 class="product-title">
-                                    <a v-bind:href="[[ getProductLink(product._product) ]]">[[ product.product_name ]] [[ getAttrs(product._product) ]]</a>
+                                    <a v-bind:href="[[ getProductLink(product._product) ]]">[[ product.product_name ]]
+                                        [[ getAttrs(product._product) ]]</a>
                                 </h4>
 
                                 <span class="cart-product-info">
                                     <span class="cart-product-qty">[[ product.quantity ]]</span>
-                                    x [[ product.price_ttc_after_discount ]]  {{ company.currency }} 
+                                    x [[ product.price_ttc_after_discount ]] {{ company.currency }}
                                 </span>
                             </div><!-- End .product-cart-details -->
 
@@ -101,7 +116,7 @@
                                     <img v-bind:src="[[ product.product_thumb ]]" alt="product">
                                 </a>
                             </figure>
-                            <a href="#" class="btn-remove" @click="removeFromCart(index)" title="Remove Product"><i class="icon-close"></i></a>
+                            <a href="#" class="btn-remove" @click="removeFromCart(index)" title="Remove Product"><i class="fa fa-solid fa-trash"></i></a>
                         </div><!-- End .product -->
                     </div><!-- End .cart-product -->
 
@@ -121,9 +136,7 @@
                         Votre panier est vide !
                     </div>
                 </div><!-- End .dropdown-menu -->
-
-            </div><!-- End .cart-dropdown -->
-        </div><!-- End .header-right -->
-        </div>
+        </div><!-- End .cart-dropdown -->
+    </div><!-- End .header-right -->
     </div>
 </header>

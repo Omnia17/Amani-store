@@ -2,7 +2,6 @@
 {% block body %}
 
 <main class="main">
-    <br><br><br><br><br>
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
         <div class="container">
             <ol class="breadcrumb">
@@ -19,16 +18,20 @@
                     <aside class="col-md-4 col-lg-3">
                         <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
                             <li class="nav-item active">
-                                <a class="nav-link" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Tableau de bord</a>
+                                <a class="nav-link" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard"
+                                    role="tab" aria-controls="tab-dashboard" aria-selected="true">Tableau de bord</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Commandes</a>
+                                <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab"
+                                    aria-controls="tab-orders" aria-selected="false">Commandes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
+                                <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address"
+                                    role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Détails du compte</a>
+                                <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account"
+                                    role="tab" aria-controls="tab-account" aria-selected="false">Détails du compte</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-danger" href="/" @click="logout()">Se déconnecter</a>
@@ -38,13 +41,22 @@
 
                     <div class="col-md-8 col-lg-9">
                         <div class="tab-content">
-                            <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
-                                <p>Bonjour <span class="font-weight-normal text-dark">[[ user?.first_name + ' ' + user?.last_name ]] </span> 
-                                <br>
-                                À partir du tableau de bord de votre compte, vous pouvez voir vos <a href="#tab-orders" class="tab-trigger-link link-underline" data-toggle="tab">commandes récentes</a>, gérer vos <a href="#tab-address" class="tab-trigger-link" data-toggle="tab">adresses de livraison et de facturation</a>, et <a href="#tab-account" class="tab-trigger-link" data-toggle="tab"> modifier votre détails de votre compte.</a>.</p>
+                            <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel"
+                                aria-labelledby="tab-dashboard-link">
+                                <p>Bonjour <span class="font-weight-normal text-dark">[[ user?.first_name + ' ' +
+                                        user?.last_name ]] </span>
+                                    <br>
+                                    À partir du tableau de bord de votre compte, vous pouvez voir vos <a
+                                        href="#tab-orders" class="tab-trigger-link link-underline"
+                                        data-toggle="tab">commandes récentes</a>, gérer vos <a href="#tab-address"
+                                        class="tab-trigger-link" data-toggle="tab">adresses de livraison et de
+                                        facturation</a>, et <a href="#tab-account" class="tab-trigger-link"
+                                        data-toggle="tab"> modifier votre détails de votre compte.</a>.
+                                </p>
                             </div><!-- .End .tab-pane -->
 
-                            <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+                            <div class="tab-pane fade" id="tab-orders" role="tabpanel"
+                                aria-labelledby="tab-orders-link">
 
 
                                 <p v-if="customerOrders.length == 0">Aucune commande n'a encore été passée.</p>
@@ -57,25 +69,29 @@
                                             <th>Date</th>
                                             <th>Total</th>
                                             <th>Statut</th>
-                                            <!-- <th></th> --> 
+                                            <!-- <th></th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="order in customerOrders">
                                             <td class="product-col">[[ order.order_number ]]</td>
                                             <td>[[ formatDate(order.created_at) ]]</td>
-                                            <td class="price-col"> [[ order.total_after_discount ]] {{ company.currency }}</td>
-                                            <td class="stock-col"><span class="in-stock">[[ order.step_name ]]</span></td>
+                                            <td class="price-col"> [[ order.total_after_discount ]] {{ company.currency
+                                                }}</td>
+                                            <td class="stock-col"><span class="in-stock">[[ order.step_name ]]</span>
+                                            </td>
                                             <!-- <td><button class="btn btn-primary">Détails</button></td> -->
-                                        </tr>    
+                                        </tr>
                                     </tbody>
                                 </table>
-                  
-                                <a href="/" class="btn btn-outline-primary-2"><span>ALLER AU BOUTIQUE</span><i class="icon-long-arrow-right"></i></a>
+
+                                <a href="/" class="btn btn-outline-primary-2"><span>ALLER AU BOUTIQUE</span><i
+                                        class="icon-long-arrow-right"></i></a>
 
                             </div><!-- .End .tab-pane -->
 
-                            <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+                            <div class="tab-pane fade" id="tab-address" role="tabpanel"
+                                aria-labelledby="tab-address-link">
                                 <button class="btn btn-outline-primary-2 mb-1" @click="addAdress()">
                                     Ajouter une nouvelle adresse
                                 </button>
@@ -88,15 +104,17 @@
                                                 <h3 class="card-title">[[ address.title ]]</h3><!-- End .card-title -->
 
                                                 <p>[[ address?.contact ]]<br>
-                                                
-                                                [[ address?.address ]]<br>
-                                                [[ address?.gouvernorat ]]<br>
-                                                [[ address?.delegation ]]<br>
 
-                                                <br>
-                                                [[ address?.code_postal ]]<br>
-                                                    <a href="#" @click="openAddressModal(address, index)" data-toggle="modal">Modifier <i class="icon-edit"></i></a>
-                                                    <a class="ml-2" @click="deleteAdress(index, $event)" href="#">Supprimer <i class="icon-close"></i></a>
+                                                    [[ address?.address ]]<br>
+                                                    [[ address?.gouvernorat ]]<br>
+                                                    [[ address?.delegation ]]<br>
+
+                                                    <br>
+                                                    [[ address?.code_postal ]]<br>
+                                                    <a href="#" @click="openAddressModal(address, index)"
+                                                        data-toggle="modal">Modifier <i class="icon-edit"></i></a>
+                                                    <a class="ml-2" @click="deleteAdress(index, $event)"
+                                                        href="#">Supprimer <i class="icon-close"></i></a>
                                                 </p>
                                             </div><!-- End .card-body -->
                                         </div><!-- End .card-dashboard -->
@@ -105,15 +123,17 @@
                                 </div><!-- End .row -->
                             </div><!-- .End .tab-pane -->
 
-                            <div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
-                                
+                            <div class="tab-pane fade" id="tab-account" role="tabpanel"
+                                aria-labelledby="tab-account-link">
 
-                                <div v-if="UserSubmitMessage != ''" class="alert" role="alert" :class="UserSubmitError ? 'alert-danger' : 'alert-success'">
+
+                                <div v-if="UserSubmitMessage != ''" class="alert" role="alert"
+                                    :class="UserSubmitError ? 'alert-danger' : 'alert-success'">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true"><i class="icon-close"></i></span>
                                     </button>
 
-                                    [[ UserSubmitMessage ]]                    
+                                    [[ UserSubmitMessage ]]
                                 </div>
                                 <form @submit.prevent="updateUser()">
 
@@ -123,7 +143,8 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <label>Téléphone *</label>
-                                            <input type="tel" class="form-control" v-model="user.customer.phone" required="">
+                                            <input type="tel" class="form-control" v-model="user.customer.phone"
+                                                required="">
                                         </div><!-- End .col-sm-6 -->
 
                                         <div class="col-sm-6">
@@ -164,21 +185,23 @@
 
                         <label>Contact</label>
                         <input type="text" class="form-control" v-model="addressToEdit.contact">
-                        
+
                         <label>Adresse</label>
                         <input type="text" class="form-control" v-model="addressToEdit.address" required>
 
                         <label>Gouvernorat</label>
-                        <select class="form-control" v-model="addressToEdit.gouvernorat" @change="updateGouvernorat($event.target.value)" required>
+                        <select class="form-control" v-model="addressToEdit.gouvernorat"
+                            @change="updateGouvernorat($event.target.value)" required>
                             <option v-for="(gouv, name, index) in gouvernorats" :value="name">[[ name ]]</option>
                         </select>
 
                         <label>Délégation</label>
-                        <input type="text" name="city" list="delegations" v-model="addressToEdit.delegation" class="form-control" required>
+                        <input type="text" name="city" list="delegations" v-model="addressToEdit.delegation"
+                            class="form-control" required>
                         <datalist id="delegations">
                             <option v-for="dlg in options">[[ dlg ]]</option>
                         </datalist>
-                        
+
                         <label>Code postal</label>
                         <input type="text" class="form-control" v-model="addressToEdit.code_postal">
 

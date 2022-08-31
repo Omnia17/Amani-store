@@ -1,11 +1,12 @@
 {% extends "../index.html" %}
 {% block body %}
-
         <main class="main">
 
             {% for section in sections %}
                 
                 {% with key=forloop.counter %}  
+
+               {# {{key}} #}
 
                     {% if section.active %}
 

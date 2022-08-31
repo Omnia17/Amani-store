@@ -1,87 +1,66 @@
 {% load to_json %}
-{% load get_link %}
-{% load prod_tags %} 
 
 
-
-
-                <section class="section-space pt-0">
-                    <br>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="section-title">
-                                    <h2 class="title" align="center">{{ data.values.title_1 }}</h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" v-if="!sectionData[{{key}}]">
-                     
-                            <div class="col-6 col-md-4 col-lg-3 col-xl-5col"  v-for="index in 5" :key="index">
-                                <div class="waiting"></div>
-                            </div>
-                            
-                        </div>
-                        <div class="row mb-n4 mb-sm-n10 g-3 g-sm-6" >
-
-
-                <div class="col-6 col-lg-4 mb-4 mb-sm-9">
-                    <!--== Start Product Item ==-->
-                    <div class="product-item product-st2-item">
-                    <div class="product-thumb">
-                       
-                            <figure class="product-media">
-                                <span v-if="product.active_stock && product.stock < 1 && ! product.order_without_stock" class="product-label label-primary">En rupture de stock</span>
-                                <span v-if="product.discount > 0" class="product-label label-sale">En promotion!</span>
-                                <a v-bind:href="[[ getProductLink(product) ]]">
-                                    <img v-bind:src="[[ product.photo ]]" alt="[[ product.name ]]" class="product-image">
-                                </a>
-                                <div class="product-action-vertical">
-                                    <a href="#" v-if="logged" @click="addToWishlist(product.id, $event)" class="btn-product-icon btn-wishlist btn-expandable"><span>Ajouter aux Favoris</span></a>
-                                </div><!-- End .product-action-vertical -->
-                            </figure><!-- End .product-media -->      
-                                         
-                        <span class="flag-new">new</span>
-                    </div>
-                    <div class="product-info">
-                      
-                        <h4 class="title"><a v-bind:href="[[ getProductLink(product) ]]">[[ product.name ]]</a></h4>
-                        <div class="prices">
-                            <a>[[ product]]</a>
-                            <span class="price">[[ product.price - product.discount ]] {{ company.currency }}</span>
-                            <span class="price-old">[[ product.price ]] {{ company.currency }}</span>
-                        </div>
-                      <!--  <div id="product-action">-->
-                            <button type="button" id="btncart" data-bs-toggle="modal" data-bs-target="#action-CartAddModal">
-                                <span>Add to cart</span>
-                            </button>
-                            <button type="button" id="btncartview" data-bs-toggle="modal" data-bs-target="#action-QuickViewModal">
-                                <i class="fa fa-expand"></i>
-                            </button>
-                            <button type="button" id="btncartwishlist" data-bs-toggle="modal" data-bs-target="#action-WishlistModal">
-                                <i class="fa fa-heart"></i>
-                            </button>
-                        </div>
-                    
-                    </div>
-                </div>
-                    <!--== End prPduct Item ==-->
+<section class="section-space pt-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2 class="title" align="center">{{ data.values.title_1 }}</h2>
                 </div>
             </div>
         </div>
-    </section>
-    <br>
+        <div class="row" v-if="!sectionData[{{key}}]">
+
+            <div class="col-6 col-md-4 col-lg-3 col-xl-5col" v-for="index in 5" :key="index">
+                <div class="waiting"></div>
+            </div>
+
+        </div>
+        <div class="row mb-n4 mb-sm-n10 g-3 g-sm-6">
 
 
-   
+            <div class="col-6 col-lg-4 mb-4 mb-sm-9"  v-for="product in sectionData[{{key}}]">
+                <!--== Start Product Item ==-->
+                <div class="product-item product-st2-item">
+                    <div class="product-thumb">
 
+                        <figure class="product-media">
+                            <span v-if="product.active_stock && product.stock < 1 && ! product.order_without_stock"
+                                class="product-label label-primary">En rupture de stock</span>
+                            <span v-if="product.discount > 0" class="product-label label-sale">En promotion!</span>
+                            <a v-bind:href="[[ getProductLink(product) ]]">
+                                <img v-bind:src="[[ product.photo ]]" alt="[[ product.name ]]" class="product-image">
+                            </a>
+                            <div class="product-action-vertical">
+                                <a href="#" v-if="logged" @click="addToWishlist(product.id, $event)"
+                                    class="btn-product-icon btn-wishlist btn-expandable"><span>Ajouter aux
+                                        Favoris</span></a>
+                            </div><!-- End .product-action-vertical -->
+                        </figure><!-- End .product-media -->
 
+                        <span class="flag-new">new</span>
+                    </div>
+                    <div class="product-info">
 
+                        <h4 class="title"><a v-bind:href="[[ getProductLink(product) ]]">[[ product.name ]]</a></h4>
+                        <div class="prices">
+                            <a>[[ product._category.name ]]</a>
+                            <h1 class="product-title">{{ product.name }}
+                                <span class="price">[[ product.price - product.discount ]] {{ company.currency }}</span>
+                                <span class="price-old">[[ product.price ]] {{ company.currency }}</span>
+                        </div>
+                        <!--  <div id="product-action">-->
+                    <div align="center">
+                        <button  type="button" id="btncart" data-bs-toggle="modal" data-bs-target="#action-CartAddModal">
+                            <a v-bind:href="[[ getProductLink(product) ]]">Afficher</a>
+                        </button>
+                    </div>
+                    </div>
 
-
-
-            
-            
-               
-                
-      
+                </div>
+            </div>
+            <!--== End prPduct Item ==-->
+        </div>
+    </div>
+</section>

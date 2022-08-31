@@ -9,7 +9,9 @@
                     
 
                     <div class="product product-3 text-center" v-for="product in sectionData[{{key}}]">
+                        
                         <figure class="product-media">
+                            
                             <span v-if="product.active_stock && product.stock < 1 && ! product.order_without_stock" class="product-label label-primary">En rupture de stock</span>
                             <span v-if="product.discount > 0" class="product-label label-sale">En promotion!</span>
                             
@@ -50,5 +52,5 @@
             </div><!-- .End .tab-pane -->
 
     </div><!-- End .container -->
-</div><!-- End .bg-light -->
+ </div><!-- End .bg-light -->
 </div>

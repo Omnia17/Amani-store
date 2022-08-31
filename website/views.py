@@ -31,6 +31,9 @@ def getCompanyData(request):
 
 def index(request):
     company, header_menu, footer_menu, company_info = getCompanyData(request)
+
+  
+
     template = loader.get_template('amani/pages/home/index.html')
 
     sections = getPages(company['id'])
@@ -140,7 +143,7 @@ def product(request, product_id, cat_id = "", cat_slug = "",  slug = ""):
 
     colors = getProductColor(product)
 
-    template = loader.get_template('molla-1/pages/product/index.html')
+    template = loader.get_template('amani/pages/product/index.html')
 
     context = {
         "company": company,
@@ -173,6 +176,7 @@ def product_list(request, cat_id, cat_slug):
     company, header_menu, footer_menu, company_info = getCompanyData(request)   
 
     page_number = int(request.GET.get('page', '1'))
+    
 
     category = getCategory(company['id'], cat_id)
 
@@ -444,35 +448,6 @@ def error500(request):
     # ----------------------------amani store----------------------------
 
 
-def amaniproductlist(request):
-    company, header_menu, footer_menu, company_info = getCompanyData(request)   
-  
-    template = loader.get_template('amani/pages/Product-List/index.html')
-
-    context = {
-        "company": company,
-        "header": header_menu,
-        "footer": footer_menu,
-        "social_links": company_info.get('contact_settings', {}),
-        "company_info": company_info,
-        "page_type": "product_group",
-
-        "seo":{
-            "title": "categpry", 
-            "description": "", 
-            "image": "", 
-            "url": request.build_absolute_uri()
-        },
-    }
-    return HttpResponse(template.render(context, request))
-
-
-
-
-
-
-
-
 
 def failPayment(request):
     company, header_menu, footer_menu, company_info = getCompanyData(request)   
@@ -534,35 +509,7 @@ def successPayment(request):
     }
     return HttpResponse(template.render(context, request))
 
-def search(request):
-    company, header_menu, footer_menu, company_info = getCompanyData(request)   
 
-    transporters = None
-    if company['works_with_transport']:
-        res = requests.get(api+"transports-read/?company="+company['id']).json()
-        transporters = res['results']
-
-
-    template = loader.get_template('amani/pages/search/index.html')
-
-    context = {
-        "company": company,
-        "header": header_menu,
-        "footer": footer_menu,
-        "social_links": company_info.get('contact_settings', {}),
-        "company_info": company_info,
-        "page_type": "checkout",
-
-        "seo": {
-            "title": "checkout", 
-            "description": "", 
-            "image": "", 
-            "url": request.build_absolute_uri()
-        },
-
-        "transporters": transporters
-    }
-    return HttpResponse(template.render(context, request))
 
 
 
