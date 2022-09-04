@@ -233,7 +233,7 @@ $(document).ready(function () {
 	}
 
 	// Quantity Input - Cart page - Product Details pages
-    function quantityInputs() {
+ /*   function quantityInputs() {
         if ( $.fn.inputSpinner ) {
             $("input[type='number']").inputSpinner({
                 decrementButton: '<i class="fa fa-solid fa-minus"></i>',
@@ -243,7 +243,7 @@ $(document).ready(function () {
                 buttonsWidth: '26px'
             });
         }
-    }
+    }*/
 
     // Sticky Content - Sidebar - Social Icons etc..
     // Wrap elements with <div class="sticky-content"></div> if you want to make it sticky

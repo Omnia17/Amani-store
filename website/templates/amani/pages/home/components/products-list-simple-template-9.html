@@ -1,15 +1,10 @@
 {% load to_json %}
 
 
-<section class="section-space pt-0">
+<section class="section-space pt-0" id="shopnow">
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="section-title">
-                    <h2 class="title" align="center">{{ data.values.title_1 }}</h2>
-                </div>
-            </div>
-        </div>
+       <div class="heading heading-center mb-3">
+            <h2 class="title-lg" align="center">{{ data.values.title_1 }}</h2>
         <div class="row" v-if="!sectionData[{{key}}]">
 
             <div class="col-6 col-md-4 col-lg-3 col-xl-5col" v-for="index in 5" :key="index">

@@ -1,4 +1,6 @@
+
 {% extends "../index.html" %}
+{% load to_json %}
 
 {% block body %}
 <main class="main">
@@ -23,14 +25,16 @@
 
 
 <div class="torress-cart-area">
-    <br><br>
     <div class="container">
+        <br>
+        <form @submit.prevent="createOrder($event)">
 <div class="row">
     <div class="col-lg-6">
         <!--== Start Billing Accordion ==-->
         <div class="checkout-billing-details-wrap">
             <h3 class="title">Détails de la commande</h3>
             <div class="row">
+                
                 <div class="col-sm-12">
                     <label>Nom et Prénom*</label>
                     <input type="text" v-model="order.name" class="form-control" required>
@@ -68,12 +72,12 @@
             <div class="row">
                 <div class="col-sm-6">
                     <label>Téléphone *</label>
-                    <input type="tel" v-model="order.phone" class="form-control" required>
+                    <input type="tel" v-model="order.phone" class="form-control"    >
                 </div><!-- End .col-sm-6 -->
 
                 <div class="col-sm-6">
                     <label>Téléphone supplémentaire</label>
-                    <input type="tel" v-model="order.phone_extra" class="form-control">
+                    <input type="tel" v-model="order.phone_extra" class="form-control"   >
                 </div><!-- End .col-sm-6 -->
             </div><!-- End .row -->
 
@@ -85,12 +89,12 @@
             <div class="row" v-if="createAccount">
                 <div class="col-sm-6">
                     <label>Mot de passe *</label>
-                    <input type="password" class="form-control" required>
+                    <input type="password" class="form-control" required minlength="5">
                 </div><!-- End .col-sm-6 -->
 
                 <div class="col-sm-6">
                     <label>Confirmer mot de passe *</label>
-                    <input type="password" class="form-control">
+                    <input type="password" class="form-control" minlength="5">
                 </div><!-- End .col-sm-6 -->
             </div><!-- End .row -->
 
@@ -103,185 +107,113 @@
             <textarea class="form-control" cols="30" rows="4" placeholder="Remarques concernant votre commande, par exemple notes spéciales pour la livraison"></textarea>
     </div><!-- End .col-lg-9 -->
     </div>
-          <!--  {# <div class="billing-form-wrap">
-                <form action="#" method="post">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="f_name">Nom et Prénom <abbr class="required" title="required">*</abbr></label>
-                                <input id="f_name" type="text" class="form-control">
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="com_name">Adresse</label>
-                                <input id="com_name" type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                <label for="country">Gouvernorat <abbr class="required" title="required">*</abbr></label>
-                                <select class="form-control" v-model="order.gouvernorat" @change="updateGouvernorat($event.target.value)">
-                                    <option v-for="(gouv, name, index) in gouvernorats" :value="name">[[ name ]]</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 ">
-                            <div class="form-group">
-                                <label for="country">Délégation <abbr class="required" title="required">*</abbr></label>
-                                <input id="com_name" type="text" class="form-control">
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="street-address">Code postal <abbr class="required" title="required">*</abbr></label>
-                                <input id="street-address" type="text" class="form-control" >
-                            </div>
-                            <div class="form-group">
-                                <label for="street-address2" class="visually-hidden">Téléphone<abbr class="required" title="required">*</abbr></label>
-                                <input id="street-address2" type="text" class="form-control" >
-                            </div>
-                        </div>
-                       
-                       
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="email">Email address <abbr class="required" title="required">*</abbr></label>
-                                <input id="email" type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="checkout-form-list create-acc">
-                                <input id="cbox" type="checkbox">
-                                <label>Create an account?</label>
-                            </div>
-                            <div id="cbox-info" class="checkout-form-list create-account">
-                                <p>Create an account by entering the information below. If you are a returning
-                                    customer please login at the top of the page.</p>
-                                <label>Account password <span class="required">*</span></label>
-                                <input class="form-control" placeholder="password" type="password">
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                        <div class="col-md-12">
-                            <div class="form-group mb-0">
-                                <label for="order-notes">Order notes (optional)</label>
-                                <textarea id="order-notes" class="form-control" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
-                            </div>
-                        </div>
-                        </div>
-                        <br>
-                    </form>
-                </div>
-            </div>
-</div> #} -->
+         
 
                         <div class="col-12 col-lg-6">
                             <div class="checkout-order-details-wrap">
                                 <div class="order-details-table-wrap table-responsive">
                                     <div class="cart-totals-wrap">
-                                    <h2 class="title mb-25">Your order</h2>
-                                    <table class="table table-summary">
-                                        <thead>
-                                            <tr>
-                                                <th>Produits</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-    
-                                        <tbody>
-                                            <tr v-for="(product, index) in cart._details" :key="product.name">
-                                                <td><a v-bind:href="[[ getProductLink(product._product) ]]">[[ product.product_name ]]</a></td>
-                                                <td>[[ product.final_price ]] {{ company.currency }}</td>
-                                            </tr>
-                                            <tr class="summary-subtotal">
-                                                <td>Sous-total:</td>
-                                                <td>[[ cart.subtotal ]] {{ company.currency }}</td>
-                                            </tr><!-- End .summary-subtotal -->
-                                            <tr v-if="cart.transport && company && company.works_with_transport">
-                                                <td>Transport:</td>
-                                                <td>[[ cart.transport.price ]] {{ company.currency }}</td>
-                                            </tr>
-    
-                                            <!-- if no transporter foud and company works with transporter -->
-                                            <template v-if="!cart.transport && company && company.works_with_transport">
-                                                <tr class="summary-shipping">
-                                                    <td>Transport:</td>
-                                                    <td>&nbsp;</td>
-                                                </tr>
-                                                {% for transporter in transporters %}
-                                                    <tr class="summary-shipping-row">
-                                                        <td>
-                                                            <div class="custom-control custom-radio">
-                                                                <input type="radio" id="{{transporter.id}}" name="shipping"
-                                                                    class="custom-control-input" @click="updateCartTransporter({{transporter}})">
-                                                                <label class="custom-control-label" for="{{transporter.id}}">{{ transporter.name }}</label>
-                                                            </div><!-- End .custom-control -->
-                                                        </td>
-                                                        <td>{{ transporter.price }} {{ company.currency }}</td>
-                                                    </tr><!-- End .summary-shipping-row -->
-                                                {% endfor %}
-                                            </template>
-                                            
-                                            <tr class="summary-total">
-                                                <td>Total:</td>
-                                                <td>[[ cart.total ]] {{ company.currency }}</td>
-                                            </tr><!-- End .summary-total -->
-                                        </tbody>
-                                    </table><!-- End .table table-summary -->
-    
-                                    <div class="accordion-summary" id="accordion-payment">
-                                        <a role="button" @click="setPaymentType('CASH')" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-                                            Payer à la livraison
-                                        </a>
-                                      <!--  <div class="card">
-                                            <div class="card-header" id="heading-1">
-                                                <h2 class="card-title">
+                                        <div class="summary">
+                                            <h3 class="title">Votre Commande</h3><!-- End .summary-title -->
+            
+                                            <table >
+                                             
+            
+                                                <tbody>
+                                                    <tr class="cart-subtotal"v-for="(product, index) in cart._details" :key="product.name">
+                                                        <th> <a v-bind:href="[[ getProductLink(product._product) ]]">[[ product.product_name ]]</a></th>
+                                                        <td>[[ product.final_price ]] {{ company.currency }}</td>
+                                                    </tr>
+                                                    <tr class="cart-subtotal">
+                                                        <th>Sous-total:</th>
+                                                        <td>[[ cart._subtotal ]] {{ company.currency }}</td>
+                                                    </tr><!-- End .summary-subtotal -->
+                                                    <tr v-if="cart.transport && company && company.works_with_transport">
+                                                        <th>Transport:</th>
+                                                        <td>[[ cart.transport.price ]] {{ company.currency }}</td>
+                                                    </tr>
+            
+                                                    <!-- if no transporter foud and company works with transporter -->
+                                                    {% if company.works_with_transport and transporters and transporters|length > 0 %}
+                                                    <tr class="cart-subtotal">
+                                                        <th>Transport:</th>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                    {% for transporter in transporters %}
+                                                        <tr class="summary-shipping-row">
+                                                            <td>
+                                                                <div class="custom-control custom-radio">
+                                                                    <input type="radio" id="{{transporter.id}}" name="shipping"
+                                                                        class="custom-control-input" @change="updateCartTransporter({{transporter}})" value="{{transporter|to_json}}"
+                                                                        {% if transporter.default %}
+                                                                            checked="checked"
+                                                                        {% endif %}
+                                                                        >
+                                                                    <label class="custom-control-label" for="{{transporter.id}}">{{ transporter.name }}</label>
+                                                                </div><!-- End .custom-control -->
+                                                            </td>
+                                                            <td>{{ transporter.price }} {{ company.currency }}</td>
+                                                        </tr><!-- End .summary-shipping-row -->
+                                                    {% endfor %}
+                                                {% endif %}
                                                     
-                                                    <a role="button" @click="setPaymentType('CASH')" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-                                                        Payer à la livraison
-                                                    </a>
-                                                </h2>
-                                            </div>--> <!-- End .card-header -->
-                                            <div id="collapse-1" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion-payment">
-                                                <div class="card-body">
-                                                    Votre commande sera expédiée bientôt et vous pourrez payer lorsque vous la recevrez.                                            
-                                                </div><!-- End .card-body -->
-                                            </div><!-- End .collapse -->
-                                        </div><!-- End .card -->
-                                        {% if company.config_payment_status and not company.active_pack.name == "Demo" %}
-                                            <div class="card">
-                                                <div class="card-header" id="heading-2">
-                                                    <h2 class="card-title">
-                                                        <a class="collapsed" @click="setPaymentType('ONLINE')" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-                                                            Payer en ligne
-                                                        </a>
-                                                    </h2>
-                                                </div><!-- End .card-header -->
-                                                <div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-payment">
-                                                    <div class="card-body">
-                                                        Effectuez votre paiement directement sur notre compte bancaire. Veuillez utiliser votre ID de commande comme référence de paiement. Votre commande ne sera pas expédiée tant que les fonds n'auront pas été crédités sur notre compte.                                               
-                                                    </div><!-- End .card-body -->
-                                                </div><!-- End .collapse -->
-                                            </div><!-- End .card -->
-                                        {% endif %}
+                                                    <tr class="cart-subtotal">
+                                                        <th>Total:</th>
+                                                        <td>[[ cart._total_amount ]] {{ company.currency }}</td>
+                                                    </tr><!-- End .summary-total -->
+                                                </tbody>
+                                            </table><!-- End .table table-summary -->
+            
+                                            <div class="accordion-summary" id="accordion-payment">
+            
+                                                <div class="card">
+                                                    <div class="card-header" id="heading-1">
+                                                        <h2 class="card-title">
+                                                            
+                                                            
+                                                      <a type="radio" @click="setPaymentType('CASH')" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                                                                Payer à la livraison
+                                                            </a>
+                                                        </h2>
+                                                    </div><!-- End .card-header -->
+                                                    <div id="collapse-1" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion-payment">
+                                                        <div class="card-body">
+                                                            Votre commande sera expédiée bientôt et vous pourrez payer lorsque vous la recevrez.                                            
+                                                        </div><!-- End .card-body -->
+                                                    </div><!-- End .collapse -->
+                                                </div><!-- End .card -->
+                                                {% if company.config_payment_status and not company.active_pack.name == "Demo" %}
+                                                    <div class="card">
+                                                        <div class="card-header" id="heading-2">
+                                                            <h2 class="card-title">
+                                                                <a class="collapsed" @click="setPaymentType('ONLINE')" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+                                                                    Payer en ligne
+                                                                </a>
+                                                            </h2>
+                                                        </div><!-- End .card-header -->
+                                                        <div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-payment">
+                                                            <div class="card-body">
+                                                                Effectuez votre paiement directement sur notre compte bancaire. Veuillez utiliser votre ID de commande comme référence de paiement. Votre commande ne sera pas expédiée tant que les fonds n'auront pas été crédités sur notre compte.                                               
+                                                            </div><!-- End .card-body -->
+                                                        </div><!-- End .collapse -->
+                                                    </div><!-- End .card -->
+                                                {% endif %}
     
                                     </div><!-- End .accordion -->
                                         <br>
-                                    <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+                                        <a href="#success-modal" data-toggle="modal">
+                                    <button type="submit"  class="btn btn-lg btn-primary btn-order btn-block">
                                         <span class="btn-text">Passer  commande</span>
                                     </button>
+                                    
+</a>
                                     </div>
                                 </div>
                             </div>
                             <!--== End Order Details Accordion ==-->
                    
+                        </form>
                 
-                <br>
             </div>
         </div>
     </main>

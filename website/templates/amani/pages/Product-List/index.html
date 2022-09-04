@@ -3,7 +3,7 @@
 {% load to_json %}
 {% load static %}
 {% load paginate %}
-{% load prod_tags %} 
+{% load prod_tags %}
 {% load images_tags %}
 
 
@@ -17,154 +17,168 @@
                     <h2>Welcome to your product list</h2>
                     <ul>
                         <li><a href="/">Home</a></li>
-                        
-    
-                    <li class="active"> Product List</li>
-                       
+
+
+                        <li class="active"> Product List</li>
+
                     </ul>
                 </div>
             </div>
         </div>
-        </nav>
+    </nav>
 
-        <div class="shop-top-bar-area">
-            <div class="container">
-                <div class="shop-top-bar">
-                    <label for="sortby">Trier par:</label>
-                    <div class="select-custom">
-                        <select name="sortby" id="sortby" class="form-control" v-model="productsSort" @change="getProducts(1)">
-                            <option value="-updated_at" selected="selected">Plus Populaire</option>
-                            <option value="created_at">Nouveaux Produit</option>
-                            <option value="price">Prix Croissant</option>
-                            <option value="-price">Prix Décroissant</option>
-                        </select>
-                    </div>
-                   
+    <div class="shop-top-bar-area">
+        <div class="container">
+            <div class="shop-top-bar">
+                <label for="sortby">Trier par:</label>
+                <div class="select-custom">
+                    <select name="sortby" id="sortby" class="form-control" v-model="productsSort"
+                        @change="getProducts(1)">
+                        <option value="-updated_at" selected="selected">Plus Populaire</option>
+                        <option value="created_at">Nouveaux Produit</option>
+                        <option value="price">Prix Croissant</option>
+                        <option value="-price">Prix Décroissant</option>
+                    </select>
+                </div>
 
-                       
 
-                    <div class="select-price-range">
-                        <div class="toolbox-info">
+
+
+                <div class="select-price-range">
+                    <div class="toolbox-info">
                         Affichage de <span> [[products.results.length ]] sur [[ products.count ]] </span> Produits
                     </div>
-                    </div>
-
-                    
                 </div>
+
+
             </div>
         </div>
+    </div>
 
+    <!-- lets try the original-->
 
+    <!--== Start Product Item ==-->
+    <div class="container">
 
+        <div class="product-item">
 
+            <div class="product-thumb">
 
-
-
-
-                <!-- lets try the original-->
-               
-                        <!--== Start Product Item ==-->
-                        <div class="container">
-
-                        <div class="product-item">
-                            
-                            <div class="product-thumb">
-                                
                 <div class="products mb-3">
                     <div class="row justify-content-center">
-                        <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="(product, index) in products.results" :key="product.name">
+                        <div class="col-6 col-md-4 col-lg-4 col-xl-3" v-for="(product, index) in products.results"
+                            :key="product.name">
                             <div class="product product-7 text-center">
                                 <figure class="product-media">
-                                    <span v-if="product.discount > 0" class="product-label label-sale">En promotion!</span> 
-                                    <span v-if="product.active_stock && product.stock < 1 && ! product.order_without_stock" class="product-label label-out">En rupture de stock</span>
-                                    
+                                    <span v-if="product.discount > 0" class="product-label label-sale">En
+                                        promotion!</span>
+                                    <span
+                                        v-if="product.active_stock && product.stock < 1 && ! product.order_without_stock"
+                                        class="product-label label-out">En rupture de stock</span>
+
                                     <a v-bind:href="[[ getProductLink(product) ]]">
-                                        <img v-bind:src="[[ product.photo ]]" alt="[[ product.name ]]" class="product-image">
+                                        <img v-bind:src="[[ product.photo ]]" alt="[[ product.name ]]"
+                                            class="product-image">
                                     </a>
 
                                     <div class="product-action-vertical">
-                                        <a href="#" v-if="logged" @click="addToWishlist(product.id, $event)" class="btn-product-icon btn-wishlist btn-expandable"><span>Ajouter aux Favoris</span></a>
-                                        
+                                        <a href="#" v-if="logged" @click="addToWishlist(product.id, $event)"
+                                            class="btn-product-icon btn-wishlist btn-expandable"><span>Ajouter aux
+                                                Favoris</span></a>
+
                                     </div><!-- End .product-action-vertical -->
                                     <div class="product-action">
-                                    <a v-bind:href="[[ getProductLink(product) ]]" type="button" class="product-action-btn action-btn-cart" data-bs-toggle="modal" data-bs-target="#action-CartAddModal">
-                                        <span>Afficher produit</span>
-                                    </a>
-</div>
-                                   <!-- <div class="product-action">
+                                        
+                                        <a v-bind:href="[[ getProductLink(product) ]]" type="button"
+                                            class="product-action-btn action-btn-cart" data-bs-toggle="modal"
+                                            data-bs-target="#action-CartAddModal">
+                                            <span>Afficher produit</span>
+                                        </a>
+                                    </div>
+                                    <!-- <div class="product-action">
                                         <a v-bind:href="[[ getProductLink(product) ]]" class="btn-product"><span>Afficher produit</span></a>-->
 
-                                        {% comment %} {% if not product.declinaison %}
-                                            <a href="#" @click="addToCart({{product | to_json}}, productQte, $event)" class="btn-product btn-cart"><span>Ajouter au panier</span></a>
-                                        {% else %}
-                                            <a href="#" class="btn-product btn-cart" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Ajouter au panier</span></a>
-                
-                                            <div class="dropdown-menu">
-                                                {% for child_product in product.declinaisons %}
-                                                    <a class="dropdown-item" href="#" @click="addToCart({{child_product | to_json}}, productQte, $event)">{{ child_product | get_prod_attrs }}</a>
-                                                {% endfor %}
-                                            </div>
-                                        {% endif %} {% endcomment %}
-                                    </div><!-- End .product-action -->
-                                </figure><!-- End .product-media -->
+                                    {% comment %} {% if not product.declinaison %}
+                                    <a href="#" @click="addToCart({{product | to_json}}, productQte, $event)"
+                                        class="btn-product btn-cart"><span>Ajouter au panier</span></a>
+                                    {% else %}
+                                    <a href="#" class="btn-product btn-cart" role="button" id="dropdownMenuLink"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Ajouter
+                                            au panier</span></a>
 
-                                <div class="product-info">
-
-                                    <div class="product-cat">
-                                        <a>[[ product._category.name ]]</a>
-                                    </div><!-- End .product-cat -->
-                                    <h3 class="product-title"><a v-bind:href="[[ getProductLink(product) ]]">[[ product.name ]]</a></h3><!-- End .product-title -->
-                                    <div class="product-price" v-if="product.discount > 0">
-                                        <span class="new-price">[[ product.price - product.discount ]] {{ company.currency }}</span>
-                                        <span class="old-price">[[ product.price ]]  {{ company.currency }}</span>
+                                    <div class="dropdown-menu">
+                                        {% for child_product in product.declinaisons %}
+                                        <a class="dropdown-item" href="#"
+                                            @click="addToCart({{child_product | to_json}}, productQte, $event)">{{
+                                            child_product | get_prod_attrs }}</a>
+                                        {% endfor %}
                                     </div>
-                                    <div class="product-price" v-if="!product.discount > 0">
-                                        [[ product.price ]] {{ company.currency }}
-                                    </div><!-- End .product-price -->
-                                    {% comment %} <div class="ratings-container">
-                                        <div class="ratings">
-                                            <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
-                                        </div><!-- End .ratings -->
-                                        <span class="ratings-text">( 2 Reviews )</span>
-                                    </div><!-- End .rating-container --> {% endcomment %}
+                                    {% endif %} {% endcomment %}
+                            </div><!-- End .product-action -->
+                            </figure><!-- End .product-media -->
 
-                                  
-                                </div><!-- End .product-body -->
-                            </div><!-- End .product -->
-                        </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
-                    </div><!-- End .row -->
-                </div>
-                <div align="center">
-                    <nav aria-label="Page navigation" >
+                            <div class="product-info">
 
-                        <ul class="pagination justify-content-center" >
-                            <li v-if="ProductsSearch.current_page == 1" class="page-item disabled">
-                                <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
-                                    <span aria-hidden="true"><i class=" fa fa-thin fa-arrow-left"></i></span>
-                                </a>
-                            </li>
-                            <li v-if="ProductsSearch.current_page != 1" class="page-item">
-                                <a class="page-link page-link-prev" href="#" aria-label="Previous" @click="searchProductsPagination(ProductsSearch.previous)">
-                                    <span aria-hidden="true"><i class="fa fa-thin fa-arrow-left"></i></span>
-                                </a>
-                            </li>
+                                <div class="product-cat">
+                                    <a>[[ product._category.name ]]</a>
+                                </div><!-- End .product-cat -->
+                                <h3 class="product-title"><a v-bind:href="[[ getProductLink(product) ]]">[[ product.name
+                                        ]]</a></h3><!-- End .product-title -->
+                                <div class="product-price" v-if="product.discount > 0">
+                                    <span class="new-price">[[ product.price - product.discount ]] {{ company.currency }}</span>
+                                    <span class="old-price">[[ product.price ]] {{ company.currency }}</span>
+                                </div>
+                                <div class="product-price" v-if="!product.discount > 0">
+                                    [[ product.price ]] {{ company.currency }}
+                                </div><!-- End .product-price -->
+                                {% comment %} <div class="ratings-container">
+                                    <div class="ratings">
+                                        <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                                    </div><!-- End .ratings -->
+                                    <span class="ratings-text">( 2 Reviews )</span>
+                                </div><!-- End .rating-container --> {% endcomment %}
 
-                          <!---  <li class="page-item-total">[[ ProductsSearch.current_page ]]  sur  [[ ProductsSearch.total_pages ]]</li>-->
-                          <li class="page-item-total">1 sur  3</li>
-                            <li v-if="ProductsSearch.current_page == ProductsSearch.total_pages" class="page-item disabled">
-                                <a class="page-link page-link-next" href="#" aria-label="Next" tabindex="+1" aria-disabled="true">
-                                     <span aria-hidden="true"><i class="fa fa-thin fa-arrow-right"></i></span>
-                                </a>
-                            </li>
-                            <li v-if="ProductsSearch.current_page != ProductsSearch.total_pages" class="page-item" @click="searchProductsPagination(ProductsSearch.next)">
-                                <a class="page-link page-link-next" href="#" aria-label="Next">
-                                     <span aria-hidden="true"><i class=" fa fa-thin fa-arrow-right"></i></span>
-                                </a>
-                            </li>
-                        </ul>
 
-                    </nav>
-                    </div>
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
+                    </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                </div><!-- End .row -->
+            </div>
+            <div align="center">
+                <nav aria-label="Page navigation">
+
+                    <ul class="pagination justify-content-center">
+                        <li v-if="ProductsSearch.current_page == 1" class="page-item disabled">
+                            <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
+                                aria-disabled="true">
+                                <span aria-hidden="true"><i class=" fa fa-thin fa-arrow-left"></i></span>
+                            </a>
+                        </li>
+                        <li v-if="ProductsSearch.current_page != 1" class="page-item">
+                            <a class="page-link page-link-prev" href="#" aria-label="Previous"
+                                @click="searchProductsPagination(ProductsSearch.previous)">
+                                <span aria-hidden="true"><i class="fa fa-thin fa-arrow-left"></i></span>
+                            </a>
+                        </li>
+
+                        <!---  <li class="page-item-total">[[ ProductsSearch.current_page ]]  sur  [[ ProductsSearch.total_pages ]]</li>-->
+                        <li class="page-item-total">[[products.results.length ]] sur [[ products.count ]]</li>
+                        <li v-if="ProductsSearch.current_page == ProductsSearch.total_pages" class="page-item disabled">
+                            <a class="page-link page-link-next" href="#" aria-label="Next" tabindex="+1"
+                                aria-disabled="true">
+                                <span aria-hidden="true"><i class="fa fa-thin fa-arrow-right"></i></span>
+                            </a>
+                        </li>
+                        <li v-if="ProductsSearch.current_page != ProductsSearch.total_pages" class="page-item"
+                            @click="searchProductsPagination(ProductsSearch.next)">
+                            <a class="page-link page-link-next" href="#" aria-label="Next">
+                                <span aria-hidden="true"><i class=" fa fa-thin fa-arrow-right"></i></span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </nav>
+            </div>
 </main>
 
 {% endblock %}

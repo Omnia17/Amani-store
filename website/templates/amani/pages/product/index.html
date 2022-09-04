@@ -58,7 +58,7 @@
                             <h3 class="product-details-title">{{ product.name }}</h3>
                             
                             <div class="product-details-qty-list">
-                                <div class="qty-list-check">
+                                <div class="product-details-action">
                                     
                                     {% if product.discount > 0 %}
                                       <span class="price"> <b>{{ product | calculate_new_price }} {{company.currency}} </b></span> </label> 
@@ -114,16 +114,17 @@
                         </table>
                     </div> 
                             {% endwith %}
-                                                        <div class="product-details-pro-qty">
+                                                     <!--   <div class="product-details-pro-qty">
                                                             <div class="product-details-quantity">
                                                                 <input type="number" id="qty" v-model="productQte" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required="" style="display: none;">
                                                             </div>
+                            </div>--><div class="pro-qty">
+                                <input type="number" id="qty" v-model="productQte" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required="" style="display: none;">
                             </div>
                            
                             <div class="product-details-action">
                            
-                                <a href="#" @click="addToCart(productQte, $event)" ><button type="button" class="btn btn-outline-primary"><i class="fa fa-solid fa-cart-plus"></i>Ajouter au panier</button></a>
-                                    <div class="details-action-wrapper">
+                                <a href="#" @click="addToCart(productQte, $event)" ><button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#action-CartAddModal">Ajouter au panier</button></a>                                    <div class="details-action-wrapper">
                                         <a href="#" v-if="logged" @click="addToWishlist({{product.id}}, $event)" class="btn-product btn-wishlist" title="Wishlist"><span>Ajouter aux Favoris</span></a>
                                     </div><!-- End .details-action-wrapper -->
                                 </div><!-- End .product-details-action -->
@@ -217,7 +218,7 @@
                             <a href="#">Women</a>
                         </div><!-- End .product-cat -->
                         <h3 class="product-title"><a href="{{ relatedProd | get_prod_link }}">{{ relatedProd.name }}</a></h3><!-- End .product-title -->
-                        <div class="product-price">
+                        <div class="product-details-action">
                             {% if relatedProd.discount > 0 %}
                             <span class="new-price">{{ relatedProd | calculate_new_price }} {{company.currency}}</span>
                             <span class="old-price">{{ relatedProd.price }} {{company.currency}} </span>

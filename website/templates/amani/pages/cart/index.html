@@ -24,135 +24,135 @@
         </div>
     </nav>
 
+        <div class="container">
+            <div class="shopping-cart-form table-responsive">
+                <form action="#" method="post">
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th class="product-remove">Supprimer</th>
+                                <th class="product-thumbnail">image</th>
+                                <th class="product-name">Nom</th>
+                                <th class="product-price">Prix</th>
+                                <th class="product-quantity">Quantité</th>
+                                <th class="product-subtotal">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="tbody-item" v-for="(product, index) in cart._details" :key="product.name">
 
-    <div class="page-content">
-        <div class="cart">
-
-            <div class="torress-cart-area">
-                <br><br>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="table-content table-responsive">
-
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th class="torress-product-remove">remove</th>
-                                            <th class="torress-product-thumbnail">images</th>
-                                            <th class="cart-product-name">Product</th>
-                                            <th class="torress-product-quantity">Quantity</th>
-                                            <th class="torress-product-subtotal">Total</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-
-                                        <tr v-for="(product, index) in cart._details" :key="product.name">
-                                            <td class="torress-product-remove"><a href="javascript:void(0)"><i
-                                                        class="fa fa-solid fa-trash"></i></a></td>
-
-
-                                            <td class="torress-product-thumbnail">
-
-                                                <a v-bind:href="[[ getProductLink(product._product) ]]">
-                                                    <img v-bind:src="[[ product.product_thumb ]]" alt="Product image">
-                                                </a>
-                                                <h3 class="product-title">
-                                                    <a v-bind:href="[[ getProductLink(product._product) ]]">[[ product.product_name ]]</a>
-                                                </h3><!-- End .product-title -->
-                                            </td>
-                                            <td class="price-col">[[ product.price_ttc_after_discount ]] {{ company.currency }}</td>
-                                            <td class="quantity-col">
-                                                <div class="cart-product-quantity">
-                                                    <input type="number" class="form-control" min="1"
-                                                        v-model="product.quantity" v-on:change="updateCart()" step="1"
-                                                        data-decimals="0" required="" style="display: none;">
-                                                </div><!-- End .cart-product-quantity -->
-                                            </td>
-                                            <td class="total-col">[[ product.final_price ]] {{ company.currency }}</td>
-                                        </tr>
-                                        <tr class="tbody-item-actions" align="center">
-                                            <td colspan="6">
-                                                <a href="#" @click="setCart($event)" class="btn btn-outline-dark-2">
-                                                    <span>MISE À JOUR DU PANIER</span><i class="fa icon-refresh"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div><!-- End .table table-wishlist -->
-                           <!--code promo-->
-                            <div class="row">
-                                <div class="col-12 col-lg-6">
-                                    <div class="coupon-wrap">
-                                        <h4 class="title">Code Promo</h4>
-                                        <p class="desc">Enter your code promo code if you have one.</p>
-                                        <input type="text" class="form-control" placeholder="Coupon code">
-                                        <button type="button" class="btn-coupon">Apply Code Promo</button>
+                                <td class="product-remove">
+                                    <a href="#" class="btn-remove" @click="removeFromCart(index)" title="Remove Product"><i class="fa fa-solid fa-trash"></i></a>
+                                </td>
+                                <td class="product-thumbnail">
+                                    <div class="thumb">
+                                        <a v-bind:href="[[ getProductLink(product._product) ]]">
+                                            <img v-bind:src="[[ product.product_thumb ]]" alt="Product image">
+                                        </a>
                                     </div>
-                                </div><!--end code promo-->
-                            
-                                <!--total de panier-->
-                                <aside class="col-12 col-lg-6">
+                                </td>
+                                <td class="product-name">
+                                    <a v-bind:href="[[ getProductLink(product._product) ]]">[[ product.product_name ]]</a>
+                                </td>
+                                <td class="product-price">
+                                    <span class="price"> [[ product.price_ttc_after_discount ]] {{ company.currency }}</span>
+                                </td>
+                                <td class="product-quantity">
+                                    
+                                    <div class="pro-qty">
+                                        <input type="number" id="qty" v-model="product.quantity"
+                                          v-on:change="updateCart()"  class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" >
 
-                                    <div class="cart-totals-wrap">
-                                        <h3 class="summary-title">Total du panier</h3><!-- End .summary-title -->
+                                    </div>
+                                </td>
+                              <!--  <td class="quantity-col">
+                                    <div class="cart-product-quantity">
+                                        <input type="number" class="form-control" min="1" v-model="product.quantity"
+                                          v-on:change="updateCart()" step="1" data-decimals="0" required="" style="display: none;">
+                                    </div
+                                </td> -->
+                                <td class="product-subtotal">
+                                    [[ product.final_price ]] {{ company.currency }}
+                                </td>
+                            </tr>
+                           
+                            <tr class="tbody-item-actions">
+                                <td colspan="6">
+                                    <button type="submit" class="btn-update-cart disabled" disabled>Update cart</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+                
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="coupon-wrap">
+                        <h4 class="title">Coupon</h4>
+                        <p class="desc">Entrer votre coupon code (if you have one)</p>
+                        <input type="text" class="form-control" placeholder="Coupon code">
+                        <button type="button" class="btn-coupon">Apply coupon</button>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="cart-totals-wrap">
 
-                                        <table class="table table-summary">
-                                            <tbody>
-                                                <tr class="summary-subtotal">
-                                                    <td>Sous-total:</td>
-                                                    <td>[[ cart.subtotal ]] {{ company.currency }}</td>
-                                                </tr><!-- End .summary-subtotal -->
-                                                <tr class="summary-subtotal">
-                                                    <td>Remise:</td>
-                                                    <td>[[ cart.promoCodeDiscount ]] {{ company.currency }}</td>
-                                                </tr>
-                                                {% if company.works_with_transport and transporters and transporters|length > 0 %}
-                                                <tr class="summary-shipping">
-                                                    <td>Transport:</td>
-                                                    <td>&nbsp;</td>
-                                                </tr>
-                                                {% for transporter in transporters %}
-                                                <tr class="summary-shipping-row">
-                                                    <td>
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" id="{{transporter.id}}" name="shipping"
-                                                                class="custom-control-input" @change="updateCartTransporter({{transporter}})" value="{{transporter|to_json}}"
-                                                                {% if transporter.default %}
-                                                                    checked="checked"
-                                                                {% endif %}
-                                                                >
-                                                            <label class="custom-control-label"
-                                                                for="{{transporter.id}}">{{ transporter.name }}</label>
-                                                        </div><!-- End .custom-control -->
-                                                    </td>
-                                                    <td>{{ transporter.price }} {{ company.currency }}</td>
-                                                </tr><!-- End .summary-shipping-row -->
-                                                {% endfor %}
+                        <h2 class="title">Cart totals</h2>
+                        <table>
+                            <tbody>
+                                <tr class="cart-subtotal">
+                                    <th>Subtotal</th>
+                                    <td>
+                                   <span class="amount"> [[ cart._subtotal ]] {{ company.currency }}
+                                      {{ cart.subtotal}}</span>
+                               </td>
+                                </tr>
+                                <tr class="cart-subtotal">
+                                    <th>Remise</th>
+                                    <td>
+                                        <span class="amount"> [[ cart._promoCodeDiscount ]] {{ company.currency }}</span>
+                                    </td>
+                                </tr>
+                                {% if company.works_with_transport and transporters and transporters|length > 0 %}
+                                                    <tr class="cart-subtotal">
+                                                        <th>Transport:</th>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                    {% for transporter in transporters %}
+                                                        <tr class="summary-shipping-row">
+                                                            <td>
+                                                                <div class="custom-control custom-radio">
+                                                                    <input type="radio" id="{{transporter.id}}" name="shipping"
+                                                                        class="custom-control-input" @change="updateCartTransporter({{transporter}})" value="{{transporter|to_json}}"
+                                                                        {% if transporter.default %}
+                                                                            checked="checked"
+                                                                        {% endif %}
+                                                                        >
+                                                                    <label class="custom-control-label" for="{{transporter.id}}">{{ transporter.name }}</label>
+                                                                </div><!-- End .custom-control -->
+                                                            </td>
+                                                            <td>{{ transporter.price }} {{ company.currency }}</td>
+                                                        </tr><!-- End .summary-shipping-row -->
+                                                    {% endfor %}
                                                 {% endif %}
+                                <tr class="order-total">
+                                    <th>Total</th>
+                                    <td>
+                                        <span class="amount">[[ cart._total_amount ]] {{ company.currency }}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-end">
+                            <a href="/checkout" class="checkout-button">Proceed to checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--== End Product Area Wrapper ==-->
 
-
-
-
-                                                <tr class="summary-total">
-                                                    <td>Total:</td>
-                                                    <td>[[ cart.total ]] {{ company.currency }}</td>
-                                                </tr><!-- End .summary-total -->
-                                            </tbody>
-                                        </table><!-- End .table table-summary -->
-
-                                        <a href="/checkout"
-                                            class="btn btn-outline-primary-2 btn-order btn-block">COMMANDER</a>
-                                    </div><!-- End .summary -->
-                                    <a href="/" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUER MES
-                                            ACHAT</span><i class="icon-refresh"></i></a>
-                                </aside><!-- End .col-lg-3 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .container -->
-                    </div><!-- End .cart -->
-                </div><!-- End .page-content -->
 </main>
 
 {% endblock %}

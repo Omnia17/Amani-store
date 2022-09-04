@@ -1,6 +1,10 @@
 {% extends "../index.html" %}
 {% block body %}
         <main class="main">
+            
+            {% include "amani/pages/home/components/hero-slider.html" with data=section key=key %}
+
+            {% include "amani/pages/home/components/products-category.html" with data=section key=key %}
 
             {% for section in sections %}
                 
@@ -64,7 +68,7 @@
 
                         {% if section.slug == 'banner-slider-template-10' %}
                             {% include "./components/banner-slider-template-10.html" with data=section %}
-
+      
                         {% endif %}
                         
                         {% if section.slug == 'banner-slider-template-32' %}
@@ -88,6 +92,7 @@
 
                 {% endwith %}
             {% endfor %}
+
         </main><!-- End .main -->
 
 {% endblock %}

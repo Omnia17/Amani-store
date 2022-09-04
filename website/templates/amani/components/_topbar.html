@@ -1,108 +1,108 @@
 {% load get_link %}
-{% load prod_tags %}
-
-
-<!--header class="header header-8">-->
-<!--<header class="header-area sticky-header header-transparent">-->
-<header class="header header-8">
-
-    <div class="header-top">
-        <div class="container">
-            <div class="header-right">
-                <ul class="top-menu mb-1 mt-1">
-                    <li>
-                        <a href="#">Liens</a>
-
-                        <ul>
-                            <li><a href="tel:{{ company.phone }}"><i class=" fa fa-thin fa-phone"></i>Tel: {{ company.phone }}</a></li>
-                            <li v-if="logged"><a href="/wishlist"><i class="icon-heart-o"></i>Mes Favoires<span>[[
-                                        user.customer.favourite.length ]] </span></a></li>
-                            <li v-if="logged"><a href="/account"><i class=" fa fa-thin fa-user"></i>></i>Mon Compte</a>
+{% load prod_tags %} 
+        <header class="header header-8">
+            <div class="header-top">
+                <div class="container">
+                    <div class="header-right">
+                        <ul class="top-menu mb-1 mt-1">
+                            <li>
+                                <a href="#">Liens</a>
+                                <ul>
+                                    <li><a href="tel:{{ company.phone }}"><i class="fas fa-thin fa-phone"></i>Tel: {{ company.phone }}</a></li>
+                                    <li v-if="logged"><a href="/wishlist"><i class="icon-heart-o"></i>Mes Favoires<span>( [[ user.customer.favourite.length ]] )</span></a></li>
+                                    <li v-if="logged"><a href="/account"><i class=" fas fa-thin fa-user"></i>Mon Compte</a></li>
+                                    <li v-if="!logged"><a href="#signin-modal" data-toggle="modal"><i class=" fas fa-thin fa-user"></i>Se Connecter</a></li>
+                                </ul>
                             </li>
-                            <li v-if="!logged"><a href="#signin-modal" data-toggle="modal"><i
-                                        class=" fa fa-thin fa-user"></i>Se Connecter</a></li>
-                        </ul>
-                    </li>
-                </ul><!-- End .top-menu -->
-                <hr>
-            </div><!-- End .header-right -->
-        </div><!-- End .container -->
-    </div><!-- End .header-top -->
+                        </ul><!-- End .top-menu -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-top -->
 
+            <div class="header-middle sticky-header">
+                <div class="container">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggler" @click="upTodo(index)">
+                            <span class="sr-only">Toggle mobile menu</span>
+                            <i class="icon-bars"></i>
+                        </button> 
+                        
 
-    <div class="header-area sticky-header header-transparent">
-        <div class="container">
+                        <h1> 
+                            <a href="/" class="logo">
+                                <img src="{{ "https://api.tiktak.space"|add:company.logo }}" alt="company logo" width="105" height="25">
+                                {% comment %} <img src="{{ "https://api.tiktak.space/"|add:company.logo }}" alt="company logo" width="105" height="25"> {% endcomment %}
 
+                            </a>    
+                        </h1>
+                    </div><!-- End .header-left -->
 
-            <div class="row align-items-center">
+                    <div class="header-left">
+                        <nav class="main-nav">
+                            <ul class="menu sf-arrows">
+                                {% for menu in header  %}
+                                    <li>
+                                        {% if menu.type == "extern" %}
+                                            <a href="{{ menu.href }}" class="">{{menu.label}}</a>
+                                        {% else %}
+                                            <a href="{{ menu | get_link }}" class="">{{menu.label}}</a>
+                                        {% endif %}
+    
+                                        {% if menu.submenu|length > 0 %}
+                                            <ul>    
+                                                {% for submenu in menu.submenu %}
+                                                    {% if submenu.type == "extern" %}
+                                                        <li><a href="{{ submenu.href }}">{{submenu.label}}</a></li>
+                                                    {% else %}
+                                                        <li><a href="{{ submenu | get_link }}">{{submenu.label}}</a></li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}                            
+                            </ul><!-- End .menu -->
+                        </nav><!-- End .main-nav -->
+</div>
 
+<div class="header-right">
 
-                <div class="logo">
-                    <h1>
-                        <a href="/" class="logo">
-                            <img src="{{ " https://api.tiktak.space"|add:company.logo }}" alt="company logo" width="105"
-                                height="25">
-                            {% comment %} <img src="{{ " https://api.tiktak.space/"|add:company.logo }}"
-                                alt="company logo" width="105" height="25"> {% endcomment %}
+                        <div class="header-search">
+                           <a href="#" class="search-toggle" role="button">
+                                 <i class="fas fa-search" aria-hidden="true"></i>
+                                </a>
+                            <form @submit.prevent="searchCall()">
+                                <div class="header-search-wrapper">
+                                    <label for="search" class="sr-only">Rechercher</label>
+                                    <input type="search" class="form-control" v-model="search" placeholder="Rechercher..." required>-->
+                                </div><!-- End .header-search-wrapper -->
+                           </form>
+                        
+                        </div><!-- End .header-search -->
 
-                        </a>
-                    </h1>
-                </div>
-            </div>
+                        <div class="dropdown cart-dropdown">
+                            
+                                <div class="header-action justify-content-end">
+                            <button class="header-action-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#AsideOffcanvasCart" aria-controls="offcanvasRight">
+                                <span class="icon"> 
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <rect class="icon-rect" width="30" height="30" fill="url(#pattern2)"/>
+                    <defs>
+                      <pattern id="pattern2" patternContentUnits="objectBoundingBox" width="1" height="1">
+                        <use xlink:href="#image0_504:9" transform="scale(0.0333333)"/>
+                      </pattern>
+                      <image id="image0_504:9" width="30" height="30" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABmJLR0QA/wD/AP+gvaeTAAABFUlEQVRIie2VMU7DMBSGvwAqawaYuAmKxCW4A1I5Qg4AA93KBbp1ZUVUlQJSVVbCDVhgzcTQdLEVx7WDQ2xLRfzSvzzb+d6zn2MYrkugBBYevuWsHKiFn2JBMwH8Bq6Aw1jgBwHOYwGlPgT4LDZ4I8BJDNiEppl034UEJ8DMAJ0DByHBACPgUYEugePQUKkUWAmnsaB/Ry/YO9aXCwlT72AdrqaWEohwBWxSwc8ReIVtYIr5bM5pXqO+Men7rozGlkVSv4lJj1WQfsbvXVkNVNk1eEK4ik9/yuwzAPhLh5iuU4jtftMDR4ZJJXChxTJ2H3zXGDgWc43/X2Wro8G81a8u2fXU2nXiLVAxvNIKuPGW/r/2SltF+a3Rkw4pmwAAAABJRU5ErkJggg=="/>
+                    </defs>                
 
-            <div class="col-lg-4 col-xl-9 d-none d-lg-block">
-                <div class="header-navigation ps-7">
-                    <ul class="main-nav justify-content-start">
-                        {% for menu in header %}
-                        <li class="has-submenu">{% if menu.type == "extern" %}
-                            <a href="{{ menu.href }}" class="">{{menu.label}}</a>
-                            {% else %}
-                            <a href="{{ menu | get_link }}" class="">{{menu.label}}</a>
-                            {% endif %}
+                  </svg>                
 
-                            {% if menu.submenu|length > 0 %}
-
-                            <ul>
-                                {% for submenu in menu.submenu %}
-                                {% if submenu.type == "extern" %}
-                                <li><a href="{{ submenu.href }}">{{submenu.label}}</a></li>
-                                {% else %}
-                                <li><a href="{{ submenu | get_link }}">{{submenu.label}}</a></li>
-                                {% endif %}
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="header-search">
-                <a href="/search" class="search-toggle" role="button">
-                    <!--<img src="static/assets/amani/images/search.png" width="25" height="38" alt="" ></a>-->
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                    <form @submit.prevent="searchCall()">
-                        <div class="header-search-wrapper">
-                            <label for="search" class="sr-only">Rechercher</label>
-                            <input type="search" class="form-control" v-model="search" placeholder="Rechercher..."
-                                required>
-                        </div><!-- End .header-search-wrapper -->
-                    </form>
-            </div><!-- End .header-search -->
-            <div class="dropdown cart-dropdown">
-                <a href="cart" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false" data-display="static">
-                    <!--  <img  href="cart" src="static/assets/amani/images/shopcart.png" width="25" height="38" alt="" >-->
-                    <i class="fas fa-shopping-cart"></i> <span class="cart-count">[[ cart._details.length ]] </span>
-                </a>
-
+                </span>
                 <div class="dropdown-menu dropdown-menu-right" v-if="cart._details.length > 0">
                     <div class="dropdown-cart-products">
                         <div class="product" v-for="(product, index) in cart._details" :key="product.name">
                             <div class="product-cart-details">
                                 <h4 class="product-title">
-                                    <a v-bind:href="[[ getProductLink(product._product) ]]">[[ product.product_name ]]
-                                        [[ getAttrs(product._product) ]]</a>
+                                    <a v-bind:href="[[ getProductLink(product._product) ]]">[[ product.product_name ]] [[ getAttrs(product._product) ]]</a>
                                 </h4>
 
                                 <span class="cart-product-info">
@@ -123,12 +123,12 @@
                     <div class="dropdown-cart-total">
                         <span>Total</span>
 
-                        <span class="cart-total-price">[[ cart.total_amount ]] {{ company.currency }}</span>
+                        <span class="cart-total-price">[[ cart._total_amount ]] {{ company.currency }}</span>
                     </div><!-- End .dropdown-cart-total -->
 
                     <div class="dropdown-cart-action">
-                        <a href="/cart" class="btn btn-secondary">VOIR</a>
-                        <a href="/checkout" class="btn btn-outline-primary-2">Valider</a>
+                        <a href="/cart" class="cart-btn">panier </a>
+                        <a href="/checkout" class="cart-btn"><span> Valider </span><i class="fa fa-solid fa-arrow-right"></i></a>
                     </div><!-- End .dropdown-cart-total -->
                 </div><!-- End .dropdown-menu -->
                 <div class="dropdown-menu dropdown-menu-right" v-else>
@@ -136,7 +136,20 @@
                         Votre panier est vide !
                     </div>
                 </div><!-- End .dropdown-menu -->
-        </div><!-- End .cart-dropdown -->
-    </div><!-- End .header-right -->
-    </div>
-</header>
+
+                            </button>
+                            <span class="cart-count">[[ cart._details.length ]]</span>
+
+
+                        </div><!-- End .cart-dropdown -->
+
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+
+          
+
+
+
+        </header><!-- End .header -->
+        <script src="static/assets/amani/js/mainbrancy.js"></script>

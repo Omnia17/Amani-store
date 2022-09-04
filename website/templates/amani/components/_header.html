@@ -1,3 +1,4 @@
+
 {% load static %}
 {% load to_json %}
 
@@ -5,9 +6,17 @@
 <html lang="en">
 <head>
     {% include '../../core/_seo.html' %}
+   
 
     <!-- Plugins CSS File -->
-   
+    <meta charset="utf-8">
+
+    <script src="static/assets/amani/js/vendor/modernizr-3.11.7.min.js"></script>
+
+    <script src="static/assets/amani/js/vendor/jquery-3.6.0.min.js"></script>
+
+    <script src="{% static '/assets/amani/js/vendor/jquery-migrate-3.3.2.min.js' %}"></script>
+    <script src="{% static '/assets/amani/js/plugins/jquery.nice-select.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'assets/amani/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/molla-1/css/plugins/owl-carousel/owl.carousel.css' %}">
     <link rel="stylesheet" href="{% static 'assets/molla-1/css/plugins/magnific-popup/magnific-popup.css' %}">
@@ -23,9 +32,22 @@
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{% static 'assets/amani/css/style.css' %}?v=1.2.12"> 
     <link rel="stylesheet" href="{% static 'assets/molla-1/css/demos/demo-10.css' %}?v=1.0.13">
-    
-   
- 
+
+    <!-- brancy's links-->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS (Bootstrap & Icon Font) -->
+    <script src="static/assets/amani/js/vendor/bootstrap.bundle.min.js"></script>
+  
+
+    <script src="static/assets/amani/js/plugins/swiper-bundle.min.js"></script>
+    <script src="static/assets/amani/js/plugins/fancybox.min.js"></script>
+    <script src="static/assets/amani/js/main.js"></script>
+
+
   </head>
 
 <body>

@@ -1,4 +1,4 @@
-<div class="modal fade" id="add-to-cart-modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="product-action-modal modal fade" id="add-to-cart-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -15,12 +15,12 @@
             </div><!-- End .modal-body -->
 
             <div class="modal-footer">
-                <a href="/cart" >
+                <a href="/cart" class="cart-btn" >
                     <span>Voir Panier</span>
                     <i class="fas fa-shopping-cart"></i>
                                                 </a>
                
-                <button type="button" id="btncart" data-dismiss="modal">
+                <button type="button" class="cart-btn"  data-dismiss="modal">
                     <span>Continuer mes achats</span>
                     <i class="fa fa-solid fa-arrow-right"></i>
                                 </button>
@@ -29,3 +29,35 @@
         </div><!-- End .modal-content -->
     </div><!-- End .modal-dialog -->
 </div><!-- End .modal -->
+<!--
+
+<aside class="product-action-modal modal fade" id="add-to-cart-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="product-action-view-content">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    <div class="modal-action-messages">
+                        <i class="fa fa-check-square-o"></i> Added to cart successfully!
+                    </div>
+                    <p class="ml-4">[[ productInfo.message ]]</p>
+
+                    <div class="modal-action-product">
+                        <div class="thumb">
+                            <img v-bind:src="[[ product.photo ]]" alt="[[ product.name ]]"
+                            class="product-image">
+                                                </div>
+                        <h4 class="product-name"><a href="product-details.html">[[ productInfo.title ]]</a></h4>
+                        <button type="button" id="btncart" data-dismiss="modal">
+                            <span>Continuer mes achats</span>
+                            <i class="fa fa-solid fa-arrow-right"></i>
+                                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+-->
