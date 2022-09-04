@@ -1,11 +1,11 @@
 {% extends "../index.html" %}
 {% block body %}
         <main class="main">
-            
+            <!-- these two pages " hero-slider " and " products company " are static and not linked to the backoffice-->
             {% include "amani/pages/home/components/hero-slider.html" with data=section key=key %}
 
             {% include "amani/pages/home/components/products-category.html" with data=section key=key %}
-
+            <!-- End of static pages-->
             {% for section in sections %}
                 
                 {% with key=forloop.counter %}  

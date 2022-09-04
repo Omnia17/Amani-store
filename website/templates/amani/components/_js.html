@@ -844,7 +844,7 @@
                           this.order_message = response.data.order.order_number;
                           this.loading = false;
 
-                          $('#success-modal').modal();
+                          $('#success-modal').modal('show');
                           this.clearCart();
                       }
                     });
